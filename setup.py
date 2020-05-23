@@ -4,7 +4,7 @@ import setuptools
     #long_description = fh.read()
 setuptools.setup(
      name='mindpoweredinfra-maglev',
-     version='0.4.14',
+     version='0.4.15',
      description="maglev",
      #long_description=long_description,
      #long_description_content_type="text/markdown",
