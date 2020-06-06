@@ -1,0 +1,6 @@
+maglev.py
+setup.py
+mindpowered_maglev.egg-info/PKG-INFO
+mindpowered_maglev.egg-info/SOURCES.txt
+mindpowered_maglev.egg-info/dependency_links.txt
+mindpowered_maglev.egg-info/top_level.txt
