@@ -9,6 +9,7 @@ import inspect as python_lib_Inspect
 import os as python_lib_Os
 import sys as python_lib_Sys
 import functools as python_lib_Functools
+import json as python_lib_Json
 try:
     import msvcrt as python_lib_Msvcrt
 except:
@@ -37,6 +38,7 @@ from io import RawIOBase as python_lib_io_RawIOBase
 from io import FileIO as python_lib_io_FileIO
 from io import TextIOBase as python_lib_io_TextIOBase
 from io import StringIO as python_lib_io_StringIO
+from json import JSONEncoder as python_lib_json_JSONEncoder
 from time import struct_time as python_lib_time_StructTime
 import urllib.parse as python_lib_urllib_Parse
 
@@ -3170,6 +3172,47 @@ class haxe_Int64Helper:
         return result
 
 
+class haxe_Json:
+    _hx_class_name = "haxe.Json"
+    __slots__ = ()
+    _hx_statics = ["parse", "stringify"]
+
+    @staticmethod
+    def parse(text):
+        return python_lib_Json.loads(text,**python__KwArgs_KwArgs_Impl_.fromT(_hx_AnonObject({'object_hook': python_Lib.dictToAnon})))
+
+    @staticmethod
+    def stringify(value,replacer = None,space = None):
+        return haxe_format_JsonPrinter.print(value,replacer,space)
+
+
+class haxe_Log:
+    _hx_class_name = "haxe.Log"
+    __slots__ = ()
+    _hx_statics = ["formatOutput", "trace"]
+
+    @staticmethod
+    def formatOutput(v,infos):
+        _hx_str = Std.string(v)
+        if (infos is None):
+            return _hx_str
+        pstr = ((HxOverrides.stringOrNull(infos.fileName) + ":") + Std.string(infos.lineNumber))
+        if (Reflect.field(infos,"customParams") is not None):
+            _g = 0
+            _g1 = Reflect.field(infos,"customParams")
+            while (_g < len(_g1)):
+                v = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+                _g = (_g + 1)
+                _hx_str = (("null" if _hx_str is None else _hx_str) + ((", " + Std.string(v))))
+        return ((("null" if pstr is None else pstr) + ": ") + ("null" if _hx_str is None else _hx_str))
+
+    @staticmethod
+    def trace(v,infos = None):
+        _hx_str = haxe_Log.formatOutput(v,infos)
+        str1 = Std.string(_hx_str)
+        python_Lib.printString((("" + ("null" if str1 is None else str1)) + HxOverrides.stringOrNull(python_Lib.lineEnd)))
+
+
 class haxe_NativeStackTrace:
     _hx_class_name = "haxe.NativeStackTrace"
     __slots__ = ()
@@ -3837,6 +3880,253 @@ class haxe_ds_WeakMap:
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
+
+
+class haxe_format_JsonPrinter:
+    _hx_class_name = "haxe.format.JsonPrinter"
+    __slots__ = ("buf", "replacer", "indent", "pretty", "nind")
+    _hx_fields = ["buf", "replacer", "indent", "pretty", "nind"]
+    _hx_methods = ["ipad", "newl", "write", "classString", "objString", "fieldsString", "quote"]
+    _hx_statics = ["print"]
+
+    def __init__(self,replacer,space):
+        self.replacer = replacer
+        self.indent = space
+        self.pretty = (space is not None)
+        self.nind = 0
+        self.buf = StringBuf()
+
+    def ipad(self):
+        if self.pretty:
+            v = StringTools.lpad("",self.indent,(self.nind * len(self.indent)))
+            _this = self.buf
+            s = Std.string(v)
+            _this.b.write(s)
+
+    def newl(self):
+        if self.pretty:
+            _this = self.buf
+            s = "".join(map(chr,[10]))
+            _this.b.write(s)
+
+    def write(self,k,v):
+        if (self.replacer is not None):
+            v = self.replacer(k,v)
+        _g = Type.typeof(v)
+        tmp = _g.index
+        if (tmp == 0):
+            self.buf.b.write("null")
+        elif (tmp == 1):
+            _this = self.buf
+            s = Std.string(v)
+            _this.b.write(s)
+        elif (tmp == 2):
+            f = v
+            v1 = (Std.string(v) if ((((f != Math.POSITIVE_INFINITY) and ((f != Math.NEGATIVE_INFINITY))) and (not python_lib_Math.isnan(f)))) else "null")
+            _this = self.buf
+            s = Std.string(v1)
+            _this.b.write(s)
+        elif (tmp == 3):
+            _this = self.buf
+            s = Std.string(v)
+            _this.b.write(s)
+        elif (tmp == 4):
+            self.fieldsString(v,python_Boot.fields(v))
+        elif (tmp == 5):
+            self.buf.b.write("\"<fun>\"")
+        elif (tmp == 6):
+            c = _g.params[0]
+            if (c == str):
+                self.quote(v)
+            elif (c == list):
+                v1 = v
+                _this = self.buf
+                s = "".join(map(chr,[91]))
+                _this.b.write(s)
+                _hx_len = len(v1)
+                last = (_hx_len - 1)
+                _g1 = 0
+                _g2 = _hx_len
+                while (_g1 < _g2):
+                    i = _g1
+                    _g1 = (_g1 + 1)
+                    if (i > 0):
+                        _this = self.buf
+                        s = "".join(map(chr,[44]))
+                        _this.b.write(s)
+                    else:
+                        _hx_local_0 = self
+                        _hx_local_1 = _hx_local_0.nind
+                        _hx_local_0.nind = (_hx_local_1 + 1)
+                        _hx_local_1
+                    if self.pretty:
+                        _this1 = self.buf
+                        s1 = "".join(map(chr,[10]))
+                        _this1.b.write(s1)
+                    if self.pretty:
+                        v2 = StringTools.lpad("",self.indent,(self.nind * len(self.indent)))
+                        _this2 = self.buf
+                        s2 = Std.string(v2)
+                        _this2.b.write(s2)
+                    self.write(i,(v1[i] if i >= 0 and i < len(v1) else None))
+                    if (i == last):
+                        _hx_local_2 = self
+                        _hx_local_3 = _hx_local_2.nind
+                        _hx_local_2.nind = (_hx_local_3 - 1)
+                        _hx_local_3
+                        if self.pretty:
+                            _this3 = self.buf
+                            s3 = "".join(map(chr,[10]))
+                            _this3.b.write(s3)
+                        if self.pretty:
+                            v3 = StringTools.lpad("",self.indent,(self.nind * len(self.indent)))
+                            _this4 = self.buf
+                            s4 = Std.string(v3)
+                            _this4.b.write(s4)
+                _this = self.buf
+                s = "".join(map(chr,[93]))
+                _this.b.write(s)
+            elif (c == haxe_ds_StringMap):
+                v1 = v
+                o = _hx_AnonObject({})
+                k = v1.keys()
+                while k.hasNext():
+                    k1 = k.next()
+                    value = v1.h.get(k1,None)
+                    setattr(o,(("_hx_" + k1) if ((k1 in python_Boot.keywords)) else (("_hx_" + k1) if (((((len(k1) > 2) and ((ord(k1[0]) == 95))) and ((ord(k1[1]) == 95))) and ((ord(k1[(len(k1) - 1)]) != 95)))) else k1)),value)
+                v1 = o
+                self.fieldsString(v1,python_Boot.fields(v1))
+            elif (c == Date):
+                v1 = v
+                self.quote(v1.toString())
+            else:
+                self.classString(v)
+        elif (tmp == 7):
+            _g1 = _g.params[0]
+            i = v.index
+            _this = self.buf
+            s = Std.string(i)
+            _this.b.write(s)
+        elif (tmp == 8):
+            self.buf.b.write("\"???\"")
+        else:
+            pass
+
+    def classString(self,v):
+        self.fieldsString(v,python_Boot.getInstanceFields(Type.getClass(v)))
+
+    def objString(self,v):
+        self.fieldsString(v,python_Boot.fields(v))
+
+    def fieldsString(self,v,fields):
+        _this = self.buf
+        s = "".join(map(chr,[123]))
+        _this.b.write(s)
+        _hx_len = len(fields)
+        last = (_hx_len - 1)
+        first = True
+        _g = 0
+        _g1 = _hx_len
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            f = (fields[i] if i >= 0 and i < len(fields) else None)
+            value = Reflect.field(v,f)
+            if Reflect.isFunction(value):
+                continue
+            if first:
+                _hx_local_0 = self
+                _hx_local_1 = _hx_local_0.nind
+                _hx_local_0.nind = (_hx_local_1 + 1)
+                _hx_local_1
+                first = False
+            else:
+                _this = self.buf
+                s = "".join(map(chr,[44]))
+                _this.b.write(s)
+            if self.pretty:
+                _this1 = self.buf
+                s1 = "".join(map(chr,[10]))
+                _this1.b.write(s1)
+            if self.pretty:
+                v1 = StringTools.lpad("",self.indent,(self.nind * len(self.indent)))
+                _this2 = self.buf
+                s2 = Std.string(v1)
+                _this2.b.write(s2)
+            self.quote(f)
+            _this3 = self.buf
+            s3 = "".join(map(chr,[58]))
+            _this3.b.write(s3)
+            if self.pretty:
+                _this4 = self.buf
+                s4 = "".join(map(chr,[32]))
+                _this4.b.write(s4)
+            self.write(f,value)
+            if (i == last):
+                _hx_local_2 = self
+                _hx_local_3 = _hx_local_2.nind
+                _hx_local_2.nind = (_hx_local_3 - 1)
+                _hx_local_3
+                if self.pretty:
+                    _this5 = self.buf
+                    s5 = "".join(map(chr,[10]))
+                    _this5.b.write(s5)
+                if self.pretty:
+                    v2 = StringTools.lpad("",self.indent,(self.nind * len(self.indent)))
+                    _this6 = self.buf
+                    s6 = Std.string(v2)
+                    _this6.b.write(s6)
+        _this = self.buf
+        s = "".join(map(chr,[125]))
+        _this.b.write(s)
+
+    def quote(self,s):
+        _this = self.buf
+        s1 = "".join(map(chr,[34]))
+        _this.b.write(s1)
+        i = 0
+        while True:
+            index = i
+            i = (i + 1)
+            c = (-1 if ((index >= len(s))) else ord(s[index]))
+            if (c == -1):
+                break
+            c1 = c
+            if (c1 == 8):
+                self.buf.b.write("\\b")
+            elif (c1 == 9):
+                self.buf.b.write("\\t")
+            elif (c1 == 10):
+                self.buf.b.write("\\n")
+            elif (c1 == 12):
+                self.buf.b.write("\\f")
+            elif (c1 == 13):
+                self.buf.b.write("\\r")
+            elif (c1 == 34):
+                self.buf.b.write("\\\"")
+            elif (c1 == 92):
+                self.buf.b.write("\\\\")
+            else:
+                _this = self.buf
+                s1 = "".join(map(chr,[c]))
+                _this.b.write(s1)
+        _this = self.buf
+        s = "".join(map(chr,[34]))
+        _this.b.write(s)
+
+    @staticmethod
+    def print(o,replacer = None,space = None):
+        printer = haxe_format_JsonPrinter(replacer,space)
+        printer.write("",o)
+        return printer.buf.b.getvalue()
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.buf = None
+        _hx_o.replacer = None
+        _hx_o.indent = None
+        _hx_o.pretty = None
+        _hx_o.nind = None
 
 
 class haxe_io_Bytes:
