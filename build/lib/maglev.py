@@ -373,6 +373,209 @@ class IntIterator:
         _hx_o.max = None
 
 
+class Lambda:
+    _hx_class_name = "Lambda"
+    __slots__ = ()
+    _hx_statics = ["array", "list", "map", "mapi", "flatten", "flatMap", "has", "exists", "foreach", "iter", "filter", "fold", "foldi", "count", "empty", "indexOf", "find", "findIndex", "concat"]
+
+    @staticmethod
+    def array(it):
+        a = list()
+        i = HxOverrides.iterator(it)
+        while i.hasNext():
+            i1 = i.next()
+            a.append(i1)
+        return a
+
+    @staticmethod
+    def list(it):
+        l = haxe_ds_List()
+        i = HxOverrides.iterator(it)
+        while i.hasNext():
+            i1 = i.next()
+            l.add(i1)
+        return l
+
+    @staticmethod
+    def map(it,f):
+        _g = []
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            x2 = f(x1)
+            _g.append(x2)
+        return _g
+
+    @staticmethod
+    def mapi(it,f):
+        i = 0
+        _g = []
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            x2 = i
+            i = (i + 1)
+            x3 = f(x2,x1)
+            _g.append(x3)
+        return _g
+
+    @staticmethod
+    def flatten(it):
+        _g = []
+        e = HxOverrides.iterator(it)
+        while e.hasNext():
+            e1 = e.next()
+            x = HxOverrides.iterator(e1)
+            while x.hasNext():
+                x1 = x.next()
+                _g.append(x1)
+        return _g
+
+    @staticmethod
+    def flatMap(it,f):
+        _g = []
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            x2 = f(x1)
+            _g.append(x2)
+        _g1 = []
+        e = HxOverrides.iterator(_g)
+        while e.hasNext():
+            e1 = e.next()
+            x = HxOverrides.iterator(e1)
+            while x.hasNext():
+                x1 = x.next()
+                _g1.append(x1)
+        return _g1
+
+    @staticmethod
+    def has(it,elt):
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            if HxOverrides.eq(x1,elt):
+                return True
+        return False
+
+    @staticmethod
+    def exists(it,f):
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            if f(x1):
+                return True
+        return False
+
+    @staticmethod
+    def foreach(it,f):
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            if (not f(x1)):
+                return False
+        return True
+
+    @staticmethod
+    def iter(it,f):
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            f(x1)
+
+    @staticmethod
+    def filter(it,f):
+        _g = []
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            if f(x1):
+                _g.append(x1)
+        return _g
+
+    @staticmethod
+    def fold(it,f,first):
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            first = f(x1,first)
+        return first
+
+    @staticmethod
+    def foldi(it,f,first):
+        i = 0
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            first = f(x1,first,i)
+            i = (i + 1)
+        return first
+
+    @staticmethod
+    def count(it,pred = None):
+        n = 0
+        if (pred is None):
+            _ = HxOverrides.iterator(it)
+            while _.hasNext():
+                _1 = _.next()
+                n = (n + 1)
+        else:
+            x = HxOverrides.iterator(it)
+            while x.hasNext():
+                x1 = x.next()
+                if pred(x1):
+                    n = (n + 1)
+        return n
+
+    @staticmethod
+    def empty(it):
+        return (not HxOverrides.iterator(it).hasNext())
+
+    @staticmethod
+    def indexOf(it,v):
+        i = 0
+        v2 = HxOverrides.iterator(it)
+        while v2.hasNext():
+            v21 = v2.next()
+            if HxOverrides.eq(v,v21):
+                return i
+            i = (i + 1)
+        return -1
+
+    @staticmethod
+    def find(it,f):
+        v = HxOverrides.iterator(it)
+        while v.hasNext():
+            v1 = v.next()
+            if f(v1):
+                return v1
+        return None
+
+    @staticmethod
+    def findIndex(it,f):
+        i = 0
+        v = HxOverrides.iterator(it)
+        while v.hasNext():
+            v1 = v.next()
+            if f(v1):
+                return i
+            i = (i + 1)
+        return -1
+
+    @staticmethod
+    def concat(a,b):
+        l = list()
+        x = HxOverrides.iterator(a)
+        while x.hasNext():
+            x1 = x.next()
+            l.append(x1)
+        x = HxOverrides.iterator(b)
+        while x.hasNext():
+            x1 = x.next()
+            l.append(x1)
+        return l
+
+
 class Reflect:
     _hx_class_name = "Reflect"
     __slots__ = ()
@@ -1746,6 +1949,255 @@ class Type:
             if Std.isOfType(v,e):
                 ret.append(v)
         return ret
+
+
+class _Xml_XmlType_Impl_:
+    _hx_class_name = "_Xml.XmlType_Impl_"
+    __slots__ = ()
+    _hx_statics = ["Element", "PCData", "CData", "Comment", "DocType", "ProcessingInstruction", "Document", "toString"]
+
+    @staticmethod
+    def toString(this1):
+        _g = this1
+        if (_g == 0):
+            return "Element"
+        elif (_g == 1):
+            return "PCData"
+        elif (_g == 2):
+            return "CData"
+        elif (_g == 3):
+            return "Comment"
+        elif (_g == 4):
+            return "DocType"
+        elif (_g == 5):
+            return "ProcessingInstruction"
+        elif (_g == 6):
+            return "Document"
+        else:
+            pass
+
+
+class Xml:
+    _hx_class_name = "Xml"
+    __slots__ = ("nodeType", "nodeName", "nodeValue", "parent", "children", "attributeMap")
+    _hx_fields = ["nodeType", "nodeName", "nodeValue", "parent", "children", "attributeMap"]
+    _hx_methods = ["get_nodeName", "set_nodeName", "get_nodeValue", "set_nodeValue", "get", "set", "remove", "exists", "attributes", "iterator", "elements", "elementsNamed", "firstChild", "firstElement", "addChild", "removeChild", "insertChild", "toString", "ensureElementType"]
+    _hx_statics = ["Element", "PCData", "CData", "Comment", "DocType", "ProcessingInstruction", "Document", "parse", "createElement", "createPCData", "createCData", "createComment", "createDocType", "createProcessingInstruction", "createDocument"]
+
+    def __init__(self,nodeType):
+        self.parent = None
+        self.nodeValue = None
+        self.nodeName = None
+        self.nodeType = nodeType
+        self.children = []
+        self.attributeMap = haxe_ds_StringMap()
+
+    def get_nodeName(self):
+        if (self.nodeType != Xml.Element):
+            raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        return self.nodeName
+
+    def set_nodeName(self,v):
+        if (self.nodeType != Xml.Element):
+            raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        def _hx_local_1():
+            def _hx_local_0():
+                self.nodeName = v
+                return self.nodeName
+            return _hx_local_0()
+        return _hx_local_1()
+
+    def get_nodeValue(self):
+        if ((self.nodeType == Xml.Document) or ((self.nodeType == Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        return self.nodeValue
+
+    def set_nodeValue(self,v):
+        if ((self.nodeType == Xml.Document) or ((self.nodeType == Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        def _hx_local_1():
+            def _hx_local_0():
+                self.nodeValue = v
+                return self.nodeValue
+            return _hx_local_0()
+        return _hx_local_1()
+
+    def get(self,att):
+        if (self.nodeType != Xml.Element):
+            raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        return self.attributeMap.h.get(att,None)
+
+    def set(self,att,value):
+        if (self.nodeType != Xml.Element):
+            raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        self.attributeMap.h[att] = value
+
+    def remove(self,att):
+        if (self.nodeType != Xml.Element):
+            raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        self.attributeMap.remove(att)
+
+    def exists(self,att):
+        if (self.nodeType != Xml.Element):
+            raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        return (att in self.attributeMap.h)
+
+    def attributes(self):
+        if (self.nodeType != Xml.Element):
+            raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        return self.attributeMap.keys()
+
+    def iterator(self):
+        if ((self.nodeType != Xml.Document) and ((self.nodeType != Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        return haxe_iterators_ArrayIterator(self.children)
+
+    def elements(self):
+        if ((self.nodeType != Xml.Document) and ((self.nodeType != Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        _g = []
+        _g1 = 0
+        _g2 = self.children
+        while (_g1 < len(_g2)):
+            child = (_g2[_g1] if _g1 >= 0 and _g1 < len(_g2) else None)
+            _g1 = (_g1 + 1)
+            if (child.nodeType == Xml.Element):
+                _g.append(child)
+        ret = _g
+        return haxe_iterators_ArrayIterator(ret)
+
+    def elementsNamed(self,name):
+        if ((self.nodeType != Xml.Document) and ((self.nodeType != Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        _g = []
+        _g1 = 0
+        _g2 = self.children
+        while (_g1 < len(_g2)):
+            child = (_g2[_g1] if _g1 >= 0 and _g1 < len(_g2) else None)
+            _g1 = (_g1 + 1)
+            tmp = None
+            if (child.nodeType == Xml.Element):
+                if (child.nodeType != Xml.Element):
+                    raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((child.nodeType is None)) else _Xml_XmlType_Impl_.toString(child.nodeType))))))
+                tmp = (child.nodeName == name)
+            else:
+                tmp = False
+            if tmp:
+                _g.append(child)
+        ret = _g
+        return haxe_iterators_ArrayIterator(ret)
+
+    def firstChild(self):
+        if ((self.nodeType != Xml.Document) and ((self.nodeType != Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        return (self.children[0] if 0 < len(self.children) else None)
+
+    def firstElement(self):
+        if ((self.nodeType != Xml.Document) and ((self.nodeType != Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        _g = 0
+        _g1 = self.children
+        while (_g < len(_g1)):
+            child = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            if (child.nodeType == Xml.Element):
+                return child
+        return None
+
+    def addChild(self,x):
+        if ((self.nodeType != Xml.Document) and ((self.nodeType != Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        if (x.parent is not None):
+            x.parent.removeChild(x)
+        _this = self.children
+        _this.append(x)
+        x.parent = self
+
+    def removeChild(self,x):
+        if ((self.nodeType != Xml.Document) and ((self.nodeType != Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        if python_internal_ArrayImpl.remove(self.children,x):
+            x.parent = None
+            return True
+        return False
+
+    def insertChild(self,x,pos):
+        if ((self.nodeType != Xml.Document) and ((self.nodeType != Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+        if (x.parent is not None):
+            python_internal_ArrayImpl.remove(x.parent.children,x)
+        self.children.insert(pos, x)
+        x.parent = self
+
+    def toString(self):
+        return haxe_xml_Printer.print(self)
+
+    def ensureElementType(self):
+        if ((self.nodeType != Xml.Document) and ((self.nodeType != Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((self.nodeType is None)) else _Xml_XmlType_Impl_.toString(self.nodeType))))))
+
+    @staticmethod
+    def parse(_hx_str):
+        return haxe_xml_Parser.parse(_hx_str)
+
+    @staticmethod
+    def createElement(name):
+        xml = Xml(Xml.Element)
+        if (xml.nodeType != Xml.Element):
+            raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((xml.nodeType is None)) else _Xml_XmlType_Impl_.toString(xml.nodeType))))))
+        xml.nodeName = name
+        return xml
+
+    @staticmethod
+    def createPCData(data):
+        xml = Xml(Xml.PCData)
+        if ((xml.nodeType == Xml.Document) or ((xml.nodeType == Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((xml.nodeType is None)) else _Xml_XmlType_Impl_.toString(xml.nodeType))))))
+        xml.nodeValue = data
+        return xml
+
+    @staticmethod
+    def createCData(data):
+        xml = Xml(Xml.CData)
+        if ((xml.nodeType == Xml.Document) or ((xml.nodeType == Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((xml.nodeType is None)) else _Xml_XmlType_Impl_.toString(xml.nodeType))))))
+        xml.nodeValue = data
+        return xml
+
+    @staticmethod
+    def createComment(data):
+        xml = Xml(Xml.Comment)
+        if ((xml.nodeType == Xml.Document) or ((xml.nodeType == Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((xml.nodeType is None)) else _Xml_XmlType_Impl_.toString(xml.nodeType))))))
+        xml.nodeValue = data
+        return xml
+
+    @staticmethod
+    def createDocType(data):
+        xml = Xml(Xml.DocType)
+        if ((xml.nodeType == Xml.Document) or ((xml.nodeType == Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((xml.nodeType is None)) else _Xml_XmlType_Impl_.toString(xml.nodeType))))))
+        xml.nodeValue = data
+        return xml
+
+    @staticmethod
+    def createProcessingInstruction(data):
+        xml = Xml(Xml.ProcessingInstruction)
+        if ((xml.nodeType == Xml.Document) or ((xml.nodeType == Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((xml.nodeType is None)) else _Xml_XmlType_Impl_.toString(xml.nodeType))))))
+        xml.nodeValue = data
+        return xml
+
+    @staticmethod
+    def createDocument():
+        return Xml(Xml.Document)
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.nodeType = None
+        _hx_o.parent = None
+        _hx_o.children = None
+        _hx_o.attributeMap = None
 
 class haxe_StackItem(Enum):
     __slots__ = ()
@@ -3285,6 +3737,137 @@ class haxe_ValueException(haxe_Exception):
         _hx_o.value = None
 
 
+class haxe_ds_ArraySort:
+    _hx_class_name = "haxe.ds.ArraySort"
+    __slots__ = ()
+    _hx_statics = ["sort", "rec", "doMerge", "rotate", "gcd", "upper", "lower", "swap", "compare"]
+
+    @staticmethod
+    def sort(a,cmp):
+        haxe_ds_ArraySort.rec(a,cmp,0,len(a))
+
+    @staticmethod
+    def rec(a,cmp,_hx_from,to):
+        middle = ((_hx_from + to) >> 1)
+        if ((to - _hx_from) < 12):
+            if (to <= _hx_from):
+                return
+            _g = (_hx_from + 1)
+            _g1 = to
+            while (_g < _g1):
+                i = _g
+                _g = (_g + 1)
+                j = i
+                while (j > _hx_from):
+                    if (cmp((a[j] if j >= 0 and j < len(a) else None),python_internal_ArrayImpl._get(a, (j - 1))) < 0):
+                        haxe_ds_ArraySort.swap(a,(j - 1),j)
+                    else:
+                        break
+                    j = (j - 1)
+            return
+        haxe_ds_ArraySort.rec(a,cmp,_hx_from,middle)
+        haxe_ds_ArraySort.rec(a,cmp,middle,to)
+        haxe_ds_ArraySort.doMerge(a,cmp,_hx_from,middle,to,(middle - _hx_from),(to - middle))
+
+    @staticmethod
+    def doMerge(a,cmp,_hx_from,pivot,to,len1,len2):
+        first_cut = None
+        second_cut = None
+        len11 = None
+        len22 = None
+        if ((len1 == 0) or ((len2 == 0))):
+            return
+        if ((len1 + len2) == 2):
+            if (cmp((a[pivot] if pivot >= 0 and pivot < len(a) else None),(a[_hx_from] if _hx_from >= 0 and _hx_from < len(a) else None)) < 0):
+                haxe_ds_ArraySort.swap(a,pivot,_hx_from)
+            return
+        if (len1 > len2):
+            len11 = (len1 >> 1)
+            first_cut = (_hx_from + len11)
+            second_cut = haxe_ds_ArraySort.lower(a,cmp,pivot,to,first_cut)
+            len22 = (second_cut - pivot)
+        else:
+            len22 = (len2 >> 1)
+            second_cut = (pivot + len22)
+            first_cut = haxe_ds_ArraySort.upper(a,cmp,_hx_from,pivot,second_cut)
+            len11 = (first_cut - _hx_from)
+        haxe_ds_ArraySort.rotate(a,cmp,first_cut,pivot,second_cut)
+        new_mid = (first_cut + len22)
+        haxe_ds_ArraySort.doMerge(a,cmp,_hx_from,first_cut,new_mid,len11,len22)
+        haxe_ds_ArraySort.doMerge(a,cmp,new_mid,second_cut,to,(len1 - len11),(len2 - len22))
+
+    @staticmethod
+    def rotate(a,cmp,_hx_from,mid,to):
+        if ((_hx_from == mid) or ((mid == to))):
+            return
+        n = haxe_ds_ArraySort.gcd((to - _hx_from),(mid - _hx_from))
+        while True:
+            tmp = n
+            n = (n - 1)
+            if (not ((tmp != 0))):
+                break
+            val = python_internal_ArrayImpl._get(a, (_hx_from + n))
+            shift = (mid - _hx_from)
+            p1 = (_hx_from + n)
+            p2 = ((_hx_from + n) + shift)
+            while (p2 != ((_hx_from + n))):
+                python_internal_ArrayImpl._set(a, p1, (a[p2] if p2 >= 0 and p2 < len(a) else None))
+                p1 = p2
+                if ((to - p2) > shift):
+                    p2 = (p2 + shift)
+                else:
+                    p2 = (_hx_from + ((shift - ((to - p2)))))
+            python_internal_ArrayImpl._set(a, p1, val)
+
+    @staticmethod
+    def gcd(m,n):
+        while (n != 0):
+            t = HxOverrides.mod(m, n)
+            m = n
+            n = t
+        return m
+
+    @staticmethod
+    def upper(a,cmp,_hx_from,to,val):
+        _hx_len = (to - _hx_from)
+        half = None
+        mid = None
+        while (_hx_len > 0):
+            half = (_hx_len >> 1)
+            mid = (_hx_from + half)
+            if (cmp((a[val] if val >= 0 and val < len(a) else None),(a[mid] if mid >= 0 and mid < len(a) else None)) < 0):
+                _hx_len = half
+            else:
+                _hx_from = (mid + 1)
+                _hx_len = ((_hx_len - half) - 1)
+        return _hx_from
+
+    @staticmethod
+    def lower(a,cmp,_hx_from,to,val):
+        _hx_len = (to - _hx_from)
+        half = None
+        mid = None
+        while (_hx_len > 0):
+            half = (_hx_len >> 1)
+            mid = (_hx_from + half)
+            if (cmp((a[mid] if mid >= 0 and mid < len(a) else None),(a[val] if val >= 0 and val < len(a) else None)) < 0):
+                _hx_from = (mid + 1)
+                _hx_len = ((_hx_len - half) - 1)
+            else:
+                _hx_len = half
+        return _hx_from
+
+    @staticmethod
+    def swap(a,i,j):
+        tmp = (a[i] if i >= 0 and i < len(a) else None)
+        python_internal_ArrayImpl._set(a, i, (a[j] if j >= 0 and j < len(a) else None))
+        python_internal_ArrayImpl._set(a, j, tmp)
+
+    @staticmethod
+    def compare(a,cmp,i,j):
+        return cmp((a[i] if i >= 0 and i < len(a) else None),(a[j] if j >= 0 and j < len(a) else None))
+
+
 class haxe_ds_BalancedTree:
     _hx_class_name = "haxe.ds.BalancedTree"
     __slots__ = ("root",)
@@ -3489,6 +4072,19 @@ class haxe_ds_TreeNode:
         _hx_o.value = None
         _hx_o._height = None
 
+class haxe_ds_Either(Enum):
+    __slots__ = ()
+    _hx_class_name = "haxe.ds.Either"
+    _hx_constructs = ["Left", "Right"]
+
+    @staticmethod
+    def Left(v):
+        return haxe_ds_Either("Left", 0, (v,))
+
+    @staticmethod
+    def Right(v):
+        return haxe_ds_Either("Right", 1, (v,))
+
 
 class haxe_ds_EnumValueMap(haxe_ds_BalancedTree):
     _hx_class_name = "haxe.ds.EnumValueMap"
@@ -3542,6 +4138,91 @@ class haxe_ds_EnumValueMap(haxe_ds_BalancedTree):
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
+
+
+class haxe_ds_GenericCell:
+    _hx_class_name = "haxe.ds.GenericCell"
+    __slots__ = ("elt", "next")
+    _hx_fields = ["elt", "next"]
+
+    def __init__(self,elt,next):
+        self.elt = elt
+        self.next = next
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.elt = None
+        _hx_o.next = None
+
+
+class haxe_ds_GenericStack:
+    _hx_class_name = "haxe.ds.GenericStack"
+    __slots__ = ("head",)
+    _hx_fields = ["head"]
+    _hx_methods = ["add", "first", "pop", "isEmpty", "remove", "iterator", "toString"]
+
+    def __init__(self):
+        self.head = None
+
+    def add(self,item):
+        self.head = haxe_ds_GenericCell(item,self.head)
+
+    def first(self):
+        if (self.head is None):
+            return None
+        else:
+            return self.head.elt
+
+    def pop(self):
+        k = self.head
+        if (k is None):
+            return None
+        else:
+            self.head = k.next
+            return k.elt
+
+    def isEmpty(self):
+        return (self.head is None)
+
+    def remove(self,v):
+        prev = None
+        l = self.head
+        while (l is not None):
+            if HxOverrides.eq(l.elt,v):
+                if (prev is None):
+                    self.head = l.next
+                else:
+                    prev.next = l.next
+                break
+            prev = l
+            l = l.next
+        return (l is not None)
+
+    def iterator(self):
+        l = self.head
+        def _hx_local_2():
+            def _hx_local_0():
+                return (l is not None)
+            def _hx_local_1():
+                nonlocal l
+                k = l
+                l = k.next
+                return k.elt
+            return _hx_AnonObject({'hasNext': _hx_local_0, 'next': _hx_local_1})
+        return _hx_local_2()
+
+    def toString(self):
+        a = list()
+        l = self.head
+        while (l is not None):
+            x = l.elt
+            a.append(x)
+            l = l.next
+        return (("{" + HxOverrides.stringOrNull(",".join([python_Boot.toString1(x1,'') for x1 in a]))) + "}")
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.head = None
 
 
 class haxe_ds__HashMap_HashMap_Impl_:
@@ -3678,6 +4359,340 @@ class haxe_ds_IntMap:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.h = None
+
+
+class haxe_ds_List:
+    _hx_class_name = "haxe.ds.List"
+    __slots__ = ("h", "q", "length")
+    _hx_fields = ["h", "q", "length"]
+    _hx_methods = ["add", "push", "first", "last", "pop", "isEmpty", "clear", "remove", "iterator", "keyValueIterator", "toString", "join", "filter", "map"]
+
+    def __init__(self):
+        self.q = None
+        self.h = None
+        self.length = 0
+
+    def add(self,item):
+        x = haxe_ds__List_ListNode(item,None)
+        if (self.h is None):
+            self.h = x
+        else:
+            self.q.next = x
+        self.q = x
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0.length
+        _hx_local_0.length = (_hx_local_1 + 1)
+        _hx_local_1
+
+    def push(self,item):
+        x = haxe_ds__List_ListNode(item,self.h)
+        self.h = x
+        if (self.q is None):
+            self.q = x
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0.length
+        _hx_local_0.length = (_hx_local_1 + 1)
+        _hx_local_1
+
+    def first(self):
+        if (self.h is None):
+            return None
+        else:
+            return self.h.item
+
+    def last(self):
+        if (self.q is None):
+            return None
+        else:
+            return self.q.item
+
+    def pop(self):
+        if (self.h is None):
+            return None
+        x = self.h.item
+        self.h = self.h.next
+        if (self.h is None):
+            self.q = None
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0.length
+        _hx_local_0.length = (_hx_local_1 - 1)
+        _hx_local_1
+        return x
+
+    def isEmpty(self):
+        return (self.h is None)
+
+    def clear(self):
+        self.h = None
+        self.q = None
+        self.length = 0
+
+    def remove(self,v):
+        prev = None
+        l = self.h
+        while (l is not None):
+            if HxOverrides.eq(l.item,v):
+                if (prev is None):
+                    self.h = l.next
+                else:
+                    prev.next = l.next
+                if (self.q == l):
+                    self.q = prev
+                _hx_local_0 = self
+                _hx_local_1 = _hx_local_0.length
+                _hx_local_0.length = (_hx_local_1 - 1)
+                _hx_local_1
+                return True
+            prev = l
+            l = l.next
+        return False
+
+    def iterator(self):
+        return haxe_ds__List_ListIterator(self.h)
+
+    def keyValueIterator(self):
+        return haxe_ds__List_ListKeyValueIterator(self.h)
+
+    def toString(self):
+        s_b = python_lib_io_StringIO()
+        first = True
+        l = self.h
+        s_b.write("{")
+        while (l is not None):
+            if first:
+                first = False
+            else:
+                s_b.write(", ")
+            s_b.write(Std.string(Std.string(l.item)))
+            l = l.next
+        s_b.write("}")
+        return s_b.getvalue()
+
+    def join(self,sep):
+        s_b = python_lib_io_StringIO()
+        first = True
+        l = self.h
+        while (l is not None):
+            if first:
+                first = False
+            else:
+                s_b.write(Std.string(sep))
+            s_b.write(Std.string(l.item))
+            l = l.next
+        return s_b.getvalue()
+
+    def filter(self,f):
+        l2 = haxe_ds_List()
+        l = self.h
+        while (l is not None):
+            v = l.item
+            l = l.next
+            if f(v):
+                l2.add(v)
+        return l2
+
+    def map(self,f):
+        b = haxe_ds_List()
+        l = self.h
+        while (l is not None):
+            v = l.item
+            l = l.next
+            b.add(f(v))
+        return b
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.h = None
+        _hx_o.q = None
+        _hx_o.length = None
+
+
+class haxe_ds__List_ListNode:
+    _hx_class_name = "haxe.ds._List.ListNode"
+    __slots__ = ("item", "next")
+    _hx_fields = ["item", "next"]
+
+    def __init__(self,item,next):
+        self.item = item
+        self.next = next
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.item = None
+        _hx_o.next = None
+
+
+class haxe_ds__List_ListIterator:
+    _hx_class_name = "haxe.ds._List.ListIterator"
+    __slots__ = ("head",)
+    _hx_fields = ["head"]
+    _hx_methods = ["hasNext", "next"]
+
+    def __init__(self,head):
+        self.head = head
+
+    def hasNext(self):
+        return (self.head is not None)
+
+    def next(self):
+        val = self.head.item
+        self.head = self.head.next
+        return val
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.head = None
+
+
+class haxe_ds__List_ListKeyValueIterator:
+    _hx_class_name = "haxe.ds._List.ListKeyValueIterator"
+    __slots__ = ("idx", "head")
+    _hx_fields = ["idx", "head"]
+    _hx_methods = ["hasNext", "next"]
+
+    def __init__(self,head):
+        self.head = head
+        self.idx = 0
+
+    def hasNext(self):
+        return (self.head is not None)
+
+    def next(self):
+        val = self.head.item
+        self.head = self.head.next
+        def _hx_local_3():
+            def _hx_local_2():
+                _hx_local_0 = self
+                _hx_local_1 = _hx_local_0.idx
+                _hx_local_0.idx = (_hx_local_1 + 1)
+                return _hx_local_1
+            return _hx_AnonObject({'value': val, 'key': _hx_local_2()})
+        return _hx_local_3()
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.idx = None
+        _hx_o.head = None
+
+
+class haxe_ds_ListSort:
+    _hx_class_name = "haxe.ds.ListSort"
+    __slots__ = ()
+    _hx_statics = ["sort", "sortSingleLinked"]
+
+    @staticmethod
+    def sort(_hx_list,cmp):
+        if (_hx_list is None):
+            return None
+        insize = 1
+        nmerges = None
+        psize = 0
+        qsize = 0
+        p = None
+        q = None
+        e = None
+        tail = None
+        while True:
+            p = _hx_list
+            _hx_list = None
+            tail = None
+            nmerges = 0
+            while (p is not None):
+                nmerges = (nmerges + 1)
+                q = p
+                psize = 0
+                _g = 0
+                _g1 = insize
+                while (_g < _g1):
+                    i = _g
+                    _g = (_g + 1)
+                    psize = (psize + 1)
+                    q = q.next
+                    if (q is None):
+                        break
+                qsize = insize
+                while ((psize > 0) or (((qsize > 0) and ((q is not None))))):
+                    if (psize == 0):
+                        e = q
+                        q = q.next
+                        qsize = (qsize - 1)
+                    elif (((qsize == 0) or ((q is None))) or ((cmp(p,q) <= 0))):
+                        e = p
+                        p = p.next
+                        psize = (psize - 1)
+                    else:
+                        e = q
+                        q = q.next
+                        qsize = (qsize - 1)
+                    if (tail is not None):
+                        tail.next = e
+                    else:
+                        _hx_list = e
+                    e.prev = tail
+                    tail = e
+                p = q
+            tail.next = None
+            if (nmerges <= 1):
+                break
+            insize = (insize * 2)
+        _hx_list.prev = tail
+        return _hx_list
+
+    @staticmethod
+    def sortSingleLinked(_hx_list,cmp):
+        if (_hx_list is None):
+            return None
+        insize = 1
+        nmerges = None
+        psize = 0
+        qsize = 0
+        p = None
+        q = None
+        e = None
+        tail = None
+        while True:
+            p = _hx_list
+            _hx_list = None
+            tail = None
+            nmerges = 0
+            while (p is not None):
+                nmerges = (nmerges + 1)
+                q = p
+                psize = 0
+                _g = 0
+                _g1 = insize
+                while (_g < _g1):
+                    i = _g
+                    _g = (_g + 1)
+                    psize = (psize + 1)
+                    q = q.next
+                    if (q is None):
+                        break
+                qsize = insize
+                while ((psize > 0) or (((qsize > 0) and ((q is not None))))):
+                    if (psize == 0):
+                        e = q
+                        q = q.next
+                        qsize = (qsize - 1)
+                    elif (((qsize == 0) or ((q is None))) or ((cmp(p,q) <= 0))):
+                        e = p
+                        p = p.next
+                        psize = (psize - 1)
+                    else:
+                        e = q
+                        q = q.next
+                        qsize = (qsize - 1)
+                    if (tail is not None):
+                        tail.next = e
+                    else:
+                        _hx_list = e
+                    tail = e
+                p = q
+            tail.next = None
+            if (nmerges <= 1):
+                break
+            insize = (insize * 2)
+        return _hx_list
 
 
 class haxe_ds__Map_Map_Impl_:
@@ -3823,6 +4838,16 @@ class haxe_ds_ObjectMap:
     def _hx_empty_init(_hx_o):
         _hx_o.h = None
 
+class haxe_ds_Option(Enum):
+    __slots__ = ()
+    _hx_class_name = "haxe.ds.Option"
+    _hx_constructs = ["Some", "None"]
+
+    @staticmethod
+    def Some(v):
+        return haxe_ds_Option("Some", 0, (v,))
+haxe_ds_Option._hx_None = haxe_ds_Option("None", 1, ())
+
 
 class haxe_ds__ReadOnlyArray_ReadOnlyArray_Impl_:
     _hx_class_name = "haxe.ds._ReadOnlyArray.ReadOnlyArray_Impl_"
@@ -3837,6 +4862,123 @@ class haxe_ds__ReadOnlyArray_ReadOnlyArray_Impl_:
     @staticmethod
     def get(this1,i):
         return (this1[i] if i >= 0 and i < len(this1) else None)
+
+
+class haxe_ds__Vector_Vector_Impl_:
+    _hx_class_name = "haxe.ds._Vector.Vector_Impl_"
+    __slots__ = ()
+    _hx_statics = ["_new", "get", "set", "get_length", "blit", "toArray", "toData", "fromData", "fromArrayCopy", "copy", "join", "map", "sort"]
+    length = None
+
+    @staticmethod
+    def _new(length):
+        this1 = [None]*length
+        return this1
+
+    @staticmethod
+    def get(this1,index):
+        return this1[index]
+
+    @staticmethod
+    def set(this1,index,val):
+        this1[index] = val
+        return val
+
+    @staticmethod
+    def get_length(this1):
+        return len(this1)
+
+    @staticmethod
+    def blit(src,srcPos,dest,destPos,_hx_len):
+        if (src is dest):
+            if (srcPos < destPos):
+                i = (srcPos + _hx_len)
+                j = (destPos + _hx_len)
+                _g = 0
+                _g1 = _hx_len
+                while (_g < _g1):
+                    k = _g
+                    _g = (_g + 1)
+                    i = (i - 1)
+                    j = (j - 1)
+                    val = src[i]
+                    src[j] = val
+            elif (srcPos > destPos):
+                i = srcPos
+                j = destPos
+                _g = 0
+                _g1 = _hx_len
+                while (_g < _g1):
+                    k = _g
+                    _g = (_g + 1)
+                    val = src[i]
+                    src[j] = val
+                    i = (i + 1)
+                    j = (j + 1)
+        else:
+            _g = 0
+            _g1 = _hx_len
+            while (_g < _g1):
+                i = _g
+                _g = (_g + 1)
+                val = src[(srcPos + i)]
+                dest[(destPos + i)] = val
+
+    @staticmethod
+    def toArray(this1):
+        return list(this1)
+
+    @staticmethod
+    def toData(this1):
+        return this1
+
+    @staticmethod
+    def fromData(data):
+        return data
+
+    @staticmethod
+    def fromArrayCopy(array):
+        return list(array)
+
+    @staticmethod
+    def copy(this1):
+        this2 = [None]*len(this1)
+        r = this2
+        haxe_ds__Vector_Vector_Impl_.blit(this1,0,r,0,len(this1))
+        return r
+
+    @staticmethod
+    def join(this1,sep):
+        b_b = python_lib_io_StringIO()
+        _hx_len = len(this1)
+        _g = 0
+        _g1 = _hx_len
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            b_b.write(Std.string(Std.string(this1[i])))
+            if (i < ((_hx_len - 1))):
+                b_b.write(Std.string(sep))
+        return b_b.getvalue()
+
+    @staticmethod
+    def map(this1,f):
+        length = len(this1)
+        this2 = [None]*length
+        r = this2
+        _hx_len = length
+        _g = 0
+        _g1 = _hx_len
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            v = f(this1[i])
+            r[i] = v
+        return r
+
+    @staticmethod
+    def sort(this1,f):
+        this1.sort(key= python_lib_Functools.cmp_to_key(f))
 
 
 class haxe_ds_WeakMap:
@@ -5380,6 +6522,569 @@ class haxe_iterators_StringKeyValueIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.offset = None
         _hx_o.s = None
+
+
+class haxe_xml_XmlParserException:
+    _hx_class_name = "haxe.xml.XmlParserException"
+    __slots__ = ("message", "lineNumber", "positionAtLine", "position", "xml")
+    _hx_fields = ["message", "lineNumber", "positionAtLine", "position", "xml"]
+    _hx_methods = ["toString"]
+
+    def __init__(self,message,xml,position):
+        self.xml = xml
+        self.message = message
+        self.position = position
+        self.lineNumber = 1
+        self.positionAtLine = 0
+        _g = 0
+        _g1 = position
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            c = (-1 if ((i >= len(xml))) else ord(xml[i]))
+            if (c == 10):
+                _hx_local_0 = self
+                _hx_local_1 = _hx_local_0.lineNumber
+                _hx_local_0.lineNumber = (_hx_local_1 + 1)
+                _hx_local_1
+                self.positionAtLine = 0
+            elif (c != 13):
+                _hx_local_2 = self
+                _hx_local_3 = _hx_local_2.positionAtLine
+                _hx_local_2.positionAtLine = (_hx_local_3 + 1)
+                _hx_local_3
+
+    def toString(self):
+        return ((((((HxOverrides.stringOrNull(Type.getClassName(Type.getClass(self))) + ": ") + HxOverrides.stringOrNull(self.message)) + " at line ") + Std.string(self.lineNumber)) + " char ") + Std.string(self.positionAtLine))
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.message = None
+        _hx_o.lineNumber = None
+        _hx_o.positionAtLine = None
+        _hx_o.position = None
+        _hx_o.xml = None
+
+
+class haxe_xml_Parser:
+    _hx_class_name = "haxe.xml.Parser"
+    __slots__ = ()
+    _hx_statics = ["escapes", "parse", "doParse", "isValidChar"]
+
+    @staticmethod
+    def parse(_hx_str,strict = None):
+        if (strict is None):
+            strict = False
+        doc = Xml.createDocument()
+        haxe_xml_Parser.doParse(_hx_str,strict,0,doc)
+        return doc
+
+    @staticmethod
+    def doParse(_hx_str,strict,p = None,parent = None):
+        if (p is None):
+            p = 0
+        xml = None
+        state = 1
+        next = 1
+        aname = None
+        start = 0
+        nsubs = 0
+        nbrackets = 0
+        c = (-1 if ((p >= len(_hx_str))) else ord(_hx_str[p]))
+        buf = StringBuf()
+        escapeNext = 1
+        attrValQuote = -1
+        while (c != -1):
+            state1 = state
+            if (state1 == 0):
+                c1 = c
+                if ((((c1 == 32) or ((c1 == 13))) or ((c1 == 10))) or ((c1 == 9))):
+                    pass
+                else:
+                    state = next
+                    continue
+            elif (state1 == 1):
+                if (c == 60):
+                    state = 0
+                    next = 2
+                else:
+                    start = p
+                    state = 13
+                    continue
+            elif (state1 == 2):
+                c2 = c
+                if (c2 == 33):
+                    index = (p + 1)
+                    if (((-1 if ((index >= len(_hx_str))) else ord(_hx_str[index]))) == 91):
+                        p = (p + 2)
+                        if (HxString.substr(_hx_str,p,6).upper() != "CDATA["):
+                            raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected <![CDATA[",_hx_str,p))
+                        p = (p + 5)
+                        state = 17
+                        start = (p + 1)
+                    else:
+                        tmp = None
+                        index1 = (p + 1)
+                        if (((-1 if ((index1 >= len(_hx_str))) else ord(_hx_str[index1]))) != 68):
+                            index2 = (p + 1)
+                            tmp = (((-1 if ((index2 >= len(_hx_str))) else ord(_hx_str[index2]))) == 100)
+                        else:
+                            tmp = True
+                        if tmp:
+                            if (HxString.substr(_hx_str,(p + 2),6).upper() != "OCTYPE"):
+                                raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected <!DOCTYPE",_hx_str,p))
+                            p = (p + 8)
+                            state = 16
+                            start = (p + 1)
+                        else:
+                            tmp1 = None
+                            index3 = (p + 1)
+                            if (((-1 if ((index3 >= len(_hx_str))) else ord(_hx_str[index3]))) == 45):
+                                index4 = (p + 2)
+                                tmp1 = (((-1 if ((index4 >= len(_hx_str))) else ord(_hx_str[index4]))) != 45)
+                            else:
+                                tmp1 = True
+                            if tmp1:
+                                raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected <!--",_hx_str,p))
+                            else:
+                                p = (p + 2)
+                                state = 15
+                                start = (p + 1)
+                elif (c2 == 47):
+                    if (parent is None):
+                        raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected node name",_hx_str,p))
+                    start = (p + 1)
+                    state = 0
+                    next = 10
+                elif (c2 == 63):
+                    state = 14
+                    start = p
+                else:
+                    state = 3
+                    start = p
+                    continue
+            elif (state1 == 3):
+                if (not (((((((((c >= 97) and ((c <= 122))) or (((c >= 65) and ((c <= 90))))) or (((c >= 48) and ((c <= 57))))) or ((c == 58))) or ((c == 46))) or ((c == 95))) or ((c == 45))))):
+                    if (p == start):
+                        raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected node name",_hx_str,p))
+                    xml = Xml.createElement(HxString.substr(_hx_str,start,(p - start)))
+                    parent.addChild(xml)
+                    nsubs = (nsubs + 1)
+                    state = 0
+                    next = 4
+                    continue
+            elif (state1 == 4):
+                c3 = c
+                if (c3 == 47):
+                    state = 11
+                elif (c3 == 62):
+                    state = 9
+                else:
+                    state = 5
+                    start = p
+                    continue
+            elif (state1 == 5):
+                if (not (((((((((c >= 97) and ((c <= 122))) or (((c >= 65) and ((c <= 90))))) or (((c >= 48) and ((c <= 57))))) or ((c == 58))) or ((c == 46))) or ((c == 95))) or ((c == 45))))):
+                    if (start == p):
+                        raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected attribute name",_hx_str,p))
+                    tmp2 = HxString.substr(_hx_str,start,(p - start))
+                    aname = tmp2
+                    if xml.exists(aname):
+                        raise haxe_Exception.thrown(haxe_xml_XmlParserException((("Duplicate attribute [" + ("null" if aname is None else aname)) + "]"),_hx_str,p))
+                    state = 0
+                    next = 6
+                    continue
+            elif (state1 == 6):
+                if (c == 61):
+                    state = 0
+                    next = 7
+                else:
+                    raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected =",_hx_str,p))
+            elif (state1 == 7):
+                c4 = c
+                if ((c4 == 39) or ((c4 == 34))):
+                    buf = StringBuf()
+                    state = 8
+                    start = (p + 1)
+                    attrValQuote = c
+                else:
+                    raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected \"",_hx_str,p))
+            elif (state1 == 8):
+                c5 = c
+                if (c5 == 38):
+                    _hx_len = (p - start)
+                    s = (HxString.substr(_hx_str,start,None) if ((_hx_len is None)) else HxString.substr(_hx_str,start,_hx_len))
+                    buf.b.write(s)
+                    state = 18
+                    escapeNext = 8
+                    start = (p + 1)
+                elif ((c5 == 62) or ((c5 == 60))):
+                    if strict:
+                        raise haxe_Exception.thrown(haxe_xml_XmlParserException((("Invalid unescaped " + HxOverrides.stringOrNull("".join(map(chr,[c])))) + " in attribute value"),_hx_str,p))
+                    elif (c == attrValQuote):
+                        len1 = (p - start)
+                        s1 = (HxString.substr(_hx_str,start,None) if ((len1 is None)) else HxString.substr(_hx_str,start,len1))
+                        buf.b.write(s1)
+                        val = buf.b.getvalue()
+                        buf = StringBuf()
+                        xml.set(aname,val)
+                        state = 0
+                        next = 4
+                elif (c == attrValQuote):
+                    len2 = (p - start)
+                    s2 = (HxString.substr(_hx_str,start,None) if ((len2 is None)) else HxString.substr(_hx_str,start,len2))
+                    buf.b.write(s2)
+                    val1 = buf.b.getvalue()
+                    buf = StringBuf()
+                    xml.set(aname,val1)
+                    state = 0
+                    next = 4
+            elif (state1 == 9):
+                p = haxe_xml_Parser.doParse(_hx_str,strict,p,xml)
+                start = p
+                state = 1
+            elif (state1 == 10):
+                if (not (((((((((c >= 97) and ((c <= 122))) or (((c >= 65) and ((c <= 90))))) or (((c >= 48) and ((c <= 57))))) or ((c == 58))) or ((c == 46))) or ((c == 95))) or ((c == 45))))):
+                    if (start == p):
+                        raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected node name",_hx_str,p))
+                    v = HxString.substr(_hx_str,start,(p - start))
+                    if ((parent is None) or ((parent.nodeType != 0))):
+                        raise haxe_Exception.thrown(haxe_xml_XmlParserException((("Unexpected </" + ("null" if v is None else v)) + ">, tag is not open"),_hx_str,p))
+                    if (parent.nodeType != Xml.Element):
+                        raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((parent.nodeType is None)) else _Xml_XmlType_Impl_.toString(parent.nodeType))))))
+                    if (v != parent.nodeName):
+                        if (parent.nodeType != Xml.Element):
+                            raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((parent.nodeType is None)) else _Xml_XmlType_Impl_.toString(parent.nodeType))))))
+                        raise haxe_Exception.thrown(haxe_xml_XmlParserException((("Expected </" + HxOverrides.stringOrNull(parent.nodeName)) + ">"),_hx_str,p))
+                    state = 0
+                    next = 12
+                    continue
+            elif (state1 == 11):
+                if (c == 62):
+                    state = 1
+                else:
+                    raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected >",_hx_str,p))
+            elif (state1 == 12):
+                if (c == 62):
+                    if (nsubs == 0):
+                        parent.addChild(Xml.createPCData(""))
+                    return p
+                else:
+                    raise haxe_Exception.thrown(haxe_xml_XmlParserException("Expected >",_hx_str,p))
+            elif (state1 == 13):
+                if (c == 60):
+                    len3 = (p - start)
+                    s3 = (HxString.substr(_hx_str,start,None) if ((len3 is None)) else HxString.substr(_hx_str,start,len3))
+                    buf.b.write(s3)
+                    child = Xml.createPCData(buf.b.getvalue())
+                    buf = StringBuf()
+                    parent.addChild(child)
+                    nsubs = (nsubs + 1)
+                    state = 0
+                    next = 2
+                elif (c == 38):
+                    len4 = (p - start)
+                    s4 = (HxString.substr(_hx_str,start,None) if ((len4 is None)) else HxString.substr(_hx_str,start,len4))
+                    buf.b.write(s4)
+                    state = 18
+                    escapeNext = 13
+                    start = (p + 1)
+            elif (state1 == 14):
+                tmp3 = None
+                if (c == 63):
+                    index5 = (p + 1)
+                    tmp3 = (((-1 if ((index5 >= len(_hx_str))) else ord(_hx_str[index5]))) == 62)
+                else:
+                    tmp3 = False
+                if tmp3:
+                    p = (p + 1)
+                    str1 = HxString.substr(_hx_str,(start + 1),((p - start) - 2))
+                    parent.addChild(Xml.createProcessingInstruction(str1))
+                    nsubs = (nsubs + 1)
+                    state = 1
+            elif (state1 == 15):
+                tmp4 = None
+                tmp5 = None
+                if (c == 45):
+                    index6 = (p + 1)
+                    tmp5 = (((-1 if ((index6 >= len(_hx_str))) else ord(_hx_str[index6]))) == 45)
+                else:
+                    tmp5 = False
+                if tmp5:
+                    index7 = (p + 2)
+                    tmp4 = (((-1 if ((index7 >= len(_hx_str))) else ord(_hx_str[index7]))) == 62)
+                else:
+                    tmp4 = False
+                if tmp4:
+                    parent.addChild(Xml.createComment(HxString.substr(_hx_str,start,(p - start))))
+                    nsubs = (nsubs + 1)
+                    p = (p + 2)
+                    state = 1
+            elif (state1 == 16):
+                if (c == 91):
+                    nbrackets = (nbrackets + 1)
+                elif (c == 93):
+                    nbrackets = (nbrackets - 1)
+                elif ((c == 62) and ((nbrackets == 0))):
+                    parent.addChild(Xml.createDocType(HxString.substr(_hx_str,start,(p - start))))
+                    nsubs = (nsubs + 1)
+                    state = 1
+            elif (state1 == 17):
+                tmp6 = None
+                tmp7 = None
+                if (c == 93):
+                    index8 = (p + 1)
+                    tmp7 = (((-1 if ((index8 >= len(_hx_str))) else ord(_hx_str[index8]))) == 93)
+                else:
+                    tmp7 = False
+                if tmp7:
+                    index9 = (p + 2)
+                    tmp6 = (((-1 if ((index9 >= len(_hx_str))) else ord(_hx_str[index9]))) == 62)
+                else:
+                    tmp6 = False
+                if tmp6:
+                    child1 = Xml.createCData(HxString.substr(_hx_str,start,(p - start)))
+                    parent.addChild(child1)
+                    nsubs = (nsubs + 1)
+                    p = (p + 2)
+                    state = 1
+            elif (state1 == 18):
+                if (c == 59):
+                    s5 = HxString.substr(_hx_str,start,(p - start))
+                    if (((-1 if ((0 >= len(s5))) else ord(s5[0]))) == 35):
+                        c6 = (Std.parseInt(("0" + HxOverrides.stringOrNull(HxString.substr(s5,1,(len(s5) - 1))))) if ((((-1 if ((1 >= len(s5))) else ord(s5[1]))) == 120)) else Std.parseInt(HxString.substr(s5,1,(len(s5) - 1))))
+                        s6 = "".join(map(chr,[c6]))
+                        buf.b.write(s6)
+                    elif (not (s5 in haxe_xml_Parser.escapes.h)):
+                        if strict:
+                            raise haxe_Exception.thrown(haxe_xml_XmlParserException(("Undefined entity: " + ("null" if s5 is None else s5)),_hx_str,p))
+                        s7 = Std.string((("&" + ("null" if s5 is None else s5)) + ";"))
+                        buf.b.write(s7)
+                    else:
+                        s8 = Std.string(haxe_xml_Parser.escapes.h.get(s5,None))
+                        buf.b.write(s8)
+                    start = (p + 1)
+                    state = escapeNext
+                elif ((not (((((((((c >= 97) and ((c <= 122))) or (((c >= 65) and ((c <= 90))))) or (((c >= 48) and ((c <= 57))))) or ((c == 58))) or ((c == 46))) or ((c == 95))) or ((c == 45))))) and ((c != 35))):
+                    if strict:
+                        raise haxe_Exception.thrown(haxe_xml_XmlParserException(("Invalid character in entity: " + HxOverrides.stringOrNull("".join(map(chr,[c])))),_hx_str,p))
+                    s9 = "".join(map(chr,[38]))
+                    buf.b.write(s9)
+                    len5 = (p - start)
+                    s10 = (HxString.substr(_hx_str,start,None) if ((len5 is None)) else HxString.substr(_hx_str,start,len5))
+                    buf.b.write(s10)
+                    p = (p - 1)
+                    start = (p + 1)
+                    state = escapeNext
+            else:
+                pass
+            p = (p + 1)
+            index10 = p
+            c = (-1 if ((index10 >= len(_hx_str))) else ord(_hx_str[index10]))
+        if (state == 1):
+            start = p
+            state = 13
+        if (state == 13):
+            if (parent.nodeType == 0):
+                if (parent.nodeType != Xml.Element):
+                    raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((parent.nodeType is None)) else _Xml_XmlType_Impl_.toString(parent.nodeType))))))
+                raise haxe_Exception.thrown(haxe_xml_XmlParserException((("Unclosed node <" + HxOverrides.stringOrNull(parent.nodeName)) + ">"),_hx_str,p))
+            if ((p != start) or ((nsubs == 0))):
+                _hx_len = (p - start)
+                s = (HxString.substr(_hx_str,start,None) if ((_hx_len is None)) else HxString.substr(_hx_str,start,_hx_len))
+                buf.b.write(s)
+                parent.addChild(Xml.createPCData(buf.b.getvalue()))
+                nsubs = (nsubs + 1)
+            return p
+        if (((not strict) and ((state == 18))) and ((escapeNext == 13))):
+            s = "".join(map(chr,[38]))
+            buf.b.write(s)
+            _hx_len = (p - start)
+            s = (HxString.substr(_hx_str,start,None) if ((_hx_len is None)) else HxString.substr(_hx_str,start,_hx_len))
+            buf.b.write(s)
+            parent.addChild(Xml.createPCData(buf.b.getvalue()))
+            nsubs = (nsubs + 1)
+            return p
+        raise haxe_Exception.thrown(haxe_xml_XmlParserException("Unexpected end",_hx_str,p))
+
+    @staticmethod
+    def isValidChar(c):
+        if (not ((((((((c >= 97) and ((c <= 122))) or (((c >= 65) and ((c <= 90))))) or (((c >= 48) and ((c <= 57))))) or ((c == 58))) or ((c == 46))) or ((c == 95))))):
+            return (c == 45)
+        else:
+            return True
+
+
+class haxe_xml_Printer:
+    _hx_class_name = "haxe.xml.Printer"
+    __slots__ = ("output", "pretty")
+    _hx_fields = ["output", "pretty"]
+    _hx_methods = ["writeNode", "write", "newline", "hasChildren"]
+    _hx_statics = ["print"]
+
+    def __init__(self,pretty):
+        self.output = StringBuf()
+        self.pretty = pretty
+
+    def writeNode(self,value,tabs):
+        _g = value.nodeType
+        if (_g == 0):
+            _this = self.output
+            s = Std.string((("null" if tabs is None else tabs) + "<"))
+            _this.b.write(s)
+            if (value.nodeType != Xml.Element):
+                raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((value.nodeType is None)) else _Xml_XmlType_Impl_.toString(value.nodeType))))))
+            _this = self.output
+            s = Std.string(value.nodeName)
+            _this.b.write(s)
+            attribute = value.attributes()
+            while attribute.hasNext():
+                attribute1 = attribute.next()
+                _this = self.output
+                s = Std.string(((" " + ("null" if attribute1 is None else attribute1)) + "=\""))
+                _this.b.write(s)
+                input = StringTools.htmlEscape(value.get(attribute1),True)
+                _this1 = self.output
+                s1 = Std.string(input)
+                _this1.b.write(s1)
+                self.output.b.write("\"")
+            if self.hasChildren(value):
+                self.output.b.write(">")
+                if self.pretty:
+                    self.output.b.write("\n")
+                if ((value.nodeType != Xml.Document) and ((value.nodeType != Xml.Element))):
+                    raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((value.nodeType is None)) else _Xml_XmlType_Impl_.toString(value.nodeType))))))
+                _g_current = 0
+                _g_array = value.children
+                while (_g_current < len(_g_array)):
+                    child = _g_current
+                    _g_current = (_g_current + 1)
+                    child1 = (_g_array[child] if child >= 0 and child < len(_g_array) else None)
+                    self.writeNode(child1,((("null" if tabs is None else tabs) + "\t") if (self.pretty) else tabs))
+                _this = self.output
+                s = Std.string((("null" if tabs is None else tabs) + "</"))
+                _this.b.write(s)
+                if (value.nodeType != Xml.Element):
+                    raise haxe_Exception.thrown(("Bad node type, expected Element but found " + HxOverrides.stringOrNull((("null" if ((value.nodeType is None)) else _Xml_XmlType_Impl_.toString(value.nodeType))))))
+                _this = self.output
+                s = Std.string(value.nodeName)
+                _this.b.write(s)
+                self.output.b.write(">")
+                if self.pretty:
+                    self.output.b.write("\n")
+            else:
+                self.output.b.write("/>")
+                if self.pretty:
+                    self.output.b.write("\n")
+        elif (_g == 1):
+            if ((value.nodeType == Xml.Document) or ((value.nodeType == Xml.Element))):
+                raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((value.nodeType is None)) else _Xml_XmlType_Impl_.toString(value.nodeType))))))
+            nodeValue = value.nodeValue
+            if (len(nodeValue) != 0):
+                input = (("null" if tabs is None else tabs) + HxOverrides.stringOrNull(StringTools.htmlEscape(nodeValue)))
+                _this = self.output
+                s = Std.string(input)
+                _this.b.write(s)
+                if self.pretty:
+                    self.output.b.write("\n")
+        elif (_g == 2):
+            _this = self.output
+            s = Std.string((("null" if tabs is None else tabs) + "<![CDATA["))
+            _this.b.write(s)
+            if ((value.nodeType == Xml.Document) or ((value.nodeType == Xml.Element))):
+                raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((value.nodeType is None)) else _Xml_XmlType_Impl_.toString(value.nodeType))))))
+            _this = self.output
+            s = Std.string(value.nodeValue)
+            _this.b.write(s)
+            self.output.b.write("]]>")
+            if self.pretty:
+                self.output.b.write("\n")
+        elif (_g == 3):
+            if ((value.nodeType == Xml.Document) or ((value.nodeType == Xml.Element))):
+                raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((value.nodeType is None)) else _Xml_XmlType_Impl_.toString(value.nodeType))))))
+            commentContent = value.nodeValue
+            commentContent = EReg("[\n\r\t]+","g").replace(commentContent,"")
+            commentContent = (("<!--" + ("null" if commentContent is None else commentContent)) + "-->")
+            _this = self.output
+            s = Std.string(tabs)
+            _this.b.write(s)
+            input = StringTools.trim(commentContent)
+            _this = self.output
+            s = Std.string(input)
+            _this.b.write(s)
+            if self.pretty:
+                self.output.b.write("\n")
+        elif (_g == 4):
+            if ((value.nodeType == Xml.Document) or ((value.nodeType == Xml.Element))):
+                raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((value.nodeType is None)) else _Xml_XmlType_Impl_.toString(value.nodeType))))))
+            _this = self.output
+            s = Std.string((("<!DOCTYPE " + HxOverrides.stringOrNull(value.nodeValue)) + ">"))
+            _this.b.write(s)
+            if self.pretty:
+                self.output.b.write("\n")
+        elif (_g == 5):
+            if ((value.nodeType == Xml.Document) or ((value.nodeType == Xml.Element))):
+                raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((value.nodeType is None)) else _Xml_XmlType_Impl_.toString(value.nodeType))))))
+            _this = self.output
+            s = Std.string((("<?" + HxOverrides.stringOrNull(value.nodeValue)) + "?>"))
+            _this.b.write(s)
+            if self.pretty:
+                self.output.b.write("\n")
+        elif (_g == 6):
+            if ((value.nodeType != Xml.Document) and ((value.nodeType != Xml.Element))):
+                raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((value.nodeType is None)) else _Xml_XmlType_Impl_.toString(value.nodeType))))))
+            _g_current = 0
+            _g_array = value.children
+            while (_g_current < len(_g_array)):
+                child = _g_current
+                _g_current = (_g_current + 1)
+                child1 = (_g_array[child] if child >= 0 and child < len(_g_array) else None)
+                self.writeNode(child1,tabs)
+        else:
+            pass
+
+    def write(self,input):
+        _this = self.output
+        s = Std.string(input)
+        _this.b.write(s)
+
+    def newline(self):
+        if self.pretty:
+            self.output.b.write("\n")
+
+    def hasChildren(self,value):
+        if ((value.nodeType != Xml.Document) and ((value.nodeType != Xml.Element))):
+            raise haxe_Exception.thrown(("Bad node type, expected Element or Document but found " + HxOverrides.stringOrNull((("null" if ((value.nodeType is None)) else _Xml_XmlType_Impl_.toString(value.nodeType))))))
+        _g_current = 0
+        _g_array = value.children
+        while (_g_current < len(_g_array)):
+            child = _g_current
+            _g_current = (_g_current + 1)
+            child1 = (_g_array[child] if child >= 0 and child < len(_g_array) else None)
+            _g = child1.nodeType
+            if ((_g == 1) or ((_g == 0))):
+                return True
+            elif ((_g == 3) or ((_g == 2))):
+                if ((child1.nodeType == Xml.Document) or ((child1.nodeType == Xml.Element))):
+                    raise haxe_Exception.thrown(("Bad node type, unexpected " + HxOverrides.stringOrNull((("null" if ((child1.nodeType is None)) else _Xml_XmlType_Impl_.toString(child1.nodeType))))))
+                if (len(StringTools.ltrim(child1.nodeValue)) != 0):
+                    return True
+            else:
+                pass
+        return False
+
+    @staticmethod
+    def print(xml,pretty = None):
+        if (pretty is None):
+            pretty = False
+        printer = haxe_xml_Printer(pretty)
+        printer.writeNode(xml,"")
+        return printer.output.b.getvalue()
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.output = None
+        _hx_o.pretty = None
 
 
 class maglev_MagLev:
@@ -7271,6 +8976,20 @@ def _hx_init_Sys_environ():
     return _hx_local_0()
 Sys.environ = _hx_init_Sys_environ()
 Sys._programPath = sys_FileSystem.fullPath(python_lib_Inspect.getsourcefile(Sys))
+_Xml_XmlType_Impl_.Element = 0
+_Xml_XmlType_Impl_.PCData = 1
+_Xml_XmlType_Impl_.CData = 2
+_Xml_XmlType_Impl_.Comment = 3
+_Xml_XmlType_Impl_.DocType = 4
+_Xml_XmlType_Impl_.ProcessingInstruction = 5
+_Xml_XmlType_Impl_.Document = 6
+Xml.Element = 0
+Xml.PCData = 1
+Xml.CData = 2
+Xml.Comment = 3
+Xml.DocType = 4
+Xml.ProcessingInstruction = 5
+Xml.Document = 6
 def _hx_init_haxe_io_FPHelper_i64tmp():
     def _hx_local_0():
         this1 = haxe__Int64____Int64(0,0)
@@ -7278,6 +8997,17 @@ def _hx_init_haxe_io_FPHelper_i64tmp():
     return _hx_local_0()
 haxe_io_FPHelper.i64tmp = _hx_init_haxe_io_FPHelper_i64tmp()
 haxe_io_FPHelper.LN2 = 0.6931471805599453
+def _hx_init_haxe_xml_Parser_escapes():
+    def _hx_local_0():
+        h = haxe_ds_StringMap()
+        h.h["lt"] = "<"
+        h.h["gt"] = ">"
+        h.h["amp"] = "&"
+        h.h["quot"] = "\""
+        h.h["apos"] = "'"
+        return h
+    return _hx_local_0()
+haxe_xml_Parser.escapes = _hx_init_haxe_xml_Parser_escapes()
 maglev_MagLev._instances = haxe_ds_StringMap()
 python_Boot.keywords = set(["and", "del", "from", "not", "with", "as", "elif", "global", "or", "yield", "assert", "else", "if", "pass", "None", "break", "except", "import", "raise", "True", "class", "exec", "in", "return", "False", "continue", "finally", "is", "try", "def", "for", "lambda", "while"])
 python_Boot.prefixLength = len("_hx_")
