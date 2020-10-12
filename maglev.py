@@ -7247,7 +7247,7 @@ class maglev_MagLev:
 
     @staticmethod
     def clean(arg):
-        if (Reflect.isObject(arg) and (not Std.isOfType(arg,haxe_IMap))):
+        if (((not Std.isOfType(arg,str)) and Reflect.isObject(arg)) and (not Std.isOfType(arg,haxe_IMap))):
             keys = python_Boot.fields(arg)
             _hx_map = haxe_ds_StringMap()
             _g = 0
