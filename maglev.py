@@ -7251,15 +7251,16 @@ class maglev_MagLevOld:
 
     def register(self,method,callback):
         _gthis = self
-        def _hx_local_0(args):
+        def _hx_local_1(args):
             arr = list()
             i = 0
             while (i < args.size()):
                 x = _gthis.convertToHaxe(args.get(i))
                 arr.append(x)
+                i = (i + 1)
             result = _gthis.convertToMagLev(callback(arr))
             return maglev_MagLevResult.fromResult(result)
-        myfunc = _hx_local_0
+        myfunc = _hx_local_1
         mycallback = maglev_MagLevFunction(myfunc)
         self.maglev.register(method,mycallback)
 
@@ -7278,15 +7279,16 @@ class maglev_MagLevOld:
 
     def listen(self,event,callback):
         _gthis = self
-        def _hx_local_0(args):
+        def _hx_local_1(args):
             arr = list()
             i = 0
             while (i < args.size()):
                 x = _gthis.convertToHaxe(args.get(i))
                 arr.append(x)
+                i = (i + 1)
             callback(event,arr)
             return None
-        mysub = _hx_local_0
+        mysub = _hx_local_1
         mycallback = maglev_MagLevFunction(mysub)
         self.maglev.listen(event,mycallback)
 
@@ -7346,30 +7348,32 @@ class maglev_MagLevOld:
             while (i < y.size()):
                 x1 = y.get(i)
                 arr.append(x1)
+                i = (i + 1)
             return arr
         elif (x.getType() == maglev_MagLevType.MagLevType_Object):
-            def _hx_local_9():
-                _hx_local_8 = x
-                if (Std.isOfType(_hx_local_8,maglev_MagLevObject) or ((_hx_local_8 is None))):
-                    _hx_local_8
+            def _hx_local_10():
+                _hx_local_9 = x
+                if (Std.isOfType(_hx_local_9,maglev_MagLevObject) or ((_hx_local_9 is None))):
+                    _hx_local_9
                 else:
                     raise "Class cast error"
-                return _hx_local_8
-            y = _hx_local_9()
+                return _hx_local_9
+            y = _hx_local_10()
             _hx_map = haxe_ds_StringMap()
             keys = y.keys()
             i = 0
             while (i < keys.size()):
-                def _hx_local_11():
-                    _hx_local_10 = keys.get(i)
-                    if (Std.isOfType(_hx_local_10,maglev_MagLevString) or ((_hx_local_10 is None))):
-                        _hx_local_10
+                def _hx_local_12():
+                    _hx_local_11 = keys.get(i)
+                    if (Std.isOfType(_hx_local_11,maglev_MagLevString) or ((_hx_local_11 is None))):
+                        _hx_local_11
                     else:
                         raise "Class cast error"
-                    return _hx_local_10
-                key = (_hx_local_11()).getString()
+                    return _hx_local_11
+                key = (_hx_local_12()).getString()
                 value = y.get(key)
                 _hx_map.h[key] = value
+                i = (i + 1)
             return _hx_map
         else:
             raise haxe_Exception.thrown("convertToHaxe: unknown type")
@@ -7468,15 +7472,16 @@ class maglev_MagLevPy:
 
     def register(self,method,callback):
         _gthis = self
-        def _hx_local_0(args):
+        def _hx_local_1(args):
             arr = list()
             i = 0
             while (i < args.size()):
                 x = _gthis.convertToPy(args.get(i))
                 arr.append(x)
+                i = (i + 1)
             result = _gthis.convertToMagLev(callback(arr))
             return maglev_MagLevResult.fromResult(result)
-        myfunc = _hx_local_0
+        myfunc = _hx_local_1
         mycallback = maglev_MagLevFunction(myfunc)
         self.maglev.register(method,mycallback)
 
@@ -7495,15 +7500,16 @@ class maglev_MagLevPy:
 
     def listen(self,event,callback):
         _gthis = self
-        def _hx_local_0(args):
+        def _hx_local_1(args):
             arr = list()
             i = 0
             while (i < args.size()):
                 x = _gthis.convertToPy(args.get(i))
                 arr.append(x)
+                i = (i + 1)
             callback(event,arr)
             return None
-        mysub = _hx_local_0
+        mysub = _hx_local_1
         mycallback = maglev_MagLevFunction(mysub)
         self.maglev.listen(event,mycallback)
 
@@ -7564,41 +7570,43 @@ class maglev_MagLevPy:
             while (i < y.size()):
                 x1 = y.get(i)
                 arr.append(x1)
+                i = (i + 1)
             return arr
         elif (x.getType() == maglev_MagLevType.MagLevType_Object):
-            def _hx_local_9():
-                _hx_local_8 = x
-                if (Std.isOfType(_hx_local_8,maglev_MagLevObject) or ((_hx_local_8 is None))):
-                    _hx_local_8
+            def _hx_local_10():
+                _hx_local_9 = x
+                if (Std.isOfType(_hx_local_9,maglev_MagLevObject) or ((_hx_local_9 is None))):
+                    _hx_local_9
                 else:
                     raise "Class cast error"
-                return _hx_local_8
-            y = _hx_local_9()
+                return _hx_local_9
+            y = _hx_local_10()
             d = dict()
             keys = y.keys()
             i = 0
             while (i < keys.size()):
-                def _hx_local_11():
-                    _hx_local_10 = keys.get(i)
-                    if (Std.isOfType(_hx_local_10,maglev_MagLevString) or ((_hx_local_10 is None))):
-                        _hx_local_10
+                def _hx_local_12():
+                    _hx_local_11 = keys.get(i)
+                    if (Std.isOfType(_hx_local_11,maglev_MagLevString) or ((_hx_local_11 is None))):
+                        _hx_local_11
                     else:
                         raise "Class cast error"
-                    return _hx_local_10
-                k = (_hx_local_11()).getString()
+                    return _hx_local_11
+                k = (_hx_local_12()).getString()
                 d[k] = y.get(k)
+                i = (i + 1)
             return d
         elif (x.getType() == maglev_MagLevType.MagLevType_Function):
-            def _hx_local_13():
-                _hx_local_12 = x
-                if (Std.isOfType(_hx_local_12,maglev_MagLevFunction) or ((_hx_local_12 is None))):
-                    _hx_local_12
+            def _hx_local_15():
+                _hx_local_14 = x
+                if (Std.isOfType(_hx_local_14,maglev_MagLevFunction) or ((_hx_local_14 is None))):
+                    _hx_local_14
                 else:
                     raise "Class cast error"
-                return _hx_local_12
-            y = _hx_local_13()
-            def _hx_local_16():
-                def _hx_local_15(args):
+                return _hx_local_14
+            y = _hx_local_15()
+            def _hx_local_18():
+                def _hx_local_17(args):
                     arr = maglev_MagLevArray()
                     _g = 0
                     while (_g < len(args)):
@@ -7610,8 +7618,8 @@ class maglev_MagLevPy:
                         raise haxe_Exception.thrown(ret.getError().getMessage())
                     else:
                         return ret.getResult()
-                return _hx_local_15
-            return _hx_local_16()
+                return _hx_local_17
+            return _hx_local_18()
         else:
             raise haxe_Exception.thrown("convertToPy: unknown type")
 
