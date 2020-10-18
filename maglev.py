@@ -7346,7 +7346,7 @@ class maglev_MagLevOld:
             arr = list()
             i = 0
             while (i < y.size()):
-                x1 = y.get(i)
+                x1 = self.convertToHaxe(y.get(i))
                 arr.append(x1)
                 i = (i + 1)
             return arr
@@ -7371,7 +7371,7 @@ class maglev_MagLevOld:
                         raise "Class cast error"
                     return _hx_local_11
                 key = (_hx_local_12()).getString()
-                value = y.get(key)
+                value = self.convertToHaxe(y.get(key))
                 _hx_map.h[key] = value
                 i = (i + 1)
             return _hx_map
