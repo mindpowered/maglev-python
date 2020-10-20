@@ -7239,6 +7239,630 @@ class maglev_MagLev:
 maglev_MagLev._hx_class = maglev_MagLev
 
 
+class maglev__MagLev_MagLevType_Impl_:
+    _hx_class_name = "maglev._MagLev.MagLevType_Impl_"
+    __slots__ = ()
+    _hx_statics = ["MagLevType_Result", "MagLevType_Error", "MagLevType_Function", "MagLevType_Object", "MagLevType_Array", "MagLevType_Number", "MagLevType_String", "MagLevType_Boolean", "MagLevType_Null", "_new"]
+
+    @staticmethod
+    def _new(i):
+        this1 = i
+        return this1
+maglev__MagLev_MagLevType_Impl_._hx_class = maglev__MagLev_MagLevType_Impl_
+
+
+class maglev_MagLevResult:
+    _hx_class_name = "maglev.MagLevResult"
+    __slots__ = ("result", "error")
+    _hx_fields = ["result", "error"]
+    _hx_methods = ["isError", "getResult", "setResult", "getError", "setError", "getType", "isEqual", "toJson"]
+    _hx_statics = ["fromResult", "fromError"]
+
+    def __init__(self):
+        self.result = maglev_MagLevNull()
+        self.error = None
+
+    def isError(self):
+        return (self.result is None)
+
+    def getResult(self):
+        return self.result
+
+    def setResult(self,res):
+        self.result = res
+        self.error = None
+
+    def getError(self):
+        return self.error
+
+    def setError(self,err):
+        self.result = None
+        self.error = err
+
+    def getType(self):
+        return maglev__MagLev_MagLevType_Impl_.MagLevType_Result
+
+    def isEqual(self,other):
+        if (self.isError() == other.isError()):
+            if self.isError():
+                return self.getError().isEqual(other.getError())
+            else:
+                return self.getResult().isEqual(other.getResult())
+        else:
+            return False
+
+    def toJson(self):
+        res = "null"
+        err = "null"
+        if self.isError():
+            err = self.error.toJson().getString()
+        else:
+            res = self.result.toJson().getString()
+        return maglev_MagLevString((((("{\"result\": " + ("null" if res is None else res)) + ", \"error\": ") + ("null" if err is None else err)) + "}"))
+
+    @staticmethod
+    def fromResult(res):
+        result = maglev_MagLevResult()
+        result.setResult(res)
+        return result
+
+    @staticmethod
+    def fromError(err):
+        result = maglev_MagLevResult()
+        result.setError(err)
+        return result
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.result = None
+        _hx_o.error = None
+maglev_MagLevResult._hx_class = maglev_MagLevResult
+
+
+class maglev_MagLevError:
+    _hx_class_name = "maglev.MagLevError"
+    __slots__ = ("code", "message", "data")
+    _hx_fields = ["code", "message", "data"]
+    _hx_methods = ["getCode", "getMessage", "getData", "getType", "isEqual", "toJson"]
+    _hx_statics = ["create"]
+
+    def __init__(self,code,message,data):
+        self.code = code
+        self.message = message
+        self.data = data
+
+    def getCode(self):
+        return self.code.getInt()
+
+    def getMessage(self):
+        return self.message.getString()
+
+    def getData(self):
+        return self.data
+
+    def getType(self):
+        return maglev__MagLev_MagLevType_Impl_.MagLevType_Error
+
+    def isEqual(self,other):
+        same = True
+        same = (same and self.code.isEqual(maglev_MagLevNumber(other.getCode())))
+        same = (same and self.message.isEqual(maglev_MagLevString(other.getMessage())))
+        same = (same and self.data.isEqual(other.getData()))
+        return same
+
+    def toJson(self):
+        return maglev_MagLevString((((((("{\"code\": " + Std.string(self.code.toJson())) + ", \"message\": ") + Std.string(self.message.toJson())) + ", \"data\": ") + Std.string(self.data.toJson())) + "}"))
+
+    @staticmethod
+    def create(code,message,data):
+        code2 = maglev_MagLevNumber(code)
+        message2 = maglev_MagLevString(message)
+        return maglev_MagLevError(code2,message2,data)
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.code = None
+        _hx_o.message = None
+        _hx_o.data = None
+maglev_MagLevError._hx_class = maglev_MagLevError
+
+
+class maglev_MagLevAny:
+    _hx_class_name = "maglev.MagLevAny"
+    __slots__ = ()
+    _hx_methods = ["toJson", "getType", "isEqual"]
+
+    def __init__(self):
+        pass
+
+    def toJson(self):
+        raise haxe_Exception.thrown("toJson does not exist for MagLevAny")
+
+    def getType(self):
+        raise haxe_Exception.thrown("getType does not exist for MagLevAny")
+
+    def isEqual(self,o):
+        raise haxe_Exception.thrown("isEqual does not exist for MagLevAny")
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):        pass
+maglev_MagLevAny._hx_class = maglev_MagLevAny
+
+
+class maglev_MagLevFunction(maglev_MagLevAny):
+    _hx_class_name = "maglev.MagLevFunction"
+    __slots__ = ("name", "value")
+    _hx_fields = ["name", "value"]
+    _hx_methods = ["call", "hasName", "getName", "getType", "isEqual", "toJson"]
+    _hx_statics = ["fromFunction", "fromNamedFunction"]
+    _hx_interfaces = []
+    _hx_super = maglev_MagLevAny
+
+
+    def __init__(self,value,name = None):
+        self.name = name
+        self.value = value
+        super().__init__()
+
+    def call(self,args):
+        return self.value(args)
+
+    def hasName(self):
+        return (self.name is not None)
+
+    def getName(self):
+        return self.name
+
+    def getType(self):
+        return maglev__MagLev_MagLevType_Impl_.MagLevType_Function
+
+    def isEqual(self,other):
+        if (other.getType() == self.getType()):
+            def _hx_local_1():
+                _hx_local_0 = other
+                if (Std.isOfType(_hx_local_0,maglev_MagLevFunction) or ((_hx_local_0 is None))):
+                    _hx_local_0
+                else:
+                    raise "Class cast error"
+                return _hx_local_0
+            o = _hx_local_1()
+            if (self.hasName() and o.hasName()):
+                return (self.getName() == o.getName())
+            else:
+                return False
+        else:
+            return False
+
+    def toJson(self):
+        if self.hasName():
+            return maglev_MagLevString((("<function " + HxOverrides.stringOrNull(self.name)) + ">"))
+        else:
+            return maglev_MagLevString("<anon func>")
+
+    @staticmethod
+    def fromFunction(value):
+        return maglev_MagLevFunction(value)
+
+    @staticmethod
+    def fromNamedFunction(value,name):
+        return maglev_MagLevFunction(value,name)
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.name = None
+        _hx_o.value = None
+maglev_MagLevFunction._hx_class = maglev_MagLevFunction
+
+
+class maglev_MagLevObject(maglev_MagLevAny):
+    _hx_class_name = "maglev.MagLevObject"
+    __slots__ = ("values",)
+    _hx_fields = ["values"]
+    _hx_methods = ["clear", "exists", "get", "keys", "remove", "set", "getStringMap", "getType", "isEqual", "toJson"]
+    _hx_statics = ["create"]
+    _hx_interfaces = []
+    _hx_super = maglev_MagLevAny
+
+
+    def __init__(self):
+        self.values = haxe_ds_StringMap()
+        super().__init__()
+
+    def clear(self):
+        self.values.h.clear()
+
+    def exists(self,key):
+        return (key in self.values.h)
+
+    def get(self,key):
+        return maglev_MagLevNull.wrap(self.values.h.get(key,None))
+
+    def keys(self):
+        arr = maglev_MagLevArray()
+        k = self.values.keys()
+        while k.hasNext():
+            k1 = k.next()
+            arr.push(maglev_MagLevString(k1))
+        return arr
+
+    def remove(self,key):
+        return self.values.remove(key)
+
+    def set(self,key,value):
+        this1 = self.values
+        value1 = maglev_MagLevNull.wrap(value)
+        this1.h[key] = value1
+
+    def getStringMap(self):
+        return self.values
+
+    def getType(self):
+        return maglev__MagLev_MagLevType_Impl_.MagLevType_Object
+
+    def isEqual(self,other):
+        if (other.getType() == self.getType()):
+            def _hx_local_1():
+                _hx_local_0 = other
+                if (Std.isOfType(_hx_local_0,maglev_MagLevObject) or ((_hx_local_0 is None))):
+                    _hx_local_0
+                else:
+                    raise "Class cast error"
+                return _hx_local_0
+            obj = _hx_local_1()
+            key = self.values.keys()
+            while key.hasNext():
+                key1 = key.next()
+                found = False
+                equal = False
+                key2 = obj.getStringMap().keys()
+                while key2.hasNext():
+                    key21 = key2.next()
+                    if (key1 == key21):
+                        found = True
+                        val = self.values.h.get(key1,None)
+                        val2 = obj.values.h.get(key21,None)
+                        if val.isEqual(val2):
+                            equal = True
+                if ((not found) or (not equal)):
+                    return False
+            return True
+        else:
+            return False
+
+    def toJson(self):
+        s = "{"
+        first = True
+        key = self.values.keys()
+        while key.hasNext():
+            key1 = key.next()
+            if (not first):
+                s = (("null" if s is None else s) + ", ")
+            s = (("null" if s is None else s) + ("null" if key1 is None else key1))
+            s = (("null" if s is None else s) + ": ")
+            s = (("null" if s is None else s) + Std.string(self.values.h.get(key1,None).toJson()))
+            first = False
+        s = (("null" if s is None else s) + "}")
+        return maglev_MagLevString(s)
+
+    @staticmethod
+    def create():
+        return maglev_MagLevObject()
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.values = None
+maglev_MagLevObject._hx_class = maglev_MagLevObject
+
+
+class maglev_MagLevArray(maglev_MagLevAny):
+    _hx_class_name = "maglev.MagLevArray"
+    __slots__ = ("values",)
+    _hx_fields = ["values"]
+    _hx_methods = ["size", "pop", "push", "shift", "unshift", "reverse", "get", "set", "getType", "isEqual", "toJson"]
+    _hx_statics = ["create"]
+    _hx_interfaces = []
+    _hx_super = maglev_MagLevAny
+
+
+    def __init__(self):
+        self.values = list()
+        super().__init__()
+
+    def size(self):
+        return len(self.values)
+
+    def pop(self):
+        _this = self.values
+        return maglev_MagLevNull.wrap((None if ((len(_this) == 0)) else _this.pop()))
+
+    def push(self,x):
+        _this = self.values
+        _this.append(x)
+        return self.size()
+
+    def shift(self):
+        _this = self.values
+        return maglev_MagLevNull.wrap((None if ((len(_this) == 0)) else _this.pop(0)))
+
+    def unshift(self,x):
+        _this = self.values
+        x1 = maglev_MagLevNull.wrap(x)
+        _this.insert(0, x1)
+
+    def reverse(self):
+        self.values.reverse()
+
+    def get(self,i):
+        return maglev_MagLevNull.wrap((self.values[i] if i >= 0 and i < len(self.values) else None))
+
+    def set(self,i,value):
+        python_internal_ArrayImpl._set(self.values, i, maglev_MagLevNull.wrap(value))
+
+    def getType(self):
+        return maglev__MagLev_MagLevType_Impl_.MagLevType_Array
+
+    def isEqual(self,other):
+        if (other.getType() == self.getType()):
+            def _hx_local_1():
+                _hx_local_0 = other
+                if (Std.isOfType(_hx_local_0,maglev_MagLevArray) or ((_hx_local_0 is None))):
+                    _hx_local_0
+                else:
+                    raise "Class cast error"
+                return _hx_local_0
+            o = _hx_local_1()
+            if (self.size() == o.size()):
+                def _hx_local_3():
+                    _hx_local_2 = other
+                    if (Std.isOfType(_hx_local_2,maglev_MagLevArray) or ((_hx_local_2 is None))):
+                        _hx_local_2
+                    else:
+                        raise "Class cast error"
+                    return _hx_local_2
+                arr = _hx_local_3()
+                _g = 0
+                _g1 = self.values
+                while (_g < len(_g1)):
+                    item = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+                    _g = (_g + 1)
+                    found = False
+                    _g2 = 0
+                    _g3 = arr.values
+                    while (_g2 < len(_g3)):
+                        item2 = (_g3[_g2] if _g2 >= 0 and _g2 < len(_g3) else None)
+                        _g2 = (_g2 + 1)
+                        if item.isEqual(item2):
+                            found = True
+                    if (not found):
+                        return False
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    def toJson(self):
+        s = "["
+        first = True
+        _g = 0
+        _g1 = self.values
+        while (_g < len(_g1)):
+            item = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            if (not first):
+                s = (("null" if s is None else s) + ", ")
+            s = (("null" if s is None else s) + HxOverrides.stringOrNull(item.toJson().getString()))
+            first = False
+        s = (("null" if s is None else s) + "]")
+        return maglev_MagLevString(s)
+
+    @staticmethod
+    def create():
+        return maglev_MagLevArray()
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.values = None
+maglev_MagLevArray._hx_class = maglev_MagLevArray
+
+
+class maglev_MagLevNumber(maglev_MagLevAny):
+    _hx_class_name = "maglev.MagLevNumber"
+    __slots__ = ("value",)
+    _hx_fields = ["value"]
+    _hx_methods = ["getFloat", "getInt", "getType", "isEqual", "toJson"]
+    _hx_statics = ["fromFloat", "fromInt"]
+    _hx_interfaces = []
+    _hx_super = maglev_MagLevAny
+
+
+    def __init__(self,value):
+        self.value = value
+        super().__init__()
+
+    def getFloat(self):
+        return self.value
+
+    def getInt(self):
+        x = self.value
+        try:
+            return int(x)
+        except BaseException as _g:
+            None
+            return None
+
+    def getType(self):
+        return maglev__MagLev_MagLevType_Impl_.MagLevType_Number
+
+    def isEqual(self,other):
+        if (other.getType() == self.getType()):
+            def _hx_local_1():
+                _hx_local_0 = other
+                if (Std.isOfType(_hx_local_0,maglev_MagLevNumber) or ((_hx_local_0 is None))):
+                    _hx_local_0
+                else:
+                    raise "Class cast error"
+                return _hx_local_0
+            o = _hx_local_1()
+            return (self.getFloat() == o.getFloat())
+        else:
+            return False
+
+    def toJson(self):
+        return maglev_MagLevString(Std.string(self.value))
+
+    @staticmethod
+    def fromFloat(value):
+        return maglev_MagLevNumber(value)
+
+    @staticmethod
+    def fromInt(value):
+        return maglev_MagLevNumber(value)
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.value = None
+maglev_MagLevNumber._hx_class = maglev_MagLevNumber
+
+
+class maglev_MagLevString(maglev_MagLevAny):
+    _hx_class_name = "maglev.MagLevString"
+    __slots__ = ("value",)
+    _hx_fields = ["value"]
+    _hx_methods = ["getString", "getType", "isEqual", "toJson"]
+    _hx_statics = ["fromString"]
+    _hx_interfaces = []
+    _hx_super = maglev_MagLevAny
+
+
+    def __init__(self,value):
+        self.value = value
+        super().__init__()
+
+    def getString(self):
+        return self.value
+
+    def getType(self):
+        return maglev__MagLev_MagLevType_Impl_.MagLevType_String
+
+    def isEqual(self,other):
+        if (other.getType() == self.getType()):
+            def _hx_local_1():
+                _hx_local_0 = other
+                if (Std.isOfType(_hx_local_0,maglev_MagLevString) or ((_hx_local_0 is None))):
+                    _hx_local_0
+                else:
+                    raise "Class cast error"
+                return _hx_local_0
+            o = _hx_local_1()
+            return (self.getString() == o.getString())
+        else:
+            return False
+
+    def toJson(self):
+        return maglev_MagLevString((("\"" + HxOverrides.stringOrNull(self.value)) + "\""))
+
+    @staticmethod
+    def fromString(value):
+        return maglev_MagLevString(value)
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.value = None
+maglev_MagLevString._hx_class = maglev_MagLevString
+
+
+class maglev_MagLevBoolean(maglev_MagLevAny):
+    _hx_class_name = "maglev.MagLevBoolean"
+    __slots__ = ("value",)
+    _hx_fields = ["value"]
+    _hx_methods = ["getBool", "getType", "isEqual", "toJson"]
+    _hx_statics = ["fromBool"]
+    _hx_interfaces = []
+    _hx_super = maglev_MagLevAny
+
+
+    def __init__(self,value):
+        self.value = value
+        super().__init__()
+
+    def getBool(self):
+        return self.value
+
+    def getType(self):
+        return maglev__MagLev_MagLevType_Impl_.MagLevType_Boolean
+
+    def isEqual(self,other):
+        if (other.getType() == self.getType()):
+            def _hx_local_1():
+                _hx_local_0 = other
+                if (Std.isOfType(_hx_local_0,maglev_MagLevBoolean) or ((_hx_local_0 is None))):
+                    _hx_local_0
+                else:
+                    raise "Class cast error"
+                return _hx_local_0
+            o = _hx_local_1()
+            return (self.getBool() == o.getBool())
+        else:
+            return False
+
+    def toJson(self):
+        if self.value:
+            return maglev_MagLevString("true")
+        else:
+            return maglev_MagLevString("false")
+
+    @staticmethod
+    def fromBool(value):
+        return maglev_MagLevBoolean(value)
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.value = None
+maglev_MagLevBoolean._hx_class = maglev_MagLevBoolean
+
+
+class maglev_MagLevNull(maglev_MagLevAny):
+    _hx_class_name = "maglev.MagLevNull"
+    __slots__ = ()
+    _hx_fields = []
+    _hx_methods = ["getType", "isEqual", "toJson"]
+    _hx_statics = ["create", "wrap"]
+    _hx_interfaces = []
+    _hx_super = maglev_MagLevAny
+
+
+    def __init__(self):
+        super().__init__()
+
+    def getType(self):
+        return maglev__MagLev_MagLevType_Impl_.MagLevType_Null
+
+    def isEqual(self,other):
+        if (other.getType() == self.getType()):
+            return True
+        else:
+            return False
+
+    def toJson(self):
+        return maglev_MagLevString("null")
+
+    @staticmethod
+    def create():
+        return maglev_MagLevNull()
+
+    @staticmethod
+    def wrap(o):
+        if (o is None):
+            return maglev_MagLevNull()
+        else:
+            return o
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):        pass
+maglev_MagLevNull._hx_class = maglev_MagLevNull
+
+
 class maglev_MagLevOld:
     _hx_class_name = "maglev.MagLevOld"
     __slots__ = ("maglev",)
@@ -7302,9 +7926,9 @@ class maglev_MagLevOld:
         self.maglev.emit(event,myargs)
 
     def convertToHaxe(self,x):
-        if (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Null):
+        if (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Null):
             return None
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Boolean):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Boolean):
             def _hx_local_1():
                 _hx_local_0 = x
                 if (Std.isOfType(_hx_local_0,maglev_MagLevBoolean) or ((_hx_local_0 is None))):
@@ -7314,7 +7938,7 @@ class maglev_MagLevOld:
                 return _hx_local_0
             y = _hx_local_1()
             return y.getBool()
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_String):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_String):
             def _hx_local_3():
                 _hx_local_2 = x
                 if (Std.isOfType(_hx_local_2,maglev_MagLevString) or ((_hx_local_2 is None))):
@@ -7324,7 +7948,7 @@ class maglev_MagLevOld:
                 return _hx_local_2
             y = _hx_local_3()
             return y.getString()
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Number):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Number):
             def _hx_local_5():
                 _hx_local_4 = x
                 if (Std.isOfType(_hx_local_4,maglev_MagLevNumber) or ((_hx_local_4 is None))):
@@ -7334,7 +7958,7 @@ class maglev_MagLevOld:
                 return _hx_local_4
             y = _hx_local_5()
             return y.getFloat()
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Array):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Array):
             def _hx_local_7():
                 _hx_local_6 = x
                 if (Std.isOfType(_hx_local_6,maglev_MagLevArray) or ((_hx_local_6 is None))):
@@ -7350,7 +7974,7 @@ class maglev_MagLevOld:
                 arr.append(x1)
                 i = (i + 1)
             return arr
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Object):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Object):
             def _hx_local_10():
                 _hx_local_9 = x
                 if (Std.isOfType(_hx_local_9,maglev_MagLevObject) or ((_hx_local_9 is None))):
@@ -7524,9 +8148,9 @@ class maglev_MagLevPy:
 
     def convertToPy(self,x):
         _gthis = self
-        if (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Null):
+        if (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Null):
             return None
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Boolean):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Boolean):
             def _hx_local_1():
                 _hx_local_0 = x
                 if (Std.isOfType(_hx_local_0,maglev_MagLevBoolean) or ((_hx_local_0 is None))):
@@ -7536,7 +8160,7 @@ class maglev_MagLevPy:
                 return _hx_local_0
             y = _hx_local_1()
             return y.getBool()
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_String):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_String):
             def _hx_local_3():
                 _hx_local_2 = x
                 if (Std.isOfType(_hx_local_2,maglev_MagLevString) or ((_hx_local_2 is None))):
@@ -7546,7 +8170,7 @@ class maglev_MagLevPy:
                 return _hx_local_2
             y = _hx_local_3()
             return y.getString()
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Number):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Number):
             def _hx_local_5():
                 _hx_local_4 = x
                 if (Std.isOfType(_hx_local_4,maglev_MagLevNumber) or ((_hx_local_4 is None))):
@@ -7556,7 +8180,7 @@ class maglev_MagLevPy:
                 return _hx_local_4
             y = _hx_local_5()
             return y.getFloat()
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Array):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Array):
             def _hx_local_7():
                 _hx_local_6 = x
                 if (Std.isOfType(_hx_local_6,maglev_MagLevArray) or ((_hx_local_6 is None))):
@@ -7572,7 +8196,7 @@ class maglev_MagLevPy:
                 arr.append(x1)
                 i = (i + 1)
             return arr
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Object):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Object):
             def _hx_local_10():
                 _hx_local_9 = x
                 if (Std.isOfType(_hx_local_9,maglev_MagLevObject) or ((_hx_local_9 is None))):
@@ -7596,7 +8220,7 @@ class maglev_MagLevPy:
                 d[k] = y.get(k)
                 i = (i + 1)
             return d
-        elif (x.getType() == maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Function):
+        elif (x.getType() == maglev__MagLev_MagLevType_Impl_.MagLevType_Function):
             def _hx_local_15():
                 _hx_local_14 = x
                 if (Std.isOfType(_hx_local_14,maglev_MagLevFunction) or ((_hx_local_14 is None))):
@@ -7667,630 +8291,6 @@ class maglev_MagLevPy:
     def _hx_empty_init(_hx_o):
         _hx_o.maglev = None
 maglev_MagLevPy._hx_class = maglev_MagLevPy
-
-
-class maglev__MagLevTypes_MagLevType_Impl_:
-    _hx_class_name = "maglev._MagLevTypes.MagLevType_Impl_"
-    __slots__ = ()
-    _hx_statics = ["MagLevType_Result", "MagLevType_Error", "MagLevType_Function", "MagLevType_Object", "MagLevType_Array", "MagLevType_Number", "MagLevType_String", "MagLevType_Boolean", "MagLevType_Null", "_new"]
-
-    @staticmethod
-    def _new(i):
-        this1 = i
-        return this1
-maglev__MagLevTypes_MagLevType_Impl_._hx_class = maglev__MagLevTypes_MagLevType_Impl_
-
-
-class maglev_MagLevResult:
-    _hx_class_name = "maglev.MagLevResult"
-    __slots__ = ("result", "error")
-    _hx_fields = ["result", "error"]
-    _hx_methods = ["isError", "getResult", "setResult", "getError", "setError", "getType", "isEqual", "toJson"]
-    _hx_statics = ["fromResult", "fromError"]
-
-    def __init__(self):
-        self.result = maglev_MagLevNull()
-        self.error = None
-
-    def isError(self):
-        return (self.result is None)
-
-    def getResult(self):
-        return self.result
-
-    def setResult(self,res):
-        self.result = res
-        self.error = None
-
-    def getError(self):
-        return self.error
-
-    def setError(self,err):
-        self.result = None
-        self.error = err
-
-    def getType(self):
-        return maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Result
-
-    def isEqual(self,other):
-        if (self.isError() == other.isError()):
-            if self.isError():
-                return self.getError().isEqual(other.getError())
-            else:
-                return self.getResult().isEqual(other.getResult())
-        else:
-            return False
-
-    def toJson(self):
-        res = "null"
-        err = "null"
-        if self.isError():
-            err = self.error.toJson().getString()
-        else:
-            res = self.result.toJson().getString()
-        return maglev_MagLevString((((("{\"result\": " + ("null" if res is None else res)) + ", \"error\": ") + ("null" if err is None else err)) + "}"))
-
-    @staticmethod
-    def fromResult(res):
-        result = maglev_MagLevResult()
-        result.setResult(res)
-        return result
-
-    @staticmethod
-    def fromError(err):
-        result = maglev_MagLevResult()
-        result.setError(err)
-        return result
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):
-        _hx_o.result = None
-        _hx_o.error = None
-maglev_MagLevResult._hx_class = maglev_MagLevResult
-
-
-class maglev_MagLevError:
-    _hx_class_name = "maglev.MagLevError"
-    __slots__ = ("code", "message", "data")
-    _hx_fields = ["code", "message", "data"]
-    _hx_methods = ["getCode", "getMessage", "getData", "getType", "isEqual", "toJson"]
-    _hx_statics = ["create"]
-
-    def __init__(self,code,message,data):
-        self.code = code
-        self.message = message
-        self.data = data
-
-    def getCode(self):
-        return self.code.getInt()
-
-    def getMessage(self):
-        return self.message.getString()
-
-    def getData(self):
-        return self.data
-
-    def getType(self):
-        return maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Error
-
-    def isEqual(self,other):
-        same = True
-        same = (same and self.code.isEqual(maglev_MagLevNumber(other.getCode())))
-        same = (same and self.message.isEqual(maglev_MagLevString(other.getMessage())))
-        same = (same and self.data.isEqual(other.getData()))
-        return same
-
-    def toJson(self):
-        return maglev_MagLevString((((((("{\"code\": " + Std.string(self.code.toJson())) + ", \"message\": ") + Std.string(self.message.toJson())) + ", \"data\": ") + Std.string(self.data.toJson())) + "}"))
-
-    @staticmethod
-    def create(code,message,data):
-        code2 = maglev_MagLevNumber(code)
-        message2 = maglev_MagLevString(message)
-        return maglev_MagLevError(code2,message2,data)
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):
-        _hx_o.code = None
-        _hx_o.message = None
-        _hx_o.data = None
-maglev_MagLevError._hx_class = maglev_MagLevError
-
-
-class maglev_MagLevAny:
-    _hx_class_name = "maglev.MagLevAny"
-    __slots__ = ()
-    _hx_methods = ["toJson", "getType", "isEqual"]
-
-    def __init__(self):
-        pass
-
-    def toJson(self):
-        raise haxe_Exception.thrown("toJson does not exist for MagLevAny")
-
-    def getType(self):
-        raise haxe_Exception.thrown("getType does not exist for MagLevAny")
-
-    def isEqual(self,o):
-        raise haxe_Exception.thrown("isEqual does not exist for MagLevAny")
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):        pass
-maglev_MagLevAny._hx_class = maglev_MagLevAny
-
-
-class maglev_MagLevFunction(maglev_MagLevAny):
-    _hx_class_name = "maglev.MagLevFunction"
-    __slots__ = ("name", "value")
-    _hx_fields = ["name", "value"]
-    _hx_methods = ["call", "hasName", "getName", "getType", "isEqual", "toJson"]
-    _hx_statics = ["fromFunction", "fromNamedFunction"]
-    _hx_interfaces = []
-    _hx_super = maglev_MagLevAny
-
-
-    def __init__(self,value,name = None):
-        self.name = name
-        self.value = value
-        super().__init__()
-
-    def call(self,args):
-        return self.value(args)
-
-    def hasName(self):
-        return (self.name is not None)
-
-    def getName(self):
-        return self.name
-
-    def getType(self):
-        return maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Function
-
-    def isEqual(self,other):
-        if (other.getType() == self.getType()):
-            def _hx_local_1():
-                _hx_local_0 = other
-                if (Std.isOfType(_hx_local_0,maglev_MagLevFunction) or ((_hx_local_0 is None))):
-                    _hx_local_0
-                else:
-                    raise "Class cast error"
-                return _hx_local_0
-            o = _hx_local_1()
-            if (self.hasName() and o.hasName()):
-                return (self.getName() == o.getName())
-            else:
-                return False
-        else:
-            return False
-
-    def toJson(self):
-        if self.hasName():
-            return maglev_MagLevString((("<function " + HxOverrides.stringOrNull(self.name)) + ">"))
-        else:
-            return maglev_MagLevString("<anon func>")
-
-    @staticmethod
-    def fromFunction(value):
-        return maglev_MagLevFunction(value)
-
-    @staticmethod
-    def fromNamedFunction(value,name):
-        return maglev_MagLevFunction(value,name)
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):
-        _hx_o.name = None
-        _hx_o.value = None
-maglev_MagLevFunction._hx_class = maglev_MagLevFunction
-
-
-class maglev_MagLevObject(maglev_MagLevAny):
-    _hx_class_name = "maglev.MagLevObject"
-    __slots__ = ("values",)
-    _hx_fields = ["values"]
-    _hx_methods = ["clear", "exists", "get", "keys", "remove", "set", "getStringMap", "getType", "isEqual", "toJson"]
-    _hx_statics = ["create"]
-    _hx_interfaces = []
-    _hx_super = maglev_MagLevAny
-
-
-    def __init__(self):
-        self.values = haxe_ds_StringMap()
-        super().__init__()
-
-    def clear(self):
-        self.values.h.clear()
-
-    def exists(self,key):
-        return (key in self.values.h)
-
-    def get(self,key):
-        return maglev_MagLevNull.wrap(self.values.h.get(key,None))
-
-    def keys(self):
-        arr = maglev_MagLevArray()
-        k = self.values.keys()
-        while k.hasNext():
-            k1 = k.next()
-            arr.push(maglev_MagLevString(k1))
-        return arr
-
-    def remove(self,key):
-        return self.values.remove(key)
-
-    def set(self,key,value):
-        this1 = self.values
-        value1 = maglev_MagLevNull.wrap(value)
-        this1.h[key] = value1
-
-    def getStringMap(self):
-        return self.values
-
-    def getType(self):
-        return maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Object
-
-    def isEqual(self,other):
-        if (other.getType() == self.getType()):
-            def _hx_local_1():
-                _hx_local_0 = other
-                if (Std.isOfType(_hx_local_0,maglev_MagLevObject) or ((_hx_local_0 is None))):
-                    _hx_local_0
-                else:
-                    raise "Class cast error"
-                return _hx_local_0
-            obj = _hx_local_1()
-            key = self.values.keys()
-            while key.hasNext():
-                key1 = key.next()
-                found = False
-                equal = False
-                key2 = obj.getStringMap().keys()
-                while key2.hasNext():
-                    key21 = key2.next()
-                    if (key1 == key21):
-                        found = True
-                        val = self.values.h.get(key1,None)
-                        val2 = obj.values.h.get(key21,None)
-                        if val.isEqual(val2):
-                            equal = True
-                if ((not found) or (not equal)):
-                    return False
-            return True
-        else:
-            return False
-
-    def toJson(self):
-        s = "{"
-        first = True
-        key = self.values.keys()
-        while key.hasNext():
-            key1 = key.next()
-            if (not first):
-                s = (("null" if s is None else s) + ", ")
-            s = (("null" if s is None else s) + ("null" if key1 is None else key1))
-            s = (("null" if s is None else s) + ": ")
-            s = (("null" if s is None else s) + Std.string(self.values.h.get(key1,None).toJson()))
-            first = False
-        s = (("null" if s is None else s) + "}")
-        return maglev_MagLevString(s)
-
-    @staticmethod
-    def create():
-        return maglev_MagLevObject()
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):
-        _hx_o.values = None
-maglev_MagLevObject._hx_class = maglev_MagLevObject
-
-
-class maglev_MagLevArray(maglev_MagLevAny):
-    _hx_class_name = "maglev.MagLevArray"
-    __slots__ = ("values",)
-    _hx_fields = ["values"]
-    _hx_methods = ["size", "pop", "push", "shift", "unshift", "reverse", "get", "set", "getType", "isEqual", "toJson"]
-    _hx_statics = ["create"]
-    _hx_interfaces = []
-    _hx_super = maglev_MagLevAny
-
-
-    def __init__(self):
-        self.values = list()
-        super().__init__()
-
-    def size(self):
-        return len(self.values)
-
-    def pop(self):
-        _this = self.values
-        return maglev_MagLevNull.wrap((None if ((len(_this) == 0)) else _this.pop()))
-
-    def push(self,x):
-        _this = self.values
-        _this.append(x)
-        return self.size()
-
-    def shift(self):
-        _this = self.values
-        return maglev_MagLevNull.wrap((None if ((len(_this) == 0)) else _this.pop(0)))
-
-    def unshift(self,x):
-        _this = self.values
-        x1 = maglev_MagLevNull.wrap(x)
-        _this.insert(0, x1)
-
-    def reverse(self):
-        self.values.reverse()
-
-    def get(self,i):
-        return maglev_MagLevNull.wrap((self.values[i] if i >= 0 and i < len(self.values) else None))
-
-    def set(self,i,value):
-        python_internal_ArrayImpl._set(self.values, i, maglev_MagLevNull.wrap(value))
-
-    def getType(self):
-        return maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Array
-
-    def isEqual(self,other):
-        if (other.getType() == self.getType()):
-            def _hx_local_1():
-                _hx_local_0 = other
-                if (Std.isOfType(_hx_local_0,maglev_MagLevArray) or ((_hx_local_0 is None))):
-                    _hx_local_0
-                else:
-                    raise "Class cast error"
-                return _hx_local_0
-            o = _hx_local_1()
-            if (self.size() == o.size()):
-                def _hx_local_3():
-                    _hx_local_2 = other
-                    if (Std.isOfType(_hx_local_2,maglev_MagLevArray) or ((_hx_local_2 is None))):
-                        _hx_local_2
-                    else:
-                        raise "Class cast error"
-                    return _hx_local_2
-                arr = _hx_local_3()
-                _g = 0
-                _g1 = self.values
-                while (_g < len(_g1)):
-                    item = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
-                    _g = (_g + 1)
-                    found = False
-                    _g2 = 0
-                    _g3 = arr.values
-                    while (_g2 < len(_g3)):
-                        item2 = (_g3[_g2] if _g2 >= 0 and _g2 < len(_g3) else None)
-                        _g2 = (_g2 + 1)
-                        if item.isEqual(item2):
-                            found = True
-                    if (not found):
-                        return False
-                return True
-            else:
-                return False
-        else:
-            return False
-
-    def toJson(self):
-        s = "["
-        first = True
-        _g = 0
-        _g1 = self.values
-        while (_g < len(_g1)):
-            item = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
-            _g = (_g + 1)
-            if (not first):
-                s = (("null" if s is None else s) + ", ")
-            s = (("null" if s is None else s) + HxOverrides.stringOrNull(item.toJson().getString()))
-            first = False
-        s = (("null" if s is None else s) + "]")
-        return maglev_MagLevString(s)
-
-    @staticmethod
-    def create():
-        return maglev_MagLevArray()
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):
-        _hx_o.values = None
-maglev_MagLevArray._hx_class = maglev_MagLevArray
-
-
-class maglev_MagLevNumber(maglev_MagLevAny):
-    _hx_class_name = "maglev.MagLevNumber"
-    __slots__ = ("value",)
-    _hx_fields = ["value"]
-    _hx_methods = ["getFloat", "getInt", "getType", "isEqual", "toJson"]
-    _hx_statics = ["fromFloat", "fromInt"]
-    _hx_interfaces = []
-    _hx_super = maglev_MagLevAny
-
-
-    def __init__(self,value):
-        self.value = value
-        super().__init__()
-
-    def getFloat(self):
-        return self.value
-
-    def getInt(self):
-        x = self.value
-        try:
-            return int(x)
-        except BaseException as _g:
-            None
-            return None
-
-    def getType(self):
-        return maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Number
-
-    def isEqual(self,other):
-        if (other.getType() == self.getType()):
-            def _hx_local_1():
-                _hx_local_0 = other
-                if (Std.isOfType(_hx_local_0,maglev_MagLevNumber) or ((_hx_local_0 is None))):
-                    _hx_local_0
-                else:
-                    raise "Class cast error"
-                return _hx_local_0
-            o = _hx_local_1()
-            return (self.getFloat() == o.getFloat())
-        else:
-            return False
-
-    def toJson(self):
-        return maglev_MagLevString(Std.string(self.value))
-
-    @staticmethod
-    def fromFloat(value):
-        return maglev_MagLevNumber(value)
-
-    @staticmethod
-    def fromInt(value):
-        return maglev_MagLevNumber(value)
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):
-        _hx_o.value = None
-maglev_MagLevNumber._hx_class = maglev_MagLevNumber
-
-
-class maglev_MagLevString(maglev_MagLevAny):
-    _hx_class_name = "maglev.MagLevString"
-    __slots__ = ("value",)
-    _hx_fields = ["value"]
-    _hx_methods = ["getString", "getType", "isEqual", "toJson"]
-    _hx_statics = ["fromString"]
-    _hx_interfaces = []
-    _hx_super = maglev_MagLevAny
-
-
-    def __init__(self,value):
-        self.value = value
-        super().__init__()
-
-    def getString(self):
-        return self.value
-
-    def getType(self):
-        return maglev__MagLevTypes_MagLevType_Impl_.MagLevType_String
-
-    def isEqual(self,other):
-        if (other.getType() == self.getType()):
-            def _hx_local_1():
-                _hx_local_0 = other
-                if (Std.isOfType(_hx_local_0,maglev_MagLevString) or ((_hx_local_0 is None))):
-                    _hx_local_0
-                else:
-                    raise "Class cast error"
-                return _hx_local_0
-            o = _hx_local_1()
-            return (self.getString() == o.getString())
-        else:
-            return False
-
-    def toJson(self):
-        return maglev_MagLevString((("\"" + HxOverrides.stringOrNull(self.value)) + "\""))
-
-    @staticmethod
-    def fromString(value):
-        return maglev_MagLevString(value)
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):
-        _hx_o.value = None
-maglev_MagLevString._hx_class = maglev_MagLevString
-
-
-class maglev_MagLevBoolean(maglev_MagLevAny):
-    _hx_class_name = "maglev.MagLevBoolean"
-    __slots__ = ("value",)
-    _hx_fields = ["value"]
-    _hx_methods = ["getBool", "getType", "isEqual", "toJson"]
-    _hx_statics = ["fromBool"]
-    _hx_interfaces = []
-    _hx_super = maglev_MagLevAny
-
-
-    def __init__(self,value):
-        self.value = value
-        super().__init__()
-
-    def getBool(self):
-        return self.value
-
-    def getType(self):
-        return maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Boolean
-
-    def isEqual(self,other):
-        if (other.getType() == self.getType()):
-            def _hx_local_1():
-                _hx_local_0 = other
-                if (Std.isOfType(_hx_local_0,maglev_MagLevBoolean) or ((_hx_local_0 is None))):
-                    _hx_local_0
-                else:
-                    raise "Class cast error"
-                return _hx_local_0
-            o = _hx_local_1()
-            return (self.getBool() == o.getBool())
-        else:
-            return False
-
-    def toJson(self):
-        if self.value:
-            return maglev_MagLevString("true")
-        else:
-            return maglev_MagLevString("false")
-
-    @staticmethod
-    def fromBool(value):
-        return maglev_MagLevBoolean(value)
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):
-        _hx_o.value = None
-maglev_MagLevBoolean._hx_class = maglev_MagLevBoolean
-
-
-class maglev_MagLevNull(maglev_MagLevAny):
-    _hx_class_name = "maglev.MagLevNull"
-    __slots__ = ()
-    _hx_fields = []
-    _hx_methods = ["getType", "isEqual", "toJson"]
-    _hx_statics = ["create", "wrap"]
-    _hx_interfaces = []
-    _hx_super = maglev_MagLevAny
-
-
-    def __init__(self):
-        super().__init__()
-
-    def getType(self):
-        return maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Null
-
-    def isEqual(self,other):
-        if (other.getType() == self.getType()):
-            return True
-        else:
-            return False
-
-    def toJson(self):
-        return maglev_MagLevString("null")
-
-    @staticmethod
-    def create():
-        return maglev_MagLevNull()
-
-    @staticmethod
-    def wrap(o):
-        if (o is None):
-            return maglev_MagLevNull()
-        else:
-            return o
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):        pass
-maglev_MagLevNull._hx_class = maglev_MagLevNull
 
 
 class python_Boot:
@@ -10189,60 +10189,60 @@ def _hx_init_haxe_xml_Parser_escapes():
     return _hx_local_0()
 haxe_xml_Parser.escapes = _hx_init_haxe_xml_Parser_escapes()
 maglev_MagLev._instances = haxe_ds_StringMap()
-def _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Result():
+def _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Result():
     def _hx_local_0():
         this1 = 11
         return this1
     return _hx_local_0()
-maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Result = _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Result()
-def _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Error():
+maglev__MagLev_MagLevType_Impl_.MagLevType_Result = _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Result()
+def _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Error():
     def _hx_local_0():
         this1 = 10
         return this1
     return _hx_local_0()
-maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Error = _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Error()
-def _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Function():
+maglev__MagLev_MagLevType_Impl_.MagLevType_Error = _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Error()
+def _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Function():
     def _hx_local_0():
         this1 = 20
         return this1
     return _hx_local_0()
-maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Function = _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Function()
-def _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Object():
+maglev__MagLev_MagLevType_Impl_.MagLevType_Function = _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Function()
+def _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Object():
     def _hx_local_0():
         this1 = 5
         return this1
     return _hx_local_0()
-maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Object = _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Object()
-def _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Array():
+maglev__MagLev_MagLevType_Impl_.MagLevType_Object = _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Object()
+def _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Array():
     def _hx_local_0():
         this1 = 4
         return this1
     return _hx_local_0()
-maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Array = _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Array()
-def _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Number():
+maglev__MagLev_MagLevType_Impl_.MagLevType_Array = _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Array()
+def _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Number():
     def _hx_local_0():
         this1 = 3
         return this1
     return _hx_local_0()
-maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Number = _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Number()
-def _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_String():
+maglev__MagLev_MagLevType_Impl_.MagLevType_Number = _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Number()
+def _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_String():
     def _hx_local_0():
         this1 = 2
         return this1
     return _hx_local_0()
-maglev__MagLevTypes_MagLevType_Impl_.MagLevType_String = _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_String()
-def _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Boolean():
+maglev__MagLev_MagLevType_Impl_.MagLevType_String = _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_String()
+def _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Boolean():
     def _hx_local_0():
         this1 = 1
         return this1
     return _hx_local_0()
-maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Boolean = _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Boolean()
-def _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Null():
+maglev__MagLev_MagLevType_Impl_.MagLevType_Boolean = _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Boolean()
+def _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Null():
     def _hx_local_0():
         this1 = 0
         return this1
     return _hx_local_0()
-maglev__MagLevTypes_MagLevType_Impl_.MagLevType_Null = _hx_init_maglev__MagLevTypes_MagLevType_Impl__MagLevType_Null()
+maglev__MagLev_MagLevType_Impl_.MagLevType_Null = _hx_init_maglev__MagLev_MagLevType_Impl__MagLevType_Null()
 python_Boot.keywords = set(["and", "del", "from", "not", "with", "as", "elif", "global", "or", "yield", "assert", "else", "if", "pass", "None", "break", "except", "import", "raise", "True", "class", "exec", "in", "return", "False", "continue", "finally", "is", "try", "def", "for", "lambda", "while"])
 python_Boot.prefixLength = len("_hx_")
 python_Lib.lineEnd = ("\r\n" if ((Sys.systemName() == "Windows")) else "\n")
