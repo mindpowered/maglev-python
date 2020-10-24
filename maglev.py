@@ -8216,7 +8216,7 @@ class maglev_MagLevPy:
             arr = list()
             i = 0
             while (i < y.size()):
-                x1 = y.get(i)
+                x1 = self.convertToPy(y.get(i))
                 arr.append(x1)
                 i = (i + 1)
             return arr
@@ -8241,7 +8241,7 @@ class maglev_MagLevPy:
                         raise "Class cast error"
                     return _hx_local_11
                 k = (_hx_local_12()).getString()
-                d[k] = y.get(k)
+                d[k] = self.convertToPy(y.get(k))
                 i = (i + 1)
             return d
         elif (x.getType() == maglev_MagLevFunction.getStaticType()):
@@ -8265,7 +8265,7 @@ class maglev_MagLevPy:
                     if ret.isError():
                         raise haxe_Exception.thrown(ret.getError().getMessage())
                     else:
-                        return ret.getResult()
+                        return _gthis.convertToPy(ret.getResult())
                 return _hx_local_17
             return _hx_local_18()
         else:
