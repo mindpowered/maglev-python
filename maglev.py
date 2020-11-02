@@ -7241,31 +7241,81 @@ maglev_MagLev._hx_class = maglev_MagLev
 
 class maglev_MagLevResult:
     _hx_class_name = "maglev.MagLevResult"
-    __slots__ = ("result", "error")
-    _hx_fields = ["result", "error"]
-    _hx_methods = ["isError", "getResult", "setResult", "getError", "setError", "getType", "isEqual", "toJson"]
-    _hx_statics = ["fromResult", "fromError", "getStaticType"]
+    __slots__ = ("result", "error", "_hx_async", "complete", "accepts", "rejects")
+    _hx_fields = ["result", "error", "async", "complete", "accepts", "rejects"]
+    _hx_methods = ["isAsync", "isComplete", "isError", "getResult", "setResult", "getError", "setError", "onResult", "onError", "getType", "isEqual", "toJson"]
+    _hx_statics = ["fromResult", "fromError", "createAsync", "getStaticType"]
 
-    def __init__(self):
-        self.result = maglev_MagLevNull()
+    def __init__(self,_hx_async):
+        self._hx_async = _hx_async
+        self.result = None
         self.error = None
+        self.complete = False
+        self.accepts = list()
+        self.rejects = list()
+
+    def isAsync(self):
+        return self._hx_async
+
+    def isComplete(self):
+        return self.complete
 
     def isError(self):
+        if (not self.complete):
+            raise haxe_Exception.thrown("isError(): Future result not complete")
         return (self.result is None)
 
     def getResult(self):
+        if (not self.complete):
+            raise haxe_Exception.thrown("getResult(): Future result not complete")
         return self.result
 
     def setResult(self,res):
+        if self.complete:
+            raise haxe_Exception.thrown("setResult(): Result was already complete")
         self.result = res
         self.error = None
+        self.complete = True
 
     def getError(self):
+        if (not self.complete):
+            raise haxe_Exception.thrown("getError(): Future result not complete")
         return self.error
 
     def setError(self,err):
+        if self.complete:
+            raise haxe_Exception.thrown("setError(): Result was already complete")
         self.result = None
         self.error = err
+        self.complete = True
+
+    def onResult(self,callback):
+        future = maglev_MagLevResult.createAsync()
+        def _hx_local_1(result):
+            ret = callback(result)
+            def _hx_local_0(result2):
+                future.setResult(result2)
+                return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
+            ret.onResult(_hx_local_0)
+            return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
+        accept = _hx_local_1
+        _this = self.accepts
+        _this.append(accept)
+        return future
+
+    def onError(self,callback):
+        future = maglev_MagLevResult.createAsync()
+        def _hx_local_1(error):
+            ret = callback(error)
+            def _hx_local_0(error2):
+                future.setError(error2)
+                return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
+            ret.onError(_hx_local_0)
+            return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
+        reject = _hx_local_1
+        _this = self.rejects
+        _this.append(reject)
+        return future
 
     def getType(self):
         return 110
@@ -7290,14 +7340,19 @@ class maglev_MagLevResult:
 
     @staticmethod
     def fromResult(res):
-        result = maglev_MagLevResult()
+        result = maglev_MagLevResult(False)
         result.setResult(res)
         return result
 
     @staticmethod
     def fromError(err):
-        result = maglev_MagLevResult()
+        result = maglev_MagLevResult(False)
         result.setError(err)
+        return result
+
+    @staticmethod
+    def createAsync():
+        result = maglev_MagLevResult(True)
         return result
 
     @staticmethod
@@ -7308,6 +7363,10 @@ class maglev_MagLevResult:
     def _hx_empty_init(_hx_o):
         _hx_o.result = None
         _hx_o.error = None
+        _hx_o._hx_async = None
+        _hx_o.complete = None
+        _hx_o.accepts = None
+        _hx_o.rejects = None
 maglev_MagLevResult._hx_class = maglev_MagLevResult
 
 
