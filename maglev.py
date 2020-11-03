@@ -7276,6 +7276,12 @@ class maglev_MagLevResult:
         self.result = res
         self.error = None
         self.complete = True
+        _g = 0
+        _g1 = self.accepts
+        while (_g < len(_g1)):
+            accept = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            accept(res)
 
     def getError(self):
         if (not self.complete):
@@ -7288,33 +7294,47 @@ class maglev_MagLevResult:
         self.result = None
         self.error = err
         self.complete = True
+        _g = 0
+        _g1 = self.rejects
+        while (_g < len(_g1)):
+            reject = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            reject(err)
 
     def onResult(self,callback):
         future = maglev_MagLevResult.createAsync()
         def _hx_local_1(result):
             ret = callback(result)
-            def _hx_local_0(result2):
-                future.setResult(result2)
-                return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
-            ret.onResult(_hx_local_0)
+            if ret.isAsync():
+                def _hx_local_0(result2):
+                    future.setResult(result2)
+                    return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
+                ret.onResult(_hx_local_0)
             return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
         accept = _hx_local_1
         _this = self.accepts
         _this.append(accept)
+        if self.complete:
+            if (not self.isError()):
+                accept(self.getResult())
         return future
 
     def onError(self,callback):
         future = maglev_MagLevResult.createAsync()
         def _hx_local_1(error):
             ret = callback(error)
-            def _hx_local_0(error2):
-                future.setError(error2)
-                return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
-            ret.onError(_hx_local_0)
+            if ret.isAsync():
+                def _hx_local_0(error2):
+                    future.setError(error2)
+                    return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
+                ret.onError(_hx_local_0)
             return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
         reject = _hx_local_1
         _this = self.rejects
         _this.append(reject)
+        if self.complete:
+            if self.isError():
+                reject(self.getError())
         return future
 
     def getType(self):
