@@ -8106,6 +8106,7 @@ class maglev_MagLevOld:
             raise haxe_Exception.thrown("convertToHaxe: unknown type")
 
     def convertToMagLev(self,x):
+        _gthis = self
         if (x is None):
             return maglev_MagLevNull.create()
         elif Std.isOfType(x,Bool):
@@ -8144,7 +8145,12 @@ class maglev_MagLevOld:
         elif Std.isOfType(x,Float):
             return maglev_MagLevNumber.fromFloat(x)
         elif Reflect.isFunction(x):
-            f = x
+            def _hx_local_9(args):
+                y = x
+                haxeArgs = _gthis.convertToHaxe(args)
+                haxeRet = y(haxeArgs)
+                return maglev_MagLevResult.fromResult(_gthis.convertToMagLev(haxeRet))
+            f = _hx_local_9
             return maglev_MagLevFunction.fromFunction(f)
         elif Std.isOfType(x,list):
             arr = maglev_MagLevArray.create()
@@ -8351,6 +8357,7 @@ class maglev_MagLevPy:
             raise haxe_Exception.thrown("convertToPy: unknown type")
 
     def convertToMagLev(self,x):
+        _gthis = self
         if (x is None):
             return maglev_MagLevNull()
         elif Std.isOfType(x,str):
@@ -8381,7 +8388,13 @@ class maglev_MagLevPy:
                 obj.set(field,self.convertToMagLev(val))
             return obj
         elif Reflect.isFunction(x):
-            return maglev_MagLevFunction(x)
+            y = x
+            def _hx_local_2(args):
+                pyArgs = _gthis.convertToPy(args)
+                pyRet = y(pyArgs)
+                return maglev_MagLevResult.fromResult(_gthis.convertToMagLev(pyRet))
+            f = _hx_local_2
+            return maglev_MagLevFunction.fromFunction(f)
         else:
             raise haxe_Exception.thrown("convertToMagLev: unknown type - are you passing only primitives to maglev?")
 
