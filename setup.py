@@ -1,17 +1,17 @@
 import setuptools
 
-#with open("README.md", "r") as fh:
-    #long_description = fh.read()
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 setuptools.setup(
      name='mindpowered-maglev',
-     version='0.6.2',
+     version='0.6.3',
      author="Mind Powered Corporation",
      author_email="support@mindpowered.dev",
      license="CPAL-1.0",
      url="https://mindpowered.dev/",
      description="MagLev",
-     #long_description=long_description,
-     #long_description_content_type="text/markdown",
+     long_description=long_description,
+     long_description_content_type="text/markdown",
      py_modules=['maglev'],
      classifiers=[
          "Programming Language :: Python :: 3",

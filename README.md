@@ -5,22 +5,30 @@ maglev
 Contents
 ========
 
-* [maglev Python Library](#maglev-python-library)
-	* [Licensing Options](#licensing-options)
-	* [Support](#support)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Licensing](#licensing)
+* [Support](#support)
 
-# maglev Python Library
+# Requirements
+Python 3.x. Due to security fixes and new features Python 3.7 or later is recommended.
+pip
 
-## Licensing Options
+
+Third-party dependencies may have additional requirements.
+
+# Installation
+pip install ...
 
 
+# Licensing
 Additional [licensing options][licensing] are available.
-## Support
 
-
-For bugfixes, please raise an issue in the [Issue Tracker][bugs].
+# Support
+For bug fixes, please raise an issue in the [Issue Tracker][bugs].
 
 For feature requests, and general support, please [Contact us][contact].
+
 
 
 [bugs]: https://github.com/mindpowered/maglev-python/issues

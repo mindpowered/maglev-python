@@ -8143,6 +8143,9 @@ class maglev_MagLevOld:
             return _hx_local_8()
         elif Std.isOfType(x,Float):
             return maglev_MagLevNumber.fromFloat(x)
+        elif Reflect.isFunction(x):
+            f = x
+            return maglev_MagLevFunction.fromFunction(f)
         elif Std.isOfType(x,list):
             arr = maglev_MagLevArray.create()
             y = x
@@ -8170,9 +8173,6 @@ class maglev_MagLevOld:
                 val = Reflect.getProperty(x,field)
                 obj.set(field,self.convertToMagLev(val))
             return obj
-        elif Reflect.isFunction(x):
-            f = x
-            return maglev_MagLevFunction.fromFunction(f)
         else:
             raise haxe_Exception.thrown("convertToMagLev: unknown type")
 
