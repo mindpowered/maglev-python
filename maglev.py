@@ -7991,7 +7991,8 @@ class maglev_MagLevOld:
         mycallback = maglev_MagLevFunction(myfunc)
         self.maglev.register(method,mycallback)
 
-    def call(self,method,args):
+    def call(self,method,args,callback):
+        _gthis = self
         myargs = maglev_MagLevArray()
         _g = 0
         while (_g < len(args)):
@@ -7999,10 +8000,13 @@ class maglev_MagLevOld:
             _g = (_g + 1)
             myargs.push(self.convertToMagLev(arg))
         myresult = self.maglev.call(method,myargs)
-        if myresult.isError():
-            raise haxe_Exception.thrown(myresult.getError().getMessage())
-        else:
-            return self.convertToHaxe(myresult.getResult())
+        def _hx_local_1(error):
+            raise haxe_Exception.thrown(error.getMessage())
+        myresult.onError(_hx_local_1)
+        def _hx_local_2(result):
+            callback(_gthis.convertToHaxe(result))
+            return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
+        myresult.onResult(_hx_local_2)
 
     def listen(self,event,callback):
         _gthis = self
@@ -8218,7 +8222,8 @@ class maglev_MagLevPy:
         mycallback = maglev_MagLevFunction(myfunc)
         self.maglev.register(method,mycallback)
 
-    def call(self,method,args):
+    def call(self,method,args,callback):
+        _gthis = self
         myargs = maglev_MagLevArray()
         _g = 0
         while (_g < len(args)):
@@ -8226,10 +8231,13 @@ class maglev_MagLevPy:
             _g = (_g + 1)
             myargs.push(self.convertToMagLev(arg))
         myresult = self.maglev.call(method,myargs)
-        if myresult.isError():
-            raise haxe_Exception.thrown(myresult.getError().getMessage())
-        else:
-            return self.convertToPy(myresult.getResult())
+        def _hx_local_1(error):
+            raise haxe_Exception.thrown(error.getMessage())
+        myresult.onError(_hx_local_1)
+        def _hx_local_2(result):
+            callback(_gthis.convertToPy(result))
+            return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
+        myresult.onResult(_hx_local_2)
 
     def listen(self,event,callback):
         _gthis = self
