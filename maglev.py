@@ -16,6 +16,9 @@ except:
     pass
 import random as python_lib_Random
 import re as python_lib_Re
+import select as python_lib_Select
+import socket as python_lib_Socket
+import ssl as python_lib_Ssl
 import subprocess as python_lib_Subprocess
 try:
     import termios as python_lib_Termios
@@ -39,6 +42,10 @@ from io import FileIO as python_lib_io_FileIO
 from io import TextIOBase as python_lib_io_TextIOBase
 from io import StringIO as python_lib_io_StringIO
 from json import JSONEncoder as python_lib_json_JSONEncoder
+from socket import socket as python_lib_socket_Socket
+from ssl import Purpose as python_lib_ssl_Purpose
+from ssl import SSLContext as python_lib_ssl_SSLContext
+from ssl import SSLSocket as python_lib_ssl_SSLSocket
 from time import struct_time as python_lib_time_StructTime
 import urllib.parse as python_lib_urllib_Parse
 
@@ -3795,6 +3802,382 @@ class haxe_ValueException(haxe_Exception):
 haxe_ValueException._hx_class = haxe_ValueException
 
 
+class haxe_io_Bytes:
+    _hx_class_name = "haxe.io.Bytes"
+    __slots__ = ("length", "b")
+    _hx_fields = ["length", "b"]
+    _hx_methods = ["get", "set", "blit", "fill", "sub", "compare", "getDouble", "getFloat", "setDouble", "setFloat", "getUInt16", "setUInt16", "getInt32", "getInt64", "setInt32", "setInt64", "getString", "readString", "toString", "toHex", "getData"]
+    _hx_statics = ["alloc", "ofString", "ofData", "ofHex", "fastGet"]
+
+    def __init__(self,length,b):
+        self.length = length
+        self.b = b
+
+    def get(self,pos):
+        return self.b[pos]
+
+    def set(self,pos,v):
+        self.b[pos] = (v & 255)
+
+    def blit(self,pos,src,srcpos,_hx_len):
+        if (((((pos < 0) or ((srcpos < 0))) or ((_hx_len < 0))) or (((pos + _hx_len) > self.length))) or (((srcpos + _hx_len) > src.length))):
+            raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
+        self.b[pos:pos+_hx_len] = src.b[srcpos:srcpos+_hx_len]
+
+    def fill(self,pos,_hx_len,value):
+        _g = 0
+        _g1 = _hx_len
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            pos1 = pos
+            pos = (pos + 1)
+            self.b[pos1] = (value & 255)
+
+    def sub(self,pos,_hx_len):
+        if (((pos < 0) or ((_hx_len < 0))) or (((pos + _hx_len) > self.length))):
+            raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
+        return haxe_io_Bytes(_hx_len,self.b[pos:(pos + _hx_len)])
+
+    def compare(self,other):
+        b1 = self.b
+        b2 = other.b
+        _hx_len = (self.length if ((self.length < other.length)) else other.length)
+        _g = 0
+        _g1 = _hx_len
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            if (b1[i] != b2[i]):
+                return (b1[i] - b2[i])
+        return (self.length - other.length)
+
+    def getDouble(self,pos):
+        v = (((self.b[pos] | ((self.b[(pos + 1)] << 8))) | ((self.b[(pos + 2)] << 16))) | ((self.b[(pos + 3)] << 24)))
+        pos1 = (pos + 4)
+        v1 = (((self.b[pos1] | ((self.b[(pos1 + 1)] << 8))) | ((self.b[(pos1 + 2)] << 16))) | ((self.b[(pos1 + 3)] << 24)))
+        return haxe_io_FPHelper.i64ToDouble(((v | -2147483648) if ((((v & -2147483648)) != 0)) else v),((v1 | -2147483648) if ((((v1 & -2147483648)) != 0)) else v1))
+
+    def getFloat(self,pos):
+        v = (((self.b[pos] | ((self.b[(pos + 1)] << 8))) | ((self.b[(pos + 2)] << 16))) | ((self.b[(pos + 3)] << 24)))
+        return haxe_io_FPHelper.i32ToFloat(((v | -2147483648) if ((((v & -2147483648)) != 0)) else v))
+
+    def setDouble(self,pos,v):
+        i = haxe_io_FPHelper.doubleToI64(v)
+        v = i.low
+        self.b[pos] = (v & 255)
+        self.b[(pos + 1)] = ((v >> 8) & 255)
+        self.b[(pos + 2)] = ((v >> 16) & 255)
+        self.b[(pos + 3)] = (HxOverrides.rshift(v, 24) & 255)
+        pos1 = (pos + 4)
+        v = i.high
+        self.b[pos1] = (v & 255)
+        self.b[(pos1 + 1)] = ((v >> 8) & 255)
+        self.b[(pos1 + 2)] = ((v >> 16) & 255)
+        self.b[(pos1 + 3)] = (HxOverrides.rshift(v, 24) & 255)
+
+    def setFloat(self,pos,v):
+        v1 = haxe_io_FPHelper.floatToI32(v)
+        self.b[pos] = (v1 & 255)
+        self.b[(pos + 1)] = ((v1 >> 8) & 255)
+        self.b[(pos + 2)] = ((v1 >> 16) & 255)
+        self.b[(pos + 3)] = (HxOverrides.rshift(v1, 24) & 255)
+
+    def getUInt16(self,pos):
+        return (self.b[pos] | ((self.b[(pos + 1)] << 8)))
+
+    def setUInt16(self,pos,v):
+        self.b[pos] = (v & 255)
+        self.b[(pos + 1)] = ((v >> 8) & 255)
+
+    def getInt32(self,pos):
+        v = (((self.b[pos] | ((self.b[(pos + 1)] << 8))) | ((self.b[(pos + 2)] << 16))) | ((self.b[(pos + 3)] << 24)))
+        if (((v & -2147483648)) != 0):
+            return (v | -2147483648)
+        else:
+            return v
+
+    def getInt64(self,pos):
+        pos1 = (pos + 4)
+        v = (((self.b[pos1] | ((self.b[(pos1 + 1)] << 8))) | ((self.b[(pos1 + 2)] << 16))) | ((self.b[(pos1 + 3)] << 24)))
+        v1 = (((self.b[pos] | ((self.b[(pos + 1)] << 8))) | ((self.b[(pos + 2)] << 16))) | ((self.b[(pos + 3)] << 24)))
+        this1 = haxe__Int64____Int64(((v | -2147483648) if ((((v & -2147483648)) != 0)) else v),((v1 | -2147483648) if ((((v1 & -2147483648)) != 0)) else v1))
+        return this1
+
+    def setInt32(self,pos,v):
+        self.b[pos] = (v & 255)
+        self.b[(pos + 1)] = ((v >> 8) & 255)
+        self.b[(pos + 2)] = ((v >> 16) & 255)
+        self.b[(pos + 3)] = (HxOverrides.rshift(v, 24) & 255)
+
+    def setInt64(self,pos,v):
+        v1 = v.low
+        self.b[pos] = (v1 & 255)
+        self.b[(pos + 1)] = ((v1 >> 8) & 255)
+        self.b[(pos + 2)] = ((v1 >> 16) & 255)
+        self.b[(pos + 3)] = (HxOverrides.rshift(v1, 24) & 255)
+        pos1 = (pos + 4)
+        v1 = v.high
+        self.b[pos1] = (v1 & 255)
+        self.b[(pos1 + 1)] = ((v1 >> 8) & 255)
+        self.b[(pos1 + 2)] = ((v1 >> 16) & 255)
+        self.b[(pos1 + 3)] = (HxOverrides.rshift(v1, 24) & 255)
+
+    def getString(self,pos,_hx_len,encoding = None):
+        tmp = (encoding is None)
+        if (((pos < 0) or ((_hx_len < 0))) or (((pos + _hx_len) > self.length))):
+            raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
+        return self.b[pos:pos+_hx_len].decode('UTF-8','replace')
+
+    def readString(self,pos,_hx_len):
+        return self.getString(pos,_hx_len)
+
+    def toString(self):
+        return self.getString(0,self.length)
+
+    def toHex(self):
+        s_b = python_lib_io_StringIO()
+        chars = []
+        _hx_str = "0123456789abcdef"
+        _g = 0
+        _g1 = len(_hx_str)
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            x = HxString.charCodeAt(_hx_str,i)
+            chars.append(x)
+        _g = 0
+        _g1 = self.length
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            c = self.b[i]
+            s_b.write("".join(map(chr,[python_internal_ArrayImpl._get(chars, (c >> 4))])))
+            s_b.write("".join(map(chr,[python_internal_ArrayImpl._get(chars, (c & 15))])))
+        return s_b.getvalue()
+
+    def getData(self):
+        return self.b
+
+    @staticmethod
+    def alloc(length):
+        return haxe_io_Bytes(length,bytearray(length))
+
+    @staticmethod
+    def ofString(s,encoding = None):
+        b = bytearray(s,"UTF-8")
+        return haxe_io_Bytes(len(b),b)
+
+    @staticmethod
+    def ofData(b):
+        return haxe_io_Bytes(len(b),b)
+
+    @staticmethod
+    def ofHex(s):
+        _hx_len = len(s)
+        if (((_hx_len & 1)) != 0):
+            raise haxe_Exception.thrown("Not a hex string (odd number of digits)")
+        ret = haxe_io_Bytes.alloc((_hx_len >> 1))
+        _g = 0
+        _g1 = ret.length
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            index = (i * 2)
+            high = (-1 if ((index >= len(s))) else ord(s[index]))
+            index1 = ((i * 2) + 1)
+            low = (-1 if ((index1 >= len(s))) else ord(s[index1]))
+            high = (((high & 15)) + ((((((high & 64)) >> 6)) * 9)))
+            low = (((low & 15)) + ((((((low & 64)) >> 6)) * 9)))
+            ret.b[i] = (((((high << 4) | low)) & 255) & 255)
+        return ret
+
+    @staticmethod
+    def fastGet(b,pos):
+        return b[pos]
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.length = None
+        _hx_o.b = None
+haxe_io_Bytes._hx_class = haxe_io_Bytes
+
+
+class haxe_crypto_Base64:
+    _hx_class_name = "haxe.crypto.Base64"
+    __slots__ = ()
+    _hx_statics = ["CHARS", "BYTES", "URL_CHARS", "URL_BYTES", "encode", "decode", "urlEncode", "urlDecode"]
+
+    @staticmethod
+    def encode(_hx_bytes,complement = None):
+        if (complement is None):
+            complement = True
+        _hx_str = haxe_crypto_BaseCode(haxe_crypto_Base64.BYTES).encodeBytes(_hx_bytes).toString()
+        if complement:
+            _g = HxOverrides.mod(_hx_bytes.length, 3)
+            if (_g == 1):
+                _hx_str = (("null" if _hx_str is None else _hx_str) + "==")
+            elif (_g == 2):
+                _hx_str = (("null" if _hx_str is None else _hx_str) + "=")
+            else:
+                pass
+        return _hx_str
+
+    @staticmethod
+    def decode(_hx_str,complement = None):
+        if (complement is None):
+            complement = True
+        if complement:
+            while (HxString.charCodeAt(_hx_str,(len(_hx_str) - 1)) == 61):
+                _hx_str = HxString.substr(_hx_str,0,-1)
+        return haxe_crypto_BaseCode(haxe_crypto_Base64.BYTES).decodeBytes(haxe_io_Bytes.ofString(_hx_str))
+
+    @staticmethod
+    def urlEncode(_hx_bytes,complement = None):
+        if (complement is None):
+            complement = False
+        _hx_str = haxe_crypto_BaseCode(haxe_crypto_Base64.URL_BYTES).encodeBytes(_hx_bytes).toString()
+        if complement:
+            _g = HxOverrides.mod(_hx_bytes.length, 3)
+            if (_g == 1):
+                _hx_str = (("null" if _hx_str is None else _hx_str) + "==")
+            elif (_g == 2):
+                _hx_str = (("null" if _hx_str is None else _hx_str) + "=")
+            else:
+                pass
+        return _hx_str
+
+    @staticmethod
+    def urlDecode(_hx_str,complement = None):
+        if (complement is None):
+            complement = False
+        if complement:
+            while (HxString.charCodeAt(_hx_str,(len(_hx_str) - 1)) == 61):
+                _hx_str = HxString.substr(_hx_str,0,-1)
+        return haxe_crypto_BaseCode(haxe_crypto_Base64.URL_BYTES).decodeBytes(haxe_io_Bytes.ofString(_hx_str))
+haxe_crypto_Base64._hx_class = haxe_crypto_Base64
+
+
+class haxe_crypto_BaseCode:
+    _hx_class_name = "haxe.crypto.BaseCode"
+    __slots__ = ("base", "nbits", "tbl")
+    _hx_fields = ["base", "nbits", "tbl"]
+    _hx_methods = ["encodeBytes", "initTable", "decodeBytes", "encodeString", "decodeString"]
+    _hx_statics = ["encode", "decode"]
+
+    def __init__(self,base):
+        self.tbl = None
+        _hx_len = base.length
+        nbits = 1
+        while (_hx_len > ((1 << nbits))):
+            nbits = (nbits + 1)
+        if ((nbits > 8) or ((_hx_len != ((1 << nbits))))):
+            raise haxe_Exception.thrown("BaseCode : base length must be a power of two.")
+        self.base = base
+        self.nbits = nbits
+
+    def encodeBytes(self,b):
+        nbits = self.nbits
+        base = self.base
+        x = ((b.length * 8) / nbits)
+        size = None
+        try:
+            size = int(x)
+        except BaseException as _g:
+            None
+            size = None
+        out = haxe_io_Bytes.alloc((size + ((0 if ((HxOverrides.mod((b.length * 8), nbits) == 0)) else 1))))
+        buf = 0
+        curbits = 0
+        mask = (((1 << nbits)) - 1)
+        pin = 0
+        pout = 0
+        while (pout < size):
+            while (curbits < nbits):
+                curbits = (curbits + 8)
+                buf = (buf << 8)
+                pos = pin
+                pin = (pin + 1)
+                buf = (buf | b.b[pos])
+            curbits = (curbits - nbits)
+            pos1 = pout
+            pout = (pout + 1)
+            v = base.b[((buf >> curbits) & mask)]
+            out.b[pos1] = (v & 255)
+        if (curbits > 0):
+            pos = pout
+            pout = (pout + 1)
+            v = base.b[((buf << ((nbits - curbits))) & mask)]
+            out.b[pos] = (v & 255)
+        return out
+
+    def initTable(self):
+        tbl = list()
+        _g = 0
+        while (_g < 256):
+            i = _g
+            _g = (_g + 1)
+            python_internal_ArrayImpl._set(tbl, i, -1)
+        _g = 0
+        _g1 = self.base.length
+        while (_g < _g1):
+            i = _g
+            _g = (_g + 1)
+            python_internal_ArrayImpl._set(tbl, self.base.b[i], i)
+        self.tbl = tbl
+
+    def decodeBytes(self,b):
+        nbits = self.nbits
+        base = self.base
+        if (self.tbl is None):
+            self.initTable()
+        tbl = self.tbl
+        size = ((b.length * nbits) >> 3)
+        out = haxe_io_Bytes.alloc(size)
+        buf = 0
+        curbits = 0
+        pin = 0
+        pout = 0
+        while (pout < size):
+            while (curbits < 8):
+                curbits = (curbits + nbits)
+                buf = (buf << nbits)
+                pos = pin
+                pin = (pin + 1)
+                i = python_internal_ArrayImpl._get(tbl, b.b[pos])
+                if (i == -1):
+                    raise haxe_Exception.thrown("BaseCode : invalid encoded char")
+                buf = (buf | i)
+            curbits = (curbits - 8)
+            pos1 = pout
+            pout = (pout + 1)
+            out.b[pos1] = (((buf >> curbits) & 255) & 255)
+        return out
+
+    def encodeString(self,s):
+        return self.encodeBytes(haxe_io_Bytes.ofString(s)).toString()
+
+    def decodeString(self,s):
+        return self.decodeBytes(haxe_io_Bytes.ofString(s)).toString()
+
+    @staticmethod
+    def encode(s,base):
+        b = haxe_crypto_BaseCode(haxe_io_Bytes.ofString(base))
+        return b.encodeString(s)
+
+    @staticmethod
+    def decode(s,base):
+        b = haxe_crypto_BaseCode(haxe_io_Bytes.ofString(base))
+        return b.decodeString(s)
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.base = None
+        _hx_o.nbits = None
+        _hx_o.tbl = None
+haxe_crypto_BaseCode._hx_class = haxe_crypto_BaseCode
+
+
 class haxe_ds_ArraySort:
     _hx_class_name = "haxe.ds.ArraySort"
     __slots__ = ()
@@ -5351,205 +5734,103 @@ class haxe_format_JsonPrinter:
 haxe_format_JsonPrinter._hx_class = haxe_format_JsonPrinter
 
 
-class haxe_io_Bytes:
-    _hx_class_name = "haxe.io.Bytes"
-    __slots__ = ("length", "b")
-    _hx_fields = ["length", "b"]
-    _hx_methods = ["get", "set", "blit", "fill", "sub", "compare", "getDouble", "getFloat", "setDouble", "setFloat", "getUInt16", "setUInt16", "getInt32", "getInt64", "setInt32", "setInt64", "getString", "readString", "toString", "toHex", "getData"]
-    _hx_statics = ["alloc", "ofString", "ofData", "ofHex", "fastGet"]
+class haxe_http_HttpBase:
+    _hx_class_name = "haxe.http.HttpBase"
+    _hx_fields = ["url", "responseBytes", "responseAsString", "postData", "postBytes", "headers", "params", "emptyOnData"]
+    _hx_methods = ["setHeader", "addHeader", "setParameter", "addParameter", "setPostData", "setPostBytes", "request", "onData", "onBytes", "onError", "onStatus", "hasOnData", "success", "get_responseData"]
 
-    def __init__(self,length,b):
-        self.length = length
-        self.b = b
+    def __init__(self,url):
+        self.emptyOnData = None
+        self.postBytes = None
+        self.postData = None
+        self.responseAsString = None
+        self.responseBytes = None
+        self.url = url
+        self.headers = []
+        self.params = []
+        self.emptyOnData = self.onData
 
-    def get(self,pos):
-        return self.b[pos]
-
-    def set(self,pos,v):
-        self.b[pos] = (v & 255)
-
-    def blit(self,pos,src,srcpos,_hx_len):
-        if (((((pos < 0) or ((srcpos < 0))) or ((_hx_len < 0))) or (((pos + _hx_len) > self.length))) or (((srcpos + _hx_len) > src.length))):
-            raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
-        self.b[pos:pos+_hx_len] = src.b[srcpos:srcpos+_hx_len]
-
-    def fill(self,pos,_hx_len,value):
+    def setHeader(self,name,value):
         _g = 0
-        _g1 = _hx_len
+        _g1 = len(self.headers)
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            pos1 = pos
-            pos = (pos + 1)
-            self.b[pos1] = (value & 255)
+            if ((self.headers[i] if i >= 0 and i < len(self.headers) else None).name == name):
+                python_internal_ArrayImpl._set(self.headers, i, _hx_AnonObject({'name': name, 'value': value}))
+                return
+        _this = self.headers
+        _this.append(_hx_AnonObject({'name': name, 'value': value}))
 
-    def sub(self,pos,_hx_len):
-        if (((pos < 0) or ((_hx_len < 0))) or (((pos + _hx_len) > self.length))):
-            raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
-        return haxe_io_Bytes(_hx_len,self.b[pos:(pos + _hx_len)])
+    def addHeader(self,header,value):
+        _this = self.headers
+        _this.append(_hx_AnonObject({'name': header, 'value': value}))
 
-    def compare(self,other):
-        b1 = self.b
-        b2 = other.b
-        _hx_len = (self.length if ((self.length < other.length)) else other.length)
+    def setParameter(self,name,value):
         _g = 0
-        _g1 = _hx_len
+        _g1 = len(self.params)
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            if (b1[i] != b2[i]):
-                return (b1[i] - b2[i])
-        return (self.length - other.length)
+            if ((self.params[i] if i >= 0 and i < len(self.params) else None).name == name):
+                python_internal_ArrayImpl._set(self.params, i, _hx_AnonObject({'name': name, 'value': value}))
+                return
+        _this = self.params
+        _this.append(_hx_AnonObject({'name': name, 'value': value}))
 
-    def getDouble(self,pos):
-        v = (((self.b[pos] | ((self.b[(pos + 1)] << 8))) | ((self.b[(pos + 2)] << 16))) | ((self.b[(pos + 3)] << 24)))
-        pos1 = (pos + 4)
-        v1 = (((self.b[pos1] | ((self.b[(pos1 + 1)] << 8))) | ((self.b[(pos1 + 2)] << 16))) | ((self.b[(pos1 + 3)] << 24)))
-        return haxe_io_FPHelper.i64ToDouble(((v | -2147483648) if ((((v & -2147483648)) != 0)) else v),((v1 | -2147483648) if ((((v1 & -2147483648)) != 0)) else v1))
+    def addParameter(self,name,value):
+        _this = self.params
+        _this.append(_hx_AnonObject({'name': name, 'value': value}))
 
-    def getFloat(self,pos):
-        v = (((self.b[pos] | ((self.b[(pos + 1)] << 8))) | ((self.b[(pos + 2)] << 16))) | ((self.b[(pos + 3)] << 24)))
-        return haxe_io_FPHelper.i32ToFloat(((v | -2147483648) if ((((v & -2147483648)) != 0)) else v))
+    def setPostData(self,data):
+        self.postData = data
+        self.postBytes = None
 
-    def setDouble(self,pos,v):
-        i = haxe_io_FPHelper.doubleToI64(v)
-        v = i.low
-        self.b[pos] = (v & 255)
-        self.b[(pos + 1)] = ((v >> 8) & 255)
-        self.b[(pos + 2)] = ((v >> 16) & 255)
-        self.b[(pos + 3)] = (HxOverrides.rshift(v, 24) & 255)
-        pos1 = (pos + 4)
-        v = i.high
-        self.b[pos1] = (v & 255)
-        self.b[(pos1 + 1)] = ((v >> 8) & 255)
-        self.b[(pos1 + 2)] = ((v >> 16) & 255)
-        self.b[(pos1 + 3)] = (HxOverrides.rshift(v, 24) & 255)
+    def setPostBytes(self,data):
+        self.postBytes = data
+        self.postData = None
 
-    def setFloat(self,pos,v):
-        v1 = haxe_io_FPHelper.floatToI32(v)
-        self.b[pos] = (v1 & 255)
-        self.b[(pos + 1)] = ((v1 >> 8) & 255)
-        self.b[(pos + 2)] = ((v1 >> 16) & 255)
-        self.b[(pos + 3)] = (HxOverrides.rshift(v1, 24) & 255)
+    def request(self,post = None):
+        raise haxe_Exception.thrown("not implemented")
 
-    def getUInt16(self,pos):
-        return (self.b[pos] | ((self.b[(pos + 1)] << 8)))
+    def onData(self,data):
+        pass
 
-    def setUInt16(self,pos,v):
-        self.b[pos] = (v & 255)
-        self.b[(pos + 1)] = ((v >> 8) & 255)
+    def onBytes(self,data):
+        pass
 
-    def getInt32(self,pos):
-        v = (((self.b[pos] | ((self.b[(pos + 1)] << 8))) | ((self.b[(pos + 2)] << 16))) | ((self.b[(pos + 3)] << 24)))
-        if (((v & -2147483648)) != 0):
-            return (v | -2147483648)
-        else:
-            return v
+    def onError(self,msg):
+        pass
 
-    def getInt64(self,pos):
-        pos1 = (pos + 4)
-        v = (((self.b[pos1] | ((self.b[(pos1 + 1)] << 8))) | ((self.b[(pos1 + 2)] << 16))) | ((self.b[(pos1 + 3)] << 24)))
-        v1 = (((self.b[pos] | ((self.b[(pos + 1)] << 8))) | ((self.b[(pos + 2)] << 16))) | ((self.b[(pos + 3)] << 24)))
-        this1 = haxe__Int64____Int64(((v | -2147483648) if ((((v & -2147483648)) != 0)) else v),((v1 | -2147483648) if ((((v1 & -2147483648)) != 0)) else v1))
-        return this1
+    def onStatus(self,status):
+        pass
 
-    def setInt32(self,pos,v):
-        self.b[pos] = (v & 255)
-        self.b[(pos + 1)] = ((v >> 8) & 255)
-        self.b[(pos + 2)] = ((v >> 16) & 255)
-        self.b[(pos + 3)] = (HxOverrides.rshift(v, 24) & 255)
+    def hasOnData(self):
+        return (not Reflect.compareMethods(self.onData,self.emptyOnData))
 
-    def setInt64(self,pos,v):
-        v1 = v.low
-        self.b[pos] = (v1 & 255)
-        self.b[(pos + 1)] = ((v1 >> 8) & 255)
-        self.b[(pos + 2)] = ((v1 >> 16) & 255)
-        self.b[(pos + 3)] = (HxOverrides.rshift(v1, 24) & 255)
-        pos1 = (pos + 4)
-        v1 = v.high
-        self.b[pos1] = (v1 & 255)
-        self.b[(pos1 + 1)] = ((v1 >> 8) & 255)
-        self.b[(pos1 + 2)] = ((v1 >> 16) & 255)
-        self.b[(pos1 + 3)] = (HxOverrides.rshift(v1, 24) & 255)
+    def success(self,data):
+        self.responseBytes = data
+        self.responseAsString = None
+        if self.hasOnData():
+            self.onData(self.get_responseData())
+        self.onBytes(self.responseBytes)
 
-    def getString(self,pos,_hx_len,encoding = None):
-        tmp = (encoding is None)
-        if (((pos < 0) or ((_hx_len < 0))) or (((pos + _hx_len) > self.length))):
-            raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
-        return self.b[pos:pos+_hx_len].decode('UTF-8','replace')
-
-    def readString(self,pos,_hx_len):
-        return self.getString(pos,_hx_len)
-
-    def toString(self):
-        return self.getString(0,self.length)
-
-    def toHex(self):
-        s_b = python_lib_io_StringIO()
-        chars = []
-        _hx_str = "0123456789abcdef"
-        _g = 0
-        _g1 = len(_hx_str)
-        while (_g < _g1):
-            i = _g
-            _g = (_g + 1)
-            x = HxString.charCodeAt(_hx_str,i)
-            chars.append(x)
-        _g = 0
-        _g1 = self.length
-        while (_g < _g1):
-            i = _g
-            _g = (_g + 1)
-            c = self.b[i]
-            s_b.write("".join(map(chr,[python_internal_ArrayImpl._get(chars, (c >> 4))])))
-            s_b.write("".join(map(chr,[python_internal_ArrayImpl._get(chars, (c & 15))])))
-        return s_b.getvalue()
-
-    def getData(self):
-        return self.b
-
-    @staticmethod
-    def alloc(length):
-        return haxe_io_Bytes(length,bytearray(length))
-
-    @staticmethod
-    def ofString(s,encoding = None):
-        b = bytearray(s,"UTF-8")
-        return haxe_io_Bytes(len(b),b)
-
-    @staticmethod
-    def ofData(b):
-        return haxe_io_Bytes(len(b),b)
-
-    @staticmethod
-    def ofHex(s):
-        _hx_len = len(s)
-        if (((_hx_len & 1)) != 0):
-            raise haxe_Exception.thrown("Not a hex string (odd number of digits)")
-        ret = haxe_io_Bytes.alloc((_hx_len >> 1))
-        _g = 0
-        _g1 = ret.length
-        while (_g < _g1):
-            i = _g
-            _g = (_g + 1)
-            index = (i * 2)
-            high = (-1 if ((index >= len(s))) else ord(s[index]))
-            index1 = ((i * 2) + 1)
-            low = (-1 if ((index1 >= len(s))) else ord(s[index1]))
-            high = (((high & 15)) + ((((((high & 64)) >> 6)) * 9)))
-            low = (((low & 15)) + ((((((low & 64)) >> 6)) * 9)))
-            ret.b[i] = (((((high << 4) | low)) & 255) & 255)
-        return ret
-
-    @staticmethod
-    def fastGet(b,pos):
-        return b[pos]
+    def get_responseData(self):
+        if ((self.responseAsString is None) and ((self.responseBytes is not None))):
+            self.responseAsString = self.responseBytes.getString(0,self.responseBytes.length,haxe_io_Encoding.UTF8)
+        return self.responseAsString
 
     @staticmethod
     def _hx_empty_init(_hx_o):
-        _hx_o.length = None
-        _hx_o.b = None
-haxe_io_Bytes._hx_class = haxe_io_Bytes
+        _hx_o.url = None
+        _hx_o.responseBytes = None
+        _hx_o.responseAsString = None
+        _hx_o.postData = None
+        _hx_o.postBytes = None
+        _hx_o.headers = None
+        _hx_o.params = None
+        _hx_o.emptyOnData = None
+haxe_http_HttpBase._hx_class = haxe_http_HttpBase
 
 
 class haxe_io_BytesBuffer:
@@ -5603,6 +5884,183 @@ class haxe_io_BytesBuffer:
     def _hx_empty_init(_hx_o):
         _hx_o.b = None
 haxe_io_BytesBuffer._hx_class = haxe_io_BytesBuffer
+
+
+class haxe_io_Output:
+    _hx_class_name = "haxe.io.Output"
+    __slots__ = ("bigEndian",)
+    _hx_fields = ["bigEndian"]
+    _hx_methods = ["writeByte", "writeBytes", "flush", "close", "set_bigEndian", "write", "writeFullBytes", "writeFloat", "writeDouble", "writeInt8", "writeInt16", "writeUInt16", "writeInt24", "writeUInt24", "writeInt32", "prepare", "writeInput", "writeString"]
+
+    def writeByte(self,c):
+        raise haxe_Exception.thrown("Not implemented")
+
+    def writeBytes(self,s,pos,_hx_len):
+        if (((pos < 0) or ((_hx_len < 0))) or (((pos + _hx_len) > s.length))):
+            raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
+        b = s.b
+        k = _hx_len
+        while (k > 0):
+            self.writeByte(b[pos])
+            pos = (pos + 1)
+            k = (k - 1)
+        return _hx_len
+
+    def flush(self):
+        pass
+
+    def close(self):
+        pass
+
+    def set_bigEndian(self,b):
+        self.bigEndian = b
+        return b
+
+    def write(self,s):
+        l = s.length
+        p = 0
+        while (l > 0):
+            k = self.writeBytes(s,p,l)
+            if (k == 0):
+                raise haxe_Exception.thrown(haxe_io_Error.Blocked)
+            p = (p + k)
+            l = (l - k)
+
+    def writeFullBytes(self,s,pos,_hx_len):
+        while (_hx_len > 0):
+            k = self.writeBytes(s,pos,_hx_len)
+            pos = (pos + k)
+            _hx_len = (_hx_len - k)
+
+    def writeFloat(self,x):
+        self.writeInt32(haxe_io_FPHelper.floatToI32(x))
+
+    def writeDouble(self,x):
+        i64 = haxe_io_FPHelper.doubleToI64(x)
+        if self.bigEndian:
+            self.writeInt32(i64.high)
+            self.writeInt32(i64.low)
+        else:
+            self.writeInt32(i64.low)
+            self.writeInt32(i64.high)
+
+    def writeInt8(self,x):
+        if ((x < -128) or ((x >= 128))):
+            raise haxe_Exception.thrown(haxe_io_Error.Overflow)
+        self.writeByte((x & 255))
+
+    def writeInt16(self,x):
+        if ((x < -32768) or ((x >= 32768))):
+            raise haxe_Exception.thrown(haxe_io_Error.Overflow)
+        self.writeUInt16((x & 65535))
+
+    def writeUInt16(self,x):
+        if ((x < 0) or ((x >= 65536))):
+            raise haxe_Exception.thrown(haxe_io_Error.Overflow)
+        if self.bigEndian:
+            self.writeByte((x >> 8))
+            self.writeByte((x & 255))
+        else:
+            self.writeByte((x & 255))
+            self.writeByte((x >> 8))
+
+    def writeInt24(self,x):
+        if ((x < -8388608) or ((x >= 8388608))):
+            raise haxe_Exception.thrown(haxe_io_Error.Overflow)
+        self.writeUInt24((x & 16777215))
+
+    def writeUInt24(self,x):
+        if ((x < 0) or ((x >= 16777216))):
+            raise haxe_Exception.thrown(haxe_io_Error.Overflow)
+        if self.bigEndian:
+            self.writeByte((x >> 16))
+            self.writeByte(((x >> 8) & 255))
+            self.writeByte((x & 255))
+        else:
+            self.writeByte((x & 255))
+            self.writeByte(((x >> 8) & 255))
+            self.writeByte((x >> 16))
+
+    def writeInt32(self,x):
+        if self.bigEndian:
+            self.writeByte(HxOverrides.rshift(x, 24))
+            self.writeByte(((x >> 16) & 255))
+            self.writeByte(((x >> 8) & 255))
+            self.writeByte((x & 255))
+        else:
+            self.writeByte((x & 255))
+            self.writeByte(((x >> 8) & 255))
+            self.writeByte(((x >> 16) & 255))
+            self.writeByte(HxOverrides.rshift(x, 24))
+
+    def prepare(self,nbytes):
+        pass
+
+    def writeInput(self,i,bufsize = None):
+        if (bufsize is None):
+            bufsize = 4096
+        buf = haxe_io_Bytes.alloc(bufsize)
+        try:
+            while True:
+                _hx_len = i.readBytes(buf,0,bufsize)
+                if (_hx_len == 0):
+                    raise haxe_Exception.thrown(haxe_io_Error.Blocked)
+                p = 0
+                while (_hx_len > 0):
+                    k = self.writeBytes(buf,p,_hx_len)
+                    if (k == 0):
+                        raise haxe_Exception.thrown(haxe_io_Error.Blocked)
+                    p = (p + k)
+                    _hx_len = (_hx_len - k)
+        except BaseException as _g:
+            None
+            if (not Std.isOfType(haxe_Exception.caught(_g).unwrap(),haxe_io_Eof)):
+                raise _g
+
+    def writeString(self,s,encoding = None):
+        b = haxe_io_Bytes.ofString(s,encoding)
+        self.writeFullBytes(b,0,b.length)
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.bigEndian = None
+haxe_io_Output._hx_class = haxe_io_Output
+
+
+class haxe_io_BytesOutput(haxe_io_Output):
+    _hx_class_name = "haxe.io.BytesOutput"
+    __slots__ = ("b",)
+    _hx_fields = ["b"]
+    _hx_methods = ["get_length", "writeByte", "writeBytes", "getBytes"]
+    _hx_statics = []
+    _hx_interfaces = []
+    _hx_super = haxe_io_Output
+
+
+    def __init__(self):
+        self.b = haxe_io_BytesBuffer()
+        self.set_bigEndian(False)
+
+    def get_length(self):
+        return len(self.b.b)
+
+    def writeByte(self,c):
+        self.b.b.append(c)
+
+    def writeBytes(self,buf,pos,_hx_len):
+        _this = self.b
+        if (((pos < 0) or ((_hx_len < 0))) or (((pos + _hx_len) > buf.length))):
+            raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
+        _this.b.extend(buf.b[pos:(pos + _hx_len)])
+        return _hx_len
+
+    def getBytes(self):
+        return self.b.getBytes()
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.b = None
+haxe_io_BytesOutput._hx_class = haxe_io_BytesOutput
 
 class haxe_io_Encoding(Enum):
     __slots__ = ()
@@ -6013,147 +6471,6 @@ class haxe_io_Input:
     def _hx_empty_init(_hx_o):
         _hx_o.bigEndian = None
 haxe_io_Input._hx_class = haxe_io_Input
-
-
-class haxe_io_Output:
-    _hx_class_name = "haxe.io.Output"
-    __slots__ = ("bigEndian",)
-    _hx_fields = ["bigEndian"]
-    _hx_methods = ["writeByte", "writeBytes", "flush", "close", "set_bigEndian", "write", "writeFullBytes", "writeFloat", "writeDouble", "writeInt8", "writeInt16", "writeUInt16", "writeInt24", "writeUInt24", "writeInt32", "prepare", "writeInput", "writeString"]
-
-    def writeByte(self,c):
-        raise haxe_Exception.thrown("Not implemented")
-
-    def writeBytes(self,s,pos,_hx_len):
-        if (((pos < 0) or ((_hx_len < 0))) or (((pos + _hx_len) > s.length))):
-            raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
-        b = s.b
-        k = _hx_len
-        while (k > 0):
-            self.writeByte(b[pos])
-            pos = (pos + 1)
-            k = (k - 1)
-        return _hx_len
-
-    def flush(self):
-        pass
-
-    def close(self):
-        pass
-
-    def set_bigEndian(self,b):
-        self.bigEndian = b
-        return b
-
-    def write(self,s):
-        l = s.length
-        p = 0
-        while (l > 0):
-            k = self.writeBytes(s,p,l)
-            if (k == 0):
-                raise haxe_Exception.thrown(haxe_io_Error.Blocked)
-            p = (p + k)
-            l = (l - k)
-
-    def writeFullBytes(self,s,pos,_hx_len):
-        while (_hx_len > 0):
-            k = self.writeBytes(s,pos,_hx_len)
-            pos = (pos + k)
-            _hx_len = (_hx_len - k)
-
-    def writeFloat(self,x):
-        self.writeInt32(haxe_io_FPHelper.floatToI32(x))
-
-    def writeDouble(self,x):
-        i64 = haxe_io_FPHelper.doubleToI64(x)
-        if self.bigEndian:
-            self.writeInt32(i64.high)
-            self.writeInt32(i64.low)
-        else:
-            self.writeInt32(i64.low)
-            self.writeInt32(i64.high)
-
-    def writeInt8(self,x):
-        if ((x < -128) or ((x >= 128))):
-            raise haxe_Exception.thrown(haxe_io_Error.Overflow)
-        self.writeByte((x & 255))
-
-    def writeInt16(self,x):
-        if ((x < -32768) or ((x >= 32768))):
-            raise haxe_Exception.thrown(haxe_io_Error.Overflow)
-        self.writeUInt16((x & 65535))
-
-    def writeUInt16(self,x):
-        if ((x < 0) or ((x >= 65536))):
-            raise haxe_Exception.thrown(haxe_io_Error.Overflow)
-        if self.bigEndian:
-            self.writeByte((x >> 8))
-            self.writeByte((x & 255))
-        else:
-            self.writeByte((x & 255))
-            self.writeByte((x >> 8))
-
-    def writeInt24(self,x):
-        if ((x < -8388608) or ((x >= 8388608))):
-            raise haxe_Exception.thrown(haxe_io_Error.Overflow)
-        self.writeUInt24((x & 16777215))
-
-    def writeUInt24(self,x):
-        if ((x < 0) or ((x >= 16777216))):
-            raise haxe_Exception.thrown(haxe_io_Error.Overflow)
-        if self.bigEndian:
-            self.writeByte((x >> 16))
-            self.writeByte(((x >> 8) & 255))
-            self.writeByte((x & 255))
-        else:
-            self.writeByte((x & 255))
-            self.writeByte(((x >> 8) & 255))
-            self.writeByte((x >> 16))
-
-    def writeInt32(self,x):
-        if self.bigEndian:
-            self.writeByte(HxOverrides.rshift(x, 24))
-            self.writeByte(((x >> 16) & 255))
-            self.writeByte(((x >> 8) & 255))
-            self.writeByte((x & 255))
-        else:
-            self.writeByte((x & 255))
-            self.writeByte(((x >> 8) & 255))
-            self.writeByte(((x >> 16) & 255))
-            self.writeByte(HxOverrides.rshift(x, 24))
-
-    def prepare(self,nbytes):
-        pass
-
-    def writeInput(self,i,bufsize = None):
-        if (bufsize is None):
-            bufsize = 4096
-        buf = haxe_io_Bytes.alloc(bufsize)
-        try:
-            while True:
-                _hx_len = i.readBytes(buf,0,bufsize)
-                if (_hx_len == 0):
-                    raise haxe_Exception.thrown(haxe_io_Error.Blocked)
-                p = 0
-                while (_hx_len > 0):
-                    k = self.writeBytes(buf,p,_hx_len)
-                    if (k == 0):
-                        raise haxe_Exception.thrown(haxe_io_Error.Blocked)
-                    p = (p + k)
-                    _hx_len = (_hx_len - k)
-        except BaseException as _g:
-            None
-            if (not Std.isOfType(haxe_Exception.caught(_g).unwrap(),haxe_io_Eof)):
-                raise _g
-
-    def writeString(self,s,encoding = None):
-        b = haxe_io_Bytes.ofString(s,encoding)
-        self.writeFullBytes(b,0,b.length)
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):
-        _hx_o.bigEndian = None
-haxe_io_Output._hx_class = haxe_io_Output
 
 
 class haxe_io_Path:
@@ -7196,6 +7513,43 @@ class maglev_MagLev:
     def __init__(self):
         self._listeners = haxe_ds_StringMap()
         self._methods = haxe_ds_StringMap()
+        t = maglev_Telemetry()
+        def _hx_local_3(args):
+            strings = list()
+            i = 0
+            while (i < args.size()):
+                arg = args.get(i)
+                def _hx_local_1():
+                    _hx_local_0 = arg
+                    if (Std.isOfType(_hx_local_0,maglev_MagLevString) or ((_hx_local_0 is None))):
+                        _hx_local_0
+                    else:
+                        raise "Class cast error"
+                    return _hx_local_0
+                x = (_hx_local_1()).getString()
+                strings.append(x)
+                i = (i + 1)
+            t.addInfo(strings)
+            return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
+        self.register("MindPowered.Telemetry.AddInfo",maglev_MagLevFunction.fromFunction(_hx_local_3))
+        def _hx_local_7(args):
+            strings = list()
+            i = 0
+            while (i < args.size()):
+                arg = args.get(i)
+                def _hx_local_5():
+                    _hx_local_4 = arg
+                    if (Std.isOfType(_hx_local_4,maglev_MagLevString) or ((_hx_local_4 is None))):
+                        _hx_local_4
+                    else:
+                        raise "Class cast error"
+                    return _hx_local_4
+                x = (_hx_local_5()).getString()
+                strings.append(x)
+                i = (i + 1)
+            t.send(strings)
+            return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
+        self.register("MindPowered.Telemetry.Send",maglev_MagLevFunction.fromFunction(_hx_local_7))
 
     def register(self,method,callback):
         self._methods.h[method] = callback
@@ -8415,6 +8769,44 @@ class maglev_MagLevPy:
     def _hx_empty_init(_hx_o):
         _hx_o.maglev = None
 maglev_MagLevPy._hx_class = maglev_MagLevPy
+
+
+class maglev_Telemetry:
+    _hx_class_name = "maglev.Telemetry"
+    __slots__ = ("info",)
+    _hx_fields = ["info"]
+    _hx_methods = ["addInfo", "send"]
+
+    def __init__(self):
+        self.info = list()
+
+    def addInfo(self,args):
+        _g = 0
+        while (_g < len(args)):
+            arg = (args[_g] if _g >= 0 and _g < len(args) else None)
+            _g = (_g + 1)
+            _this = self.info
+            _this.append(arg)
+
+    def send(self,args):
+        url = "https://telemetry.mindpowered.dev/send?"
+        _g = 0
+        _g1 = self.info
+        while (_g < len(_g1)):
+            item = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            url = (("null" if url is None else url) + HxOverrides.stringOrNull(((HxOverrides.stringOrNull(python_lib_urllib_Parse.quote(item,"")) + "&"))))
+        _g = 0
+        while (_g < len(args)):
+            item = (args[_g] if _g >= 0 and _g < len(args) else None)
+            _g = (_g + 1)
+            url = (("null" if url is None else url) + HxOverrides.stringOrNull(((HxOverrides.stringOrNull(python_lib_urllib_Parse.quote(item,"")) + "&"))))
+        sys_Http.requestUrl(url)
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.info = None
+maglev_Telemetry._hx_class = maglev_Telemetry
 
 
 class python_Boot:
@@ -10090,6 +10482,572 @@ class python_lib__Re_RegexHelper:
 python_lib__Re_RegexHelper._hx_class = python_lib__Re_RegexHelper
 
 
+class sys_net_Socket:
+    _hx_class_name = "sys.net.Socket"
+    __slots__ = ("_hx___s", "input", "output", "custom")
+    _hx_fields = ["__s", "input", "output", "custom"]
+    _hx_methods = ["__initSocket", "close", "read", "write", "connect", "listen", "shutdown", "bind", "accept", "peer", "host", "setTimeout", "waitForRead", "setBlocking", "setFastSend", "fileno"]
+    _hx_statics = ["select"]
+
+    def __init__(self):
+        self.custom = None
+        self.output = None
+        self.input = None
+        self._hx___s = None
+        self._hx___initSocket()
+        self.input = sys_net__Socket_SocketInput(self._hx___s)
+        self.output = sys_net__Socket_SocketOutput(self._hx___s)
+
+    def _hx___initSocket(self):
+        self._hx___s = python_lib_socket_Socket()
+
+    def close(self):
+        self._hx___s.close()
+
+    def read(self):
+        return self.input.readAll().toString()
+
+    def write(self,content):
+        self.output.writeString(content)
+
+    def connect(self,host,port):
+        host_str = host.toString()
+        self._hx___s.connect((host_str, port))
+
+    def listen(self,connections):
+        self._hx___s.listen(connections)
+
+    def shutdown(self,read,write):
+        self._hx___s.shutdown((python_lib_Socket.SHUT_RDWR if ((read and write)) else (python_lib_Socket.SHUT_RD if read else python_lib_Socket.SHUT_WR)))
+
+    def bind(self,host,port):
+        host_str = host.toString()
+        self._hx___s.bind((host_str, port))
+
+    def accept(self):
+        tp2 = self._hx___s.accept()
+        s = sys_net_Socket()
+        s._hx___s = tp2[0]
+        s.input = sys_net__Socket_SocketInput(s._hx___s)
+        s.output = sys_net__Socket_SocketOutput(s._hx___s)
+        return s
+
+    def peer(self):
+        pn = self._hx___s.getpeername()
+        return _hx_AnonObject({'host': sys_net_Host(pn[0]), 'port': pn[1]})
+
+    def host(self):
+        pn = self._hx___s.getsockname()
+        return _hx_AnonObject({'host': sys_net_Host(pn[0]), 'port': pn[1]})
+
+    def setTimeout(self,timeout):
+        self._hx___s.settimeout(timeout)
+
+    def waitForRead(self):
+        python_lib_Select.select([self],[],[])
+
+    def setBlocking(self,b):
+        self._hx___s.setblocking(b)
+
+    def setFastSend(self,b):
+        self._hx___s.setsockopt(python_lib_Socket.SOL_TCP,python_lib_Socket.TCP_NODELAY,b)
+
+    def fileno(self):
+        return self._hx___s.fileno()
+
+    @staticmethod
+    def select(read,write,others,timeout = None):
+        t3 = python_lib_Select.select(read,write,others,timeout)
+        return _hx_AnonObject({'read': t3[0], 'write': t3[1], 'others': t3[2]})
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o._hx___s = None
+        _hx_o.input = None
+        _hx_o.output = None
+        _hx_o.custom = None
+sys_net_Socket._hx_class = sys_net_Socket
+
+
+class python_net_SslSocket(sys_net_Socket):
+    _hx_class_name = "python.net.SslSocket"
+    __slots__ = ("hostName",)
+    _hx_fields = ["hostName"]
+    _hx_methods = ["__initSocket", "connect", "bind"]
+    _hx_statics = []
+    _hx_interfaces = []
+    _hx_super = sys_net_Socket
+
+
+    def __init__(self):
+        self.hostName = None
+        super().__init__()
+
+    def _hx___initSocket(self):
+        context = python_lib_ssl_SSLContext(python_lib_Ssl.PROTOCOL_SSLv23)
+        context.verify_mode = python_lib_Ssl.CERT_REQUIRED
+        context.set_default_verify_paths()
+        context.options = (context.options | python_lib_Ssl.OP_NO_SSLv2)
+        context.options = (context.options | python_lib_Ssl.OP_NO_SSLv3)
+        context.options = (context.options | python_lib_Ssl.OP_NO_COMPRESSION)
+        context.options = (context.options | python_lib_Ssl.OP_NO_TLSv1)
+        self._hx___s = python_lib_socket_Socket()
+        self._hx___s = context.wrap_socket(self._hx___s,False,True,True,self.hostName)
+
+    def connect(self,host,port):
+        self.hostName = host.host
+        super().connect(host,port)
+
+    def bind(self,host,port):
+        raise haxe_Exception.thrown("not implemented")
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.hostName = None
+python_net_SslSocket._hx_class = python_net_SslSocket
+
+
+class sys_Http(haxe_http_HttpBase):
+    _hx_class_name = "sys.Http"
+    __slots__ = ("noShutdown", "cnxTimeout", "responseHeaders", "chunk_size", "chunk_buf", "file")
+    _hx_fields = ["noShutdown", "cnxTimeout", "responseHeaders", "chunk_size", "chunk_buf", "file"]
+    _hx_methods = ["request", "fileTransfert", "fileTransfer", "customRequest", "writeBody", "readHttpResponse", "readChunk"]
+    _hx_statics = ["PROXY", "requestUrl"]
+    _hx_interfaces = []
+    _hx_super = haxe_http_HttpBase
+
+
+    def __init__(self,url):
+        self.file = None
+        self.chunk_buf = None
+        self.chunk_size = None
+        self.responseHeaders = None
+        self.noShutdown = None
+        self.cnxTimeout = 10
+        super().__init__(url)
+
+    def request(self,post = None):
+        _gthis = self
+        output = haxe_io_BytesOutput()
+        old = self.onError
+        err = False
+        def _hx_local_0(e):
+            nonlocal err
+            _gthis.responseBytes = output.getBytes()
+            err = True
+            _gthis.onError = old
+            _gthis.onError(e)
+        self.onError = _hx_local_0
+        post = ((post or ((self.postBytes is not None))) or ((self.postData is not None)))
+        self.customRequest(post,output)
+        if (not err):
+            self.success(output.getBytes())
+
+    def fileTransfert(self,argname,filename,file,size,mimeType = None):
+        if (mimeType is None):
+            mimeType = "application/octet-stream"
+        self.fileTransfer(argname,filename,file,size,mimeType)
+
+    def fileTransfer(self,argname,filename,file,size,mimeType = None):
+        if (mimeType is None):
+            mimeType = "application/octet-stream"
+        self.file = _hx_AnonObject({'param': argname, 'filename': filename, 'io': file, 'size': size, 'mimeType': mimeType})
+
+    def customRequest(self,post,api,sock = None,method = None):
+        self.responseAsString = None
+        self.responseBytes = None
+        url_regexp = EReg("^(https?://)?([a-zA-Z\\.0-9_-]+)(:[0-9]+)?(.*)$","")
+        url_regexp.matchObj = python_lib_Re.search(url_regexp.pattern,self.url)
+        if (url_regexp.matchObj is None):
+            self.onError("Invalid URL")
+            return
+        secure = (url_regexp.matchObj.group(1) == "https://")
+        if (sock is None):
+            if secure:
+                sock = python_net_SslSocket()
+            else:
+                sock = sys_net_Socket()
+            sock.setTimeout(self.cnxTimeout)
+        host = url_regexp.matchObj.group(2)
+        portString = url_regexp.matchObj.group(3)
+        request = url_regexp.matchObj.group(4)
+        if ((("" if ((0 >= len(request))) else request[0])) != "/"):
+            request = ("/" + ("null" if request is None else request))
+        port = ((443 if secure else 80) if (((portString is None) or ((portString == "")))) else Std.parseInt(HxString.substr(portString,1,(len(portString) - 1))))
+        multipart = (self.file is not None)
+        boundary = None
+        uri = None
+        if multipart:
+            post = True
+            boundary = (((Std.string(int((python_lib_Random.random() * 1000))) + Std.string(int((python_lib_Random.random() * 1000)))) + Std.string(int((python_lib_Random.random() * 1000)))) + Std.string(int((python_lib_Random.random() * 1000))))
+            while (len(boundary) < 38):
+                boundary = ("-" + ("null" if boundary is None else boundary))
+            b_b = python_lib_io_StringIO()
+            _g = 0
+            _g1 = self.params
+            while (_g < len(_g1)):
+                p = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+                _g = (_g + 1)
+                b_b.write("--")
+                b_b.write(Std.string(boundary))
+                b_b.write("\r\n")
+                b_b.write("Content-Disposition: form-data; name=\"")
+                b_b.write(Std.string(p.name))
+                b_b.write("\"")
+                b_b.write("\r\n")
+                b_b.write("\r\n")
+                b_b.write(Std.string(p.value))
+                b_b.write("\r\n")
+            b_b.write("--")
+            b_b.write(Std.string(boundary))
+            b_b.write("\r\n")
+            b_b.write("Content-Disposition: form-data; name=\"")
+            b_b.write(Std.string(self.file.param))
+            b_b.write("\"; filename=\"")
+            b_b.write(Std.string(self.file.filename))
+            b_b.write("\"")
+            b_b.write("\r\n")
+            b_b.write(Std.string(((("Content-Type: " + HxOverrides.stringOrNull(self.file.mimeType)) + "\r\n") + "\r\n")))
+            uri = b_b.getvalue()
+        else:
+            _g = 0
+            _g1 = self.params
+            while (_g < len(_g1)):
+                p = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+                _g = (_g + 1)
+                if (uri is None):
+                    uri = ""
+                else:
+                    uri = (("null" if uri is None else uri) + "&")
+                uri = (("null" if uri is None else uri) + HxOverrides.stringOrNull((((HxOverrides.stringOrNull(python_lib_urllib_Parse.quote(p.name,"")) + "=") + HxOverrides.stringOrNull(python_lib_urllib_Parse.quote(("" + HxOverrides.stringOrNull(p.value)),""))))))
+        b = haxe_io_BytesOutput()
+        if (method is not None):
+            b.writeString(method)
+            b.writeString(" ")
+        elif post:
+            b.writeString("POST ")
+        else:
+            b.writeString("GET ")
+        if (sys_Http.PROXY is not None):
+            b.writeString("http://")
+            b.writeString(host)
+            if (port != 80):
+                b.writeString(":")
+                b.writeString(("" + Std.string(port)))
+        b.writeString(request)
+        if ((not post) and ((uri is not None))):
+            if (HxString.indexOfImpl(request,"?",0) >= 0):
+                b.writeString("&")
+            else:
+                b.writeString("?")
+            b.writeString(uri)
+        b.writeString(((" HTTP/1.1\r\nHost: " + ("null" if host is None else host)) + "\r\n"))
+        if (self.postData is not None):
+            self.postBytes = haxe_io_Bytes.ofString(self.postData)
+            self.postData = None
+        if (self.postBytes is not None):
+            b.writeString((("Content-Length: " + Std.string(self.postBytes.length)) + "\r\n"))
+        elif (post and ((uri is not None))):
+            def _hx_local_4(h):
+                return (h.name == "Content-Type")
+            if (multipart or (not Lambda.exists(self.headers,_hx_local_4))):
+                b.writeString("Content-Type: ")
+                if multipart:
+                    b.writeString("multipart/form-data")
+                    b.writeString("; boundary=")
+                    b.writeString(boundary)
+                else:
+                    b.writeString("application/x-www-form-urlencoded")
+                b.writeString("\r\n")
+            if multipart:
+                b.writeString((("Content-Length: " + Std.string(((((len(uri) + self.file.size) + len(boundary)) + 6)))) + "\r\n"))
+            else:
+                b.writeString((("Content-Length: " + Std.string(len(uri))) + "\r\n"))
+        b.writeString("Connection: close\r\n")
+        _g = 0
+        _g1 = self.headers
+        while (_g < len(_g1)):
+            h = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            b.writeString(h.name)
+            b.writeString(": ")
+            b.writeString(h.value)
+            b.writeString("\r\n")
+        b.writeString("\r\n")
+        if (self.postBytes is not None):
+            b.writeFullBytes(self.postBytes,0,self.postBytes.length)
+        elif (post and ((uri is not None))):
+            b.writeString(uri)
+        try:
+            if (sys_Http.PROXY is not None):
+                sock.connect(sys_net_Host(sys_Http.PROXY.host),sys_Http.PROXY.port)
+            else:
+                sock.connect(sys_net_Host(host),port)
+            if multipart:
+                self.writeBody(b,self.file.io,self.file.size,boundary,sock)
+            else:
+                self.writeBody(b,None,0,None,sock)
+            self.readHttpResponse(api,sock)
+            sock.close()
+        except BaseException as _g:
+            None
+            e = haxe_Exception.caught(_g).unwrap()
+            try:
+                sock.close()
+            except BaseException as _g:
+                pass
+            self.onError(Std.string(e))
+
+    def writeBody(self,body,fileInput,fileSize,boundary,sock):
+        if (body is not None):
+            _hx_bytes = body.getBytes()
+            sock.output.writeFullBytes(_hx_bytes,0,_hx_bytes.length)
+        if (boundary is not None):
+            bufsize = 4096
+            buf = haxe_io_Bytes.alloc(bufsize)
+            while (fileSize > 0):
+                size = (bufsize if ((fileSize > bufsize)) else fileSize)
+                _hx_len = 0
+                try:
+                    _hx_len = fileInput.readBytes(buf,0,size)
+                except BaseException as _g:
+                    None
+                    if Std.isOfType(haxe_Exception.caught(_g).unwrap(),haxe_io_Eof):
+                        break
+                    else:
+                        raise _g
+                sock.output.writeFullBytes(buf,0,_hx_len)
+                fileSize = (fileSize - _hx_len)
+            sock.output.writeString("\r\n")
+            sock.output.writeString("--")
+            sock.output.writeString(boundary)
+            sock.output.writeString("--")
+
+    def readHttpResponse(self,api,sock):
+        b = haxe_io_BytesBuffer()
+        k = 4
+        s = haxe_io_Bytes.alloc(4)
+        sock.setTimeout(self.cnxTimeout)
+        while True:
+            p = sock.input.readBytes(s,0,k)
+            while (p != k):
+                p = (p + sock.input.readBytes(s,p,(k - p)))
+            if ((k < 0) or ((k > s.length))):
+                raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
+            b.b.extend(s.b[0:k])
+            k1 = k
+            if (k1 == 1):
+                c = s.b[0]
+                if (c == 10):
+                    break
+                if (c == 13):
+                    k = 3
+                else:
+                    k = 4
+            elif (k1 == 2):
+                c1 = s.b[1]
+                if (c1 == 10):
+                    if (s.b[0] == 13):
+                        break
+                    k = 4
+                elif (c1 == 13):
+                    k = 3
+                else:
+                    k = 4
+            elif (k1 == 3):
+                c2 = s.b[2]
+                if (c2 == 10):
+                    if (s.b[1] != 13):
+                        k = 4
+                    elif (s.b[0] != 10):
+                        k = 2
+                    else:
+                        break
+                elif (c2 == 13):
+                    if ((s.b[1] != 10) or ((s.b[0] != 13))):
+                        k = 1
+                    else:
+                        k = 3
+                else:
+                    k = 4
+            elif (k1 == 4):
+                c3 = s.b[3]
+                if (c3 == 10):
+                    if (s.b[2] != 13):
+                        continue
+                    elif ((s.b[1] != 10) or ((s.b[0] != 13))):
+                        k = 2
+                    else:
+                        break
+                elif (c3 == 13):
+                    if ((s.b[2] != 10) or ((s.b[1] != 13))):
+                        k = 3
+                    else:
+                        k = 1
+            else:
+                pass
+        _this = b.getBytes().toString()
+        headers = _this.split("\r\n")
+        response = (None if ((len(headers) == 0)) else headers.pop(0))
+        rp = response.split(" ")
+        status = Std.parseInt((rp[1] if 1 < len(rp) else None))
+        if ((status == 0) or ((status is None))):
+            raise haxe_Exception.thrown("Response status error")
+        if (len(headers) != 0):
+            headers.pop()
+        if (len(headers) != 0):
+            headers.pop()
+        self.responseHeaders = haxe_ds_StringMap()
+        size = None
+        chunked = False
+        _g = 0
+        while (_g < len(headers)):
+            hline = (headers[_g] if _g >= 0 and _g < len(headers) else None)
+            _g = (_g + 1)
+            a = hline.split(": ")
+            hname = (None if ((len(a) == 0)) else a.pop(0))
+            hval = ((a[0] if 0 < len(a) else None) if ((len(a) == 1)) else ": ".join([python_Boot.toString1(x1,'') for x1 in a]))
+            hval = StringTools.ltrim(StringTools.rtrim(hval))
+            self.responseHeaders.h[hname] = hval
+            _g1 = hname.lower()
+            _hx_local_2 = len(_g1)
+            if (_hx_local_2 == 17):
+                if (_g1 == "transfer-encoding"):
+                    chunked = (hval.lower() == "chunked")
+            elif (_hx_local_2 == 14):
+                if (_g1 == "content-length"):
+                    size = Std.parseInt(hval)
+            else:
+                pass
+        self.onStatus(status)
+        chunk_re = EReg("^([0-9A-Fa-f]+)[ ]*\r\n","m")
+        self.chunk_size = None
+        self.chunk_buf = None
+        bufsize = 1024
+        buf = haxe_io_Bytes.alloc(bufsize)
+        if chunked:
+            try:
+                while True:
+                    _hx_len = sock.input.readBytes(buf,0,bufsize)
+                    if (not self.readChunk(chunk_re,api,buf,_hx_len)):
+                        break
+            except BaseException as _g:
+                None
+                if Std.isOfType(haxe_Exception.caught(_g).unwrap(),haxe_io_Eof):
+                    raise haxe_Exception.thrown("Transfer aborted")
+                else:
+                    raise _g
+        elif (size is None):
+            if (not self.noShutdown):
+                sock.shutdown(False,True)
+            try:
+                while True:
+                    _hx_len = sock.input.readBytes(buf,0,bufsize)
+                    if (_hx_len == 0):
+                        break
+                    api.writeBytes(buf,0,_hx_len)
+            except BaseException as _g:
+                None
+                if (not Std.isOfType(haxe_Exception.caught(_g).unwrap(),haxe_io_Eof)):
+                    raise _g
+        else:
+            api.prepare(size)
+            try:
+                while (size > 0):
+                    _hx_len = sock.input.readBytes(buf,0,(bufsize if ((size > bufsize)) else size))
+                    api.writeBytes(buf,0,_hx_len)
+                    size = (size - _hx_len)
+            except BaseException as _g:
+                None
+                if Std.isOfType(haxe_Exception.caught(_g).unwrap(),haxe_io_Eof):
+                    raise haxe_Exception.thrown("Transfer aborted")
+                else:
+                    raise _g
+        if (chunked and (((self.chunk_size is not None) or ((self.chunk_buf is not None))))):
+            raise haxe_Exception.thrown("Invalid chunk")
+        if ((status < 200) or ((status >= 400))):
+            raise haxe_Exception.thrown(("Http Error #" + Std.string(status)))
+        api.close()
+
+    def readChunk(self,chunk_re,api,buf,_hx_len):
+        if (self.chunk_size is None):
+            if (self.chunk_buf is not None):
+                b = haxe_io_BytesBuffer()
+                b.b.extend(self.chunk_buf.b)
+                if ((_hx_len < 0) or ((_hx_len > buf.length))):
+                    raise haxe_Exception.thrown(haxe_io_Error.OutsideBounds)
+                b.b.extend(buf.b[0:_hx_len])
+                buf = b.getBytes()
+                _hx_len = (_hx_len + self.chunk_buf.length)
+                self.chunk_buf = None
+            s = buf.toString()
+            chunk_re.matchObj = python_lib_Re.search(chunk_re.pattern,s)
+            if (chunk_re.matchObj is not None):
+                p_pos = chunk_re.matchObj.start()
+                p_len = (chunk_re.matchObj.end() - chunk_re.matchObj.start())
+                if (p_len <= _hx_len):
+                    cstr = chunk_re.matchObj.group(1)
+                    self.chunk_size = Std.parseInt(("0x" + ("null" if cstr is None else cstr)))
+                    if (self.chunk_size == 0):
+                        self.chunk_size = None
+                        self.chunk_buf = None
+                        return False
+                    _hx_len = (_hx_len - p_len)
+                    return self.readChunk(chunk_re,api,buf.sub(p_len,_hx_len),_hx_len)
+            if (_hx_len > 10):
+                self.onError("Invalid chunk")
+                return False
+            self.chunk_buf = buf.sub(0,_hx_len)
+            return True
+        if (self.chunk_size > _hx_len):
+            _hx_local_2 = self
+            _hx_local_3 = _hx_local_2.chunk_size
+            _hx_local_2.chunk_size = (_hx_local_3 - _hx_len)
+            _hx_local_2.chunk_size
+            api.writeBytes(buf,0,_hx_len)
+            return True
+        end = (self.chunk_size + 2)
+        if (_hx_len >= end):
+            if (self.chunk_size > 0):
+                api.writeBytes(buf,0,self.chunk_size)
+            _hx_len = (_hx_len - end)
+            self.chunk_size = None
+            if (_hx_len == 0):
+                return True
+            return self.readChunk(chunk_re,api,buf.sub(end,_hx_len),_hx_len)
+        if (self.chunk_size > 0):
+            api.writeBytes(buf,0,self.chunk_size)
+        _hx_local_5 = self
+        _hx_local_6 = _hx_local_5.chunk_size
+        _hx_local_5.chunk_size = (_hx_local_6 - _hx_len)
+        _hx_local_5.chunk_size
+        return True
+
+    @staticmethod
+    def requestUrl(url):
+        h = sys_Http(url)
+        r = None
+        def _hx_local_0(d):
+            nonlocal r
+            r = d
+        h.onData = _hx_local_0
+        def _hx_local_1(e):
+            raise haxe_Exception.thrown(e)
+        h.onError = _hx_local_1
+        h.request(False)
+        return r
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.noShutdown = None
+        _hx_o.cnxTimeout = None
+        _hx_o.responseHeaders = None
+        _hx_o.chunk_size = None
+        _hx_o.chunk_buf = None
+        _hx_o.file = None
+sys_Http._hx_class = sys_Http
+
+
 class sys_io_FileInput(haxe_io_Input):
     _hx_class_name = "sys.io.FileInput"
     __slots__ = ("impl",)
@@ -10259,6 +11217,142 @@ sys_io_FileSeek.SeekCur = sys_io_FileSeek("SeekCur", 1, ())
 sys_io_FileSeek.SeekEnd = sys_io_FileSeek("SeekEnd", 2, ())
 sys_io_FileSeek._hx_class = sys_io_FileSeek
 
+
+class sys_net_Host:
+    _hx_class_name = "sys.net.Host"
+    __slots__ = ("host", "ip", "name")
+    _hx_fields = ["host", "ip", "name"]
+    _hx_methods = ["toString", "reverse"]
+    _hx_statics = ["localhost"]
+
+    def __init__(self,name):
+        self.ip = None
+        self.host = name
+        self.name = name
+
+    def toString(self):
+        return self.name
+
+    def reverse(self):
+        return ""
+
+    @staticmethod
+    def localhost():
+        return ""
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o.host = None
+        _hx_o.ip = None
+        _hx_o.name = None
+sys_net_Host._hx_class = sys_net_Host
+
+
+class sys_net__Socket_SocketInput(haxe_io_Input):
+    _hx_class_name = "sys.net._Socket.SocketInput"
+    __slots__ = ("_hx___s",)
+    _hx_fields = ["__s"]
+    _hx_methods = ["readByte", "readBytes", "close"]
+    _hx_statics = []
+    _hx_interfaces = []
+    _hx_super = haxe_io_Input
+
+
+    def __init__(self,s):
+        self._hx___s = s
+
+    def readByte(self):
+        r = None
+        try:
+            r = self._hx___s.recv(1,0)
+        except BaseException as _g:
+            None
+            if Std.isOfType(haxe_Exception.caught(_g).unwrap(),BlockingIOError):
+                raise haxe_Exception.thrown(haxe_io_Error.Blocked)
+            else:
+                raise _g
+        if (len(r) == 0):
+            raise haxe_Exception.thrown(haxe_io_Eof())
+        return r[0]
+
+    def readBytes(self,buf,pos,_hx_len):
+        r = None
+        data = buf.b
+        try:
+            r = self._hx___s.recv(_hx_len,0)
+            _g = pos
+            _g1 = (pos + len(r))
+            while (_g < _g1):
+                i = _g
+                _g = (_g + 1)
+                data.__setitem__(i,r[(i - pos)])
+        except BaseException as _g:
+            None
+            if Std.isOfType(haxe_Exception.caught(_g).unwrap(),BlockingIOError):
+                raise haxe_Exception.thrown(haxe_io_Error.Blocked)
+            else:
+                raise _g
+        if (len(r) == 0):
+            raise haxe_Exception.thrown(haxe_io_Eof())
+        return len(r)
+
+    def close(self):
+        super().close()
+        if (self._hx___s is not None):
+            self._hx___s.close()
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o._hx___s = None
+sys_net__Socket_SocketInput._hx_class = sys_net__Socket_SocketInput
+
+
+class sys_net__Socket_SocketOutput(haxe_io_Output):
+    _hx_class_name = "sys.net._Socket.SocketOutput"
+    __slots__ = ("_hx___s",)
+    _hx_fields = ["__s"]
+    _hx_methods = ["writeByte", "writeBytes", "close"]
+    _hx_statics = []
+    _hx_interfaces = []
+    _hx_super = haxe_io_Output
+
+
+    def __init__(self,s):
+        self._hx___s = s
+
+    def writeByte(self,c):
+        try:
+            self._hx___s.send(bytes([c]),0)
+        except BaseException as _g:
+            None
+            if Std.isOfType(haxe_Exception.caught(_g).unwrap(),BlockingIOError):
+                raise haxe_Exception.thrown(haxe_io_Error.Blocked)
+            else:
+                raise _g
+
+    def writeBytes(self,buf,pos,_hx_len):
+        try:
+            data = buf.b
+            payload = data[pos:pos+_hx_len]
+            r = self._hx___s.send(payload,0)
+            return r
+        except BaseException as _g:
+            None
+            if Std.isOfType(haxe_Exception.caught(_g).unwrap(),BlockingIOError):
+                raise haxe_Exception.thrown(haxe_io_Error.Blocked)
+            else:
+                raise _g
+
+    def close(self):
+        super().close()
+        if (self._hx___s is not None):
+            self._hx___s.close()
+
+    @staticmethod
+    def _hx_empty_init(_hx_o):
+        _hx_o._hx___s = None
+sys_net__Socket_SocketOutput._hx_class = sys_net__Socket_SocketOutput
+
 Math.NEGATIVE_INFINITY = float("-inf")
 Math.POSITIVE_INFINITY = float("inf")
 Math.NaN = float("nan")
@@ -10294,6 +11388,10 @@ Xml.Comment = 3
 Xml.DocType = 4
 Xml.ProcessingInstruction = 5
 Xml.Document = 6
+haxe_crypto_Base64.CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+haxe_crypto_Base64.BYTES = haxe_io_Bytes.ofString(haxe_crypto_Base64.CHARS)
+haxe_crypto_Base64.URL_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+haxe_crypto_Base64.URL_BYTES = haxe_io_Bytes.ofString(haxe_crypto_Base64.URL_CHARS)
 def _hx_init_haxe_io_FPHelper_i64tmp():
     def _hx_local_0():
         this1 = haxe__Int64____Int64(0,0)
@@ -10316,3 +11414,4 @@ maglev_MagLev._instances = haxe_ds_StringMap()
 python_Boot.keywords = set(["and", "del", "from", "not", "with", "as", "elif", "global", "or", "yield", "assert", "else", "if", "pass", "None", "break", "except", "import", "raise", "True", "class", "exec", "in", "return", "False", "continue", "finally", "is", "try", "def", "for", "lambda", "while"])
 python_Boot.prefixLength = len("_hx_")
 python_Lib.lineEnd = ("\r\n" if ((Sys.systemName() == "Windows")) else "\n")
+sys_Http.PROXY = None
