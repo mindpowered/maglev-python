@@ -99,7 +99,6 @@ class Enum:
         _hx_o.tag = None
         _hx_o.index = None
         _hx_o.params = None
-Enum._hx_class = Enum
 
 
 class Class: pass
@@ -229,7 +228,6 @@ class Date:
     def _hx_empty_init(_hx_o):
         _hx_o.date = None
         _hx_o.dateUTC = None
-Date._hx_class = Date
 
 
 class EReg:
@@ -368,7 +366,6 @@ class EReg:
         _hx_o.pattern = None
         _hx_o.matchObj = None
         _hx_o._hx_global = None
-EReg._hx_class = EReg
 
 
 class _EnumValue_EnumValue_Impl_:
@@ -379,7 +376,6 @@ class _EnumValue_EnumValue_Impl_:
     @staticmethod
     def match(this1,pattern):
         return False
-_EnumValue_EnumValue_Impl_._hx_class = _EnumValue_EnumValue_Impl_
 
 
 class IntIterator:
@@ -409,7 +405,6 @@ class IntIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.min = None
         _hx_o.max = None
-IntIterator._hx_class = IntIterator
 
 
 class Lambda:
@@ -613,7 +608,6 @@ class Lambda:
             x1 = x.next()
             l.append(x1)
         return l
-Lambda._hx_class = Lambda
 
 
 class Reflect:
@@ -761,7 +755,6 @@ class Reflect:
             this1 = v
             return f((list(this1) if ((not Std.isOfType(this1,list))) else this1))
         return _hx_local_0
-Reflect._hx_class = Reflect
 
 
 class Std:
@@ -1028,7 +1021,6 @@ class Std:
             return 0
         else:
             return int((python_lib_Random.random() * x))
-Std._hx_class = Std
 
 
 class Float: pass
@@ -1080,7 +1072,6 @@ class StringBuf:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.b = None
-StringBuf._hx_class = StringBuf
 
 
 class haxe_SysTools:
@@ -1162,7 +1153,6 @@ class haxe_SysTools:
             return result_b.getvalue()
         else:
             return argument
-haxe_SysTools._hx_class = haxe_SysTools
 
 
 class StringTools:
@@ -1417,7 +1407,6 @@ class StringTools:
             return result_b.getvalue()
         else:
             return argument1
-StringTools._hx_class = StringTools
 
 
 class sys_FileSystem:
@@ -1467,14 +1456,12 @@ class sys_FileSystem:
     @staticmethod
     def readDirectory(path):
         return python_lib_Os.listdir(path)
-sys_FileSystem._hx_class = sys_FileSystem
 
 
 class haxe_IMap:
     _hx_class_name = "haxe.IMap"
     __slots__ = ()
     _hx_methods = ["get", "set", "exists", "remove", "keys", "iterator", "keyValueIterator", "copy", "toString", "clear"]
-haxe_IMap._hx_class = haxe_IMap
 
 
 class haxe_ds_StringMap:
@@ -1541,7 +1528,6 @@ class haxe_ds_StringMap:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.h = None
-haxe_ds_StringMap._hx_class = haxe_ds_StringMap
 
 
 class python_HaxeIterator:
@@ -1583,7 +1569,6 @@ class python_HaxeIterator:
         _hx_o.x = None
         _hx_o.has = None
         _hx_o.checked = None
-python_HaxeIterator._hx_class = python_HaxeIterator
 
 
 class Sys:
@@ -1761,7 +1746,6 @@ class Sys:
     @staticmethod
     def stderr():
         return python_io_IoTools.createFileOutputFromText(python_lib_Sys.stderr)
-Sys._hx_class = Sys
 
 class ValueType(Enum):
     __slots__ = ()
@@ -1782,7 +1766,6 @@ ValueType.TBool = ValueType("TBool", 3, ())
 ValueType.TObject = ValueType("TObject", 4, ())
 ValueType.TFunction = ValueType("TFunction", 5, ())
 ValueType.TUnknown = ValueType("TUnknown", 8, ())
-ValueType._hx_class = ValueType
 
 
 class Type:
@@ -2000,7 +1983,6 @@ class Type:
             if Std.isOfType(v,e):
                 ret.append(v)
         return ret
-Type._hx_class = Type
 
 
 class _Xml_XmlType_Impl_:
@@ -2027,7 +2009,6 @@ class _Xml_XmlType_Impl_:
             return "Document"
         else:
             pass
-_Xml_XmlType_Impl_._hx_class = _Xml_XmlType_Impl_
 
 
 class Xml:
@@ -2251,7 +2232,6 @@ class Xml:
         _hx_o.parent = None
         _hx_o.children = None
         _hx_o.attributeMap = None
-Xml._hx_class = Xml
 
 class haxe_StackItem(Enum):
     __slots__ = ()
@@ -2274,7 +2254,6 @@ class haxe_StackItem(Enum):
     def LocalFunction(v = None):
         return haxe_StackItem("LocalFunction", 4, (v,))
 haxe_StackItem.CFunction = haxe_StackItem("CFunction", 0, ())
-haxe_StackItem._hx_class = haxe_StackItem
 
 
 class haxe__CallStack_CallStack_Impl_:
@@ -2487,7 +2466,6 @@ class haxe__CallStack_CallStack_Impl_:
             b.b.write(s)
         else:
             pass
-haxe__CallStack_CallStack_Impl_._hx_class = haxe__CallStack_CallStack_Impl_
 
 
 class haxe_Exception(Exception):
@@ -2601,7 +2579,6 @@ class haxe_Exception(Exception):
         _hx_o._hx___skipStack = None
         _hx_o._hx___nativeException = None
         _hx_o._hx___previousException = None
-haxe_Exception._hx_class = haxe_Exception
 
 
 class haxe__Int32_Int32_Impl_:
@@ -2732,7 +2709,6 @@ class haxe__Int32_Int32_Impl_:
     @staticmethod
     def clamp(x):
         return ((x + (2 ** 31)) % (2 ** 32) - (2 ** 31))
-haxe__Int32_Int32_Impl_._hx_class = haxe__Int32_Int32_Impl_
 
 
 class haxe__Int64_Int64_Impl_:
@@ -3476,7 +3452,6 @@ class haxe__Int64_Int64_Impl_:
                 return this1.low
             return _hx_local_0()
         return _hx_local_1()
-haxe__Int64_Int64_Impl_._hx_class = haxe__Int64_Int64_Impl_
 
 
 class haxe__Int64____Int64:
@@ -3496,7 +3471,6 @@ class haxe__Int64____Int64:
     def _hx_empty_init(_hx_o):
         _hx_o.high = None
         _hx_o.low = None
-haxe__Int64____Int64._hx_class = haxe__Int64____Int64
 
 
 class haxe_Int64Helper:
@@ -3682,7 +3656,6 @@ class haxe_Int64Helper:
             this1 = haxe__Int64____Int64(high,low)
             result = this1
         return result
-haxe_Int64Helper._hx_class = haxe_Int64Helper
 
 
 class haxe_Json:
@@ -3697,7 +3670,6 @@ class haxe_Json:
     @staticmethod
     def stringify(value,replacer = None,space = None):
         return haxe_format_JsonPrinter.print(value,replacer,space)
-haxe_Json._hx_class = haxe_Json
 
 
 class haxe_Log:
@@ -3725,7 +3697,6 @@ class haxe_Log:
         _hx_str = haxe_Log.formatOutput(v,infos)
         str1 = Std.string(_hx_str)
         python_Lib.printString((("" + ("null" if str1 is None else str1)) + HxOverrides.stringOrNull(python_Lib.lineEnd)))
-haxe_Log._hx_class = haxe_Log
 
 
 class haxe_NativeStackTrace:
@@ -3771,7 +3742,6 @@ class haxe_NativeStackTrace:
             x = haxe_StackItem.FilePos(haxe_StackItem.Method(None,elem[2]),elem[0],elem[1])
             stack.append(x)
         return stack
-haxe_NativeStackTrace._hx_class = haxe_NativeStackTrace
 
 
 class haxe_ValueException(haxe_Exception):
@@ -3799,7 +3769,6 @@ class haxe_ValueException(haxe_Exception):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.value = None
-haxe_ValueException._hx_class = haxe_ValueException
 
 
 class haxe_io_Bytes:
@@ -4000,7 +3969,6 @@ class haxe_io_Bytes:
     def _hx_empty_init(_hx_o):
         _hx_o.length = None
         _hx_o.b = None
-haxe_io_Bytes._hx_class = haxe_io_Bytes
 
 
 class haxe_crypto_Base64:
@@ -4055,7 +4023,6 @@ class haxe_crypto_Base64:
             while (HxString.charCodeAt(_hx_str,(len(_hx_str) - 1)) == 61):
                 _hx_str = HxString.substr(_hx_str,0,-1)
         return haxe_crypto_BaseCode(haxe_crypto_Base64.URL_BYTES).decodeBytes(haxe_io_Bytes.ofString(_hx_str))
-haxe_crypto_Base64._hx_class = haxe_crypto_Base64
 
 
 class haxe_crypto_BaseCode:
@@ -4175,7 +4142,6 @@ class haxe_crypto_BaseCode:
         _hx_o.base = None
         _hx_o.nbits = None
         _hx_o.tbl = None
-haxe_crypto_BaseCode._hx_class = haxe_crypto_BaseCode
 
 
 class haxe_ds_ArraySort:
@@ -4307,7 +4273,6 @@ class haxe_ds_ArraySort:
     @staticmethod
     def compare(a,cmp,i,j):
         return cmp((a[i] if i >= 0 and i < len(a) else None),(a[j] if j >= 0 and j < len(a) else None))
-haxe_ds_ArraySort._hx_class = haxe_ds_ArraySort
 
 
 class haxe_ds_BalancedTree:
@@ -4473,7 +4438,6 @@ class haxe_ds_BalancedTree:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.root = None
-haxe_ds_BalancedTree._hx_class = haxe_ds_BalancedTree
 
 
 class haxe_ds_TreeNode:
@@ -4514,7 +4478,6 @@ class haxe_ds_TreeNode:
         _hx_o.key = None
         _hx_o.value = None
         _hx_o._height = None
-haxe_ds_TreeNode._hx_class = haxe_ds_TreeNode
 
 class haxe_ds_Either(Enum):
     __slots__ = ()
@@ -4528,7 +4491,6 @@ class haxe_ds_Either(Enum):
     @staticmethod
     def Right(v):
         return haxe_ds_Either("Right", 1, (v,))
-haxe_ds_Either._hx_class = haxe_ds_Either
 
 
 class haxe_ds_EnumValueMap(haxe_ds_BalancedTree):
@@ -4583,7 +4545,6 @@ class haxe_ds_EnumValueMap(haxe_ds_BalancedTree):
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
-haxe_ds_EnumValueMap._hx_class = haxe_ds_EnumValueMap
 
 
 class haxe_ds_GenericCell:
@@ -4599,7 +4560,6 @@ class haxe_ds_GenericCell:
     def _hx_empty_init(_hx_o):
         _hx_o.elt = None
         _hx_o.next = None
-haxe_ds_GenericCell._hx_class = haxe_ds_GenericCell
 
 
 class haxe_ds_GenericStack:
@@ -4670,7 +4630,6 @@ class haxe_ds_GenericStack:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.head = None
-haxe_ds_GenericStack._hx_class = haxe_ds_GenericStack
 
 
 class haxe_ds__HashMap_HashMap_Impl_:
@@ -4727,7 +4686,6 @@ class haxe_ds__HashMap_HashMap_Impl_:
     def clear(this1):
         this1.keys.h.clear()
         this1.values.h.clear()
-haxe_ds__HashMap_HashMap_Impl_._hx_class = haxe_ds__HashMap_HashMap_Impl_
 
 
 class haxe_ds__HashMap_HashMapData:
@@ -4743,7 +4701,6 @@ class haxe_ds__HashMap_HashMapData:
     def _hx_empty_init(_hx_o):
         _hx_o.keys = None
         _hx_o.values = None
-haxe_ds__HashMap_HashMapData._hx_class = haxe_ds__HashMap_HashMapData
 
 
 class haxe_ds_IntMap:
@@ -4809,7 +4766,6 @@ class haxe_ds_IntMap:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.h = None
-haxe_ds_IntMap._hx_class = haxe_ds_IntMap
 
 
 class haxe_ds_List:
@@ -4956,7 +4912,6 @@ class haxe_ds_List:
         _hx_o.h = None
         _hx_o.q = None
         _hx_o.length = None
-haxe_ds_List._hx_class = haxe_ds_List
 
 
 class haxe_ds__List_ListNode:
@@ -4972,7 +4927,6 @@ class haxe_ds__List_ListNode:
     def _hx_empty_init(_hx_o):
         _hx_o.item = None
         _hx_o.next = None
-haxe_ds__List_ListNode._hx_class = haxe_ds__List_ListNode
 
 
 class haxe_ds__List_ListIterator:
@@ -4995,7 +4949,6 @@ class haxe_ds__List_ListIterator:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.head = None
-haxe_ds__List_ListIterator._hx_class = haxe_ds__List_ListIterator
 
 
 class haxe_ds__List_ListKeyValueIterator:
@@ -5027,7 +4980,6 @@ class haxe_ds__List_ListKeyValueIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.idx = None
         _hx_o.head = None
-haxe_ds__List_ListKeyValueIterator._hx_class = haxe_ds__List_ListKeyValueIterator
 
 
 class haxe_ds_ListSort:
@@ -5148,7 +5100,6 @@ class haxe_ds_ListSort:
                 break
             insize = (insize * 2)
         return _hx_list
-haxe_ds_ListSort._hx_class = haxe_ds_ListSort
 
 
 class haxe_ds__Map_Map_Impl_:
@@ -5228,7 +5179,6 @@ class haxe_ds__Map_Map_Impl_:
     @staticmethod
     def fromObjectMap(_hx_map):
         return _hx_map
-haxe_ds__Map_Map_Impl_._hx_class = haxe_ds__Map_Map_Impl_
 
 
 class haxe_ds_ObjectMap:
@@ -5294,7 +5244,6 @@ class haxe_ds_ObjectMap:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.h = None
-haxe_ds_ObjectMap._hx_class = haxe_ds_ObjectMap
 
 class haxe_ds_Option(Enum):
     __slots__ = ()
@@ -5305,7 +5254,6 @@ class haxe_ds_Option(Enum):
     def Some(v):
         return haxe_ds_Option("Some", 0, (v,))
 haxe_ds_Option._hx_None = haxe_ds_Option("None", 1, ())
-haxe_ds_Option._hx_class = haxe_ds_Option
 
 
 class haxe_ds__ReadOnlyArray_ReadOnlyArray_Impl_:
@@ -5321,7 +5269,6 @@ class haxe_ds__ReadOnlyArray_ReadOnlyArray_Impl_:
     @staticmethod
     def get(this1,i):
         return (this1[i] if i >= 0 and i < len(this1) else None)
-haxe_ds__ReadOnlyArray_ReadOnlyArray_Impl_._hx_class = haxe_ds__ReadOnlyArray_ReadOnlyArray_Impl_
 
 
 class haxe_ds__Vector_Vector_Impl_:
@@ -5439,7 +5386,6 @@ class haxe_ds__Vector_Vector_Impl_:
     @staticmethod
     def sort(this1,f):
         this1.sort(key= python_lib_Functools.cmp_to_key(f))
-haxe_ds__Vector_Vector_Impl_._hx_class = haxe_ds__Vector_Vector_Impl_
 
 
 class haxe_ds_WeakMap:
@@ -5483,7 +5429,6 @@ class haxe_ds_WeakMap:
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
-haxe_ds_WeakMap._hx_class = haxe_ds_WeakMap
 
 
 class haxe_format_JsonPrinter:
@@ -5731,7 +5676,6 @@ class haxe_format_JsonPrinter:
         _hx_o.indent = None
         _hx_o.pretty = None
         _hx_o.nind = None
-haxe_format_JsonPrinter._hx_class = haxe_format_JsonPrinter
 
 
 class haxe_http_HttpBase:
@@ -5830,7 +5774,6 @@ class haxe_http_HttpBase:
         _hx_o.headers = None
         _hx_o.params = None
         _hx_o.emptyOnData = None
-haxe_http_HttpBase._hx_class = haxe_http_HttpBase
 
 
 class haxe_io_BytesBuffer:
@@ -5883,7 +5826,6 @@ class haxe_io_BytesBuffer:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.b = None
-haxe_io_BytesBuffer._hx_class = haxe_io_BytesBuffer
 
 
 class haxe_io_Output:
@@ -6024,7 +5966,6 @@ class haxe_io_Output:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.bigEndian = None
-haxe_io_Output._hx_class = haxe_io_Output
 
 
 class haxe_io_BytesOutput(haxe_io_Output):
@@ -6060,7 +6001,6 @@ class haxe_io_BytesOutput(haxe_io_Output):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.b = None
-haxe_io_BytesOutput._hx_class = haxe_io_BytesOutput
 
 class haxe_io_Encoding(Enum):
     __slots__ = ()
@@ -6068,7 +6008,6 @@ class haxe_io_Encoding(Enum):
     _hx_constructs = ["UTF8", "RawNative"]
 haxe_io_Encoding.UTF8 = haxe_io_Encoding("UTF8", 0, ())
 haxe_io_Encoding.RawNative = haxe_io_Encoding("RawNative", 1, ())
-haxe_io_Encoding._hx_class = haxe_io_Encoding
 
 
 class haxe_io_Eof:
@@ -6084,7 +6023,6 @@ class haxe_io_Eof:
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
-haxe_io_Eof._hx_class = haxe_io_Eof
 
 class haxe_io_Error(Enum):
     __slots__ = ()
@@ -6097,7 +6035,6 @@ class haxe_io_Error(Enum):
 haxe_io_Error.Blocked = haxe_io_Error("Blocked", 0, ())
 haxe_io_Error.Overflow = haxe_io_Error("Overflow", 1, ())
 haxe_io_Error.OutsideBounds = haxe_io_Error("OutsideBounds", 2, ())
-haxe_io_Error._hx_class = haxe_io_Error
 
 
 class haxe_io_FPHelper:
@@ -6289,7 +6226,6 @@ class haxe_io_FPHelper:
                 i64.low = sig_l1
                 i64.high = ((((-2147483648 if ((v < 0)) else 0)) | (((exp + 1023) << 20))) | sig_h1)
         return i64
-haxe_io_FPHelper._hx_class = haxe_io_FPHelper
 
 
 class haxe_io_Input:
@@ -6470,7 +6406,6 @@ class haxe_io_Input:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.bigEndian = None
-haxe_io_Input._hx_class = haxe_io_Input
 
 
 class haxe_io_Path:
@@ -6734,7 +6669,6 @@ class haxe_io_Path:
         _hx_o.file = None
         _hx_o.ext = None
         _hx_o.backslash = None
-haxe_io_Path._hx_class = haxe_io_Path
 
 
 class haxe_iterators_ArrayIterator:
@@ -6764,7 +6698,6 @@ class haxe_iterators_ArrayIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.array = None
         _hx_o.current = None
-haxe_iterators_ArrayIterator._hx_class = haxe_iterators_ArrayIterator
 
 
 class haxe_iterators_ArrayKeyValueIterator:
@@ -6794,7 +6727,6 @@ class haxe_iterators_ArrayKeyValueIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.current = None
         _hx_o.array = None
-haxe_iterators_ArrayKeyValueIterator._hx_class = haxe_iterators_ArrayKeyValueIterator
 
 
 class haxe_iterators_HashMapKeyValueIterator:
@@ -6820,7 +6752,6 @@ class haxe_iterators_HashMapKeyValueIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.map = None
         _hx_o.keys = None
-haxe_iterators_HashMapKeyValueIterator._hx_class = haxe_iterators_HashMapKeyValueIterator
 
 
 class haxe_iterators_MapKeyValueIterator:
@@ -6844,7 +6775,6 @@ class haxe_iterators_MapKeyValueIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.map = None
         _hx_o.keys = None
-haxe_iterators_MapKeyValueIterator._hx_class = haxe_iterators_MapKeyValueIterator
 
 
 class haxe_iterators_StringIterator:
@@ -6873,7 +6803,6 @@ class haxe_iterators_StringIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.offset = None
         _hx_o.s = None
-haxe_iterators_StringIterator._hx_class = haxe_iterators_StringIterator
 
 
 class haxe_iterators_StringIteratorUnicode:
@@ -6907,7 +6836,6 @@ class haxe_iterators_StringIteratorUnicode:
     def _hx_empty_init(_hx_o):
         _hx_o.offset = None
         _hx_o.s = None
-haxe_iterators_StringIteratorUnicode._hx_class = haxe_iterators_StringIteratorUnicode
 
 
 class haxe_iterators_StringKeyValueIterator:
@@ -6934,7 +6862,6 @@ class haxe_iterators_StringKeyValueIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.offset = None
         _hx_o.s = None
-haxe_iterators_StringKeyValueIterator._hx_class = haxe_iterators_StringKeyValueIterator
 
 
 class haxe_xml_XmlParserException:
@@ -6977,7 +6904,6 @@ class haxe_xml_XmlParserException:
         _hx_o.positionAtLine = None
         _hx_o.position = None
         _hx_o.xml = None
-haxe_xml_XmlParserException._hx_class = haxe_xml_XmlParserException
 
 
 class haxe_xml_Parser:
@@ -7327,7 +7253,6 @@ class haxe_xml_Parser:
             return (c == 45)
         else:
             return True
-haxe_xml_Parser._hx_class = haxe_xml_Parser
 
 
 class haxe_xml_Printer:
@@ -7500,7 +7425,6 @@ class haxe_xml_Printer:
     def _hx_empty_init(_hx_o):
         _hx_o.output = None
         _hx_o.pretty = None
-haxe_xml_Printer._hx_class = haxe_xml_Printer
 
 
 class maglev_MagLev:
@@ -7590,7 +7514,6 @@ class maglev_MagLev:
     def _hx_empty_init(_hx_o):
         _hx_o._methods = None
         _hx_o._listeners = None
-maglev_MagLev._hx_class = maglev_MagLev
 
 
 class maglev_MagLevResult:
@@ -7741,7 +7664,6 @@ class maglev_MagLevResult:
         _hx_o.complete = None
         _hx_o.accepts = None
         _hx_o.rejects = None
-maglev_MagLevResult._hx_class = maglev_MagLevResult
 
 
 class maglev_MagLevError:
@@ -7793,7 +7715,6 @@ class maglev_MagLevError:
         _hx_o.code = None
         _hx_o.message = None
         _hx_o.data = None
-maglev_MagLevError._hx_class = maglev_MagLevError
 
 
 class maglev_MagLevAny:
@@ -7815,7 +7736,6 @@ class maglev_MagLevAny:
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
-maglev_MagLevAny._hx_class = maglev_MagLevAny
 
 
 class maglev_MagLevFunction(maglev_MagLevAny):
@@ -7884,7 +7804,6 @@ class maglev_MagLevFunction(maglev_MagLevAny):
     def _hx_empty_init(_hx_o):
         _hx_o.name = None
         _hx_o.value = None
-maglev_MagLevFunction._hx_class = maglev_MagLevFunction
 
 
 class maglev_MagLevObject(maglev_MagLevAny):
@@ -7988,7 +7907,6 @@ class maglev_MagLevObject(maglev_MagLevAny):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.values = None
-maglev_MagLevObject._hx_class = maglev_MagLevObject
 
 
 class maglev_MagLevArray(maglev_MagLevAny):
@@ -8104,7 +8022,6 @@ class maglev_MagLevArray(maglev_MagLevAny):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.values = None
-maglev_MagLevArray._hx_class = maglev_MagLevArray
 
 
 class maglev_MagLevNumber(maglev_MagLevAny):
@@ -8167,7 +8084,6 @@ class maglev_MagLevNumber(maglev_MagLevAny):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.value = None
-maglev_MagLevNumber._hx_class = maglev_MagLevNumber
 
 
 class maglev_MagLevString(maglev_MagLevAny):
@@ -8218,7 +8134,6 @@ class maglev_MagLevString(maglev_MagLevAny):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.value = None
-maglev_MagLevString._hx_class = maglev_MagLevString
 
 
 class maglev_MagLevBoolean(maglev_MagLevAny):
@@ -8272,7 +8187,6 @@ class maglev_MagLevBoolean(maglev_MagLevAny):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.value = None
-maglev_MagLevBoolean._hx_class = maglev_MagLevBoolean
 
 
 class maglev_MagLevNull(maglev_MagLevAny):
@@ -8317,238 +8231,6 @@ class maglev_MagLevNull(maglev_MagLevAny):
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
-maglev_MagLevNull._hx_class = maglev_MagLevNull
-
-
-class maglev_MagLevOld:
-    _hx_class_name = "maglev.MagLevOld"
-    __slots__ = ("maglev",)
-    _hx_fields = ["maglev"]
-    _hx_methods = ["register", "call", "listen", "emit", "convertToHaxe", "convertToMagLev"]
-    _hx_statics = ["getInstance"]
-
-    def __init__(self,maglev):
-        self.maglev = maglev
-
-    def register(self,method,callback):
-        _gthis = self
-        def _hx_local_1(args):
-            arr = list()
-            i = 0
-            while (i < args.size()):
-                x = _gthis.convertToHaxe(args.get(i))
-                arr.append(x)
-                i = (i + 1)
-            result = _gthis.convertToMagLev(callback(arr))
-            return maglev_MagLevResult.fromResult(result)
-        myfunc = _hx_local_1
-        mycallback = maglev_MagLevFunction(myfunc)
-        self.maglev.register(method,mycallback)
-
-    def call(self,method,args,callback):
-        _gthis = self
-        myargs = maglev_MagLevArray()
-        _g = 0
-        while (_g < len(args)):
-            arg = (args[_g] if _g >= 0 and _g < len(args) else None)
-            _g = (_g + 1)
-            myargs.push(self.convertToMagLev(arg))
-        myresult = self.maglev.call(method,myargs)
-        def _hx_local_1(error):
-            raise haxe_Exception.thrown(error.getMessage())
-        myresult.onError(_hx_local_1)
-        def _hx_local_2(result):
-            callback(_gthis.convertToHaxe(result))
-            return maglev_MagLevResult.fromResult(maglev_MagLevNull.create())
-        myresult.onResult(_hx_local_2)
-
-    def listen(self,event,callback):
-        _gthis = self
-        def _hx_local_1(args):
-            arr = list()
-            i = 0
-            while (i < args.size()):
-                x = _gthis.convertToHaxe(args.get(i))
-                arr.append(x)
-                i = (i + 1)
-            callback(event,arr)
-            return None
-        mysub = _hx_local_1
-        mycallback = maglev_MagLevFunction(mysub)
-        self.maglev.listen(event,mycallback)
-
-    def emit(self,event,args):
-        myargs = maglev_MagLevArray()
-        _g = 0
-        while (_g < len(args)):
-            arg = (args[_g] if _g >= 0 and _g < len(args) else None)
-            _g = (_g + 1)
-            myargs.push(self.convertToMagLev(arg))
-        self.maglev.emit(event,myargs)
-
-    def convertToHaxe(self,x):
-        if (x.getType() == maglev_MagLevNull.getStaticType()):
-            return None
-        elif (x.getType() == maglev_MagLevBoolean.getStaticType()):
-            def _hx_local_1():
-                _hx_local_0 = x
-                if (Std.isOfType(_hx_local_0,maglev_MagLevBoolean) or ((_hx_local_0 is None))):
-                    _hx_local_0
-                else:
-                    raise "Class cast error"
-                return _hx_local_0
-            y = _hx_local_1()
-            return y.getBool()
-        elif (x.getType() == maglev_MagLevString.getStaticType()):
-            def _hx_local_3():
-                _hx_local_2 = x
-                if (Std.isOfType(_hx_local_2,maglev_MagLevString) or ((_hx_local_2 is None))):
-                    _hx_local_2
-                else:
-                    raise "Class cast error"
-                return _hx_local_2
-            y = _hx_local_3()
-            return y.getString()
-        elif (x.getType() == maglev_MagLevNumber.getStaticType()):
-            def _hx_local_5():
-                _hx_local_4 = x
-                if (Std.isOfType(_hx_local_4,maglev_MagLevNumber) or ((_hx_local_4 is None))):
-                    _hx_local_4
-                else:
-                    raise "Class cast error"
-                return _hx_local_4
-            y = _hx_local_5()
-            return y.getFloat()
-        elif (x.getType() == maglev_MagLevArray.getStaticType()):
-            def _hx_local_7():
-                _hx_local_6 = x
-                if (Std.isOfType(_hx_local_6,maglev_MagLevArray) or ((_hx_local_6 is None))):
-                    _hx_local_6
-                else:
-                    raise "Class cast error"
-                return _hx_local_6
-            y = _hx_local_7()
-            arr = list()
-            i = 0
-            while (i < y.size()):
-                x1 = self.convertToHaxe(y.get(i))
-                arr.append(x1)
-                i = (i + 1)
-            return arr
-        elif (x.getType() == maglev_MagLevObject.getStaticType()):
-            def _hx_local_10():
-                _hx_local_9 = x
-                if (Std.isOfType(_hx_local_9,maglev_MagLevObject) or ((_hx_local_9 is None))):
-                    _hx_local_9
-                else:
-                    raise "Class cast error"
-                return _hx_local_9
-            y = _hx_local_10()
-            _hx_map = haxe_ds_StringMap()
-            keys = y.keys()
-            i = 0
-            while (i < keys.size()):
-                def _hx_local_12():
-                    _hx_local_11 = keys.get(i)
-                    if (Std.isOfType(_hx_local_11,maglev_MagLevString) or ((_hx_local_11 is None))):
-                        _hx_local_11
-                    else:
-                        raise "Class cast error"
-                    return _hx_local_11
-                key = (_hx_local_12()).getString()
-                value = self.convertToHaxe(y.get(key))
-                _hx_map.h[key] = value
-                i = (i + 1)
-            return _hx_map
-        else:
-            raise haxe_Exception.thrown("convertToHaxe: unknown type")
-
-    def convertToMagLev(self,x):
-        _gthis = self
-        if (x is None):
-            return maglev_MagLevNull.create()
-        elif Std.isOfType(x,Bool):
-            def _hx_local_2():
-                def _hx_local_1():
-                    _hx_local_0 = x
-                    if (Std.isOfType(_hx_local_0,Bool) or ((_hx_local_0 is None))):
-                        _hx_local_0
-                    else:
-                        raise "Class cast error"
-                    return _hx_local_0
-                return maglev_MagLevBoolean.fromBool(_hx_local_1())
-            return _hx_local_2()
-        elif Std.isOfType(x,str):
-            def _hx_local_5():
-                def _hx_local_4():
-                    _hx_local_3 = x
-                    if (Std.isOfType(_hx_local_3,str) or ((_hx_local_3 is None))):
-                        _hx_local_3
-                    else:
-                        raise "Class cast error"
-                    return _hx_local_3
-                return maglev_MagLevString.fromString(_hx_local_4())
-            return _hx_local_5()
-        elif Std.isOfType(x,Int):
-            def _hx_local_8():
-                def _hx_local_7():
-                    _hx_local_6 = x
-                    if (Std.isOfType(_hx_local_6,Int) or ((_hx_local_6 is None))):
-                        _hx_local_6
-                    else:
-                        raise "Class cast error"
-                    return _hx_local_6
-                return maglev_MagLevNumber.fromInt(_hx_local_7())
-            return _hx_local_8()
-        elif Std.isOfType(x,Float):
-            return maglev_MagLevNumber.fromFloat(x)
-        elif Reflect.isFunction(x):
-            def _hx_local_9(args):
-                y = x
-                haxeArgs = _gthis.convertToHaxe(args)
-                haxeRet = y(haxeArgs)
-                return maglev_MagLevResult.fromResult(_gthis.convertToMagLev(haxeRet))
-            f = _hx_local_9
-            return maglev_MagLevFunction.fromFunction(f)
-        elif Std.isOfType(x,list):
-            arr = maglev_MagLevArray.create()
-            y = x
-            _g = 0
-            while (_g < len(y)):
-                item = (y[_g] if _g >= 0 and _g < len(y) else None)
-                _g = (_g + 1)
-                arr.push(self.convertToMagLev(item))
-            return arr
-        elif Std.isOfType(x,haxe_ds_StringMap):
-            _hx_map = x
-            obj = maglev_MagLevObject.create()
-            key = _hx_map.keys()
-            while key.hasNext():
-                key1 = key.next()
-                obj.set(key1,self.convertToMagLev(_hx_map.h.get(key1,None)))
-            return obj
-        elif Reflect.isObject(x):
-            obj = maglev_MagLevObject.create()
-            _g = 0
-            _g1 = python_Boot.fields(x)
-            while (_g < len(_g1)):
-                field = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
-                _g = (_g + 1)
-                val = Reflect.getProperty(x,field)
-                obj.set(field,self.convertToMagLev(val))
-            return obj
-        else:
-            raise haxe_Exception.thrown("convertToMagLev: unknown type")
-
-    @staticmethod
-    def getInstance(key):
-        instance = maglev_MagLevOld(maglev_MagLev.getInstance(key))
-        return instance
-
-    @staticmethod
-    def _hx_empty_init(_hx_o):
-        _hx_o.maglev = None
-maglev_MagLevOld._hx_class = maglev_MagLevOld
 
 
 class maglev_MagLevPy:
@@ -8768,7 +8450,6 @@ class maglev_MagLevPy:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.maglev = None
-maglev_MagLevPy._hx_class = maglev_MagLevPy
 
 
 class maglev_Telemetry:
@@ -8809,7 +8490,6 @@ class maglev_Telemetry:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.info = None
-maglev_Telemetry._hx_class = maglev_Telemetry
 
 
 class python_Boot:
@@ -9338,7 +9018,6 @@ class python_Boot:
                 break
             currentClass = python_Boot.getSuperClass(currentClass)
         return result
-python_Boot._hx_class = python_Boot
 
 
 class python_HaxeIterable:
@@ -9356,7 +9035,6 @@ class python_HaxeIterable:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.x = None
-python_HaxeIterable._hx_class = python_HaxeIterable
 
 
 class python__KwArgs_KwArgs_Impl_:
@@ -9394,7 +9072,6 @@ class python__KwArgs_KwArgs_Impl_:
     @staticmethod
     def get(this1,key,_hx_def):
         return this1.get(key,_hx_def)
-python__KwArgs_KwArgs_Impl_._hx_class = python__KwArgs_KwArgs_Impl_
 
 
 class python_Lib:
@@ -9472,7 +9149,6 @@ class python_Lib:
     @staticmethod
     def toHaxeIterator(it):
         return python_HaxeIterator(it)
-python_Lib._hx_class = python_Lib
 
 
 class python__NativeIterable_NativeIterable_Impl_:
@@ -9487,7 +9163,6 @@ class python__NativeIterable_NativeIterable_Impl_:
     @staticmethod
     def iterator(this1):
         return python_HaxeIterator(this1.__iter__())
-python__NativeIterable_NativeIterable_Impl_._hx_class = python__NativeIterable_NativeIterable_Impl_
 
 
 class python__NativeIterator_NativeIterator_Impl_:
@@ -9503,7 +9178,6 @@ class python__NativeIterator_NativeIterator_Impl_:
     @staticmethod
     def toHaxeIterator(this1):
         return python_HaxeIterator(this1)
-python__NativeIterator_NativeIterator_Impl_._hx_class = python__NativeIterator_NativeIterator_Impl_
 
 
 class python_NativeStringTools:
@@ -9542,7 +9216,6 @@ class python_NativeStringTools:
     @staticmethod
     def endswith(s,suffix):
         return s.endswith(suffix)
-python_NativeStringTools._hx_class = python_NativeStringTools
 
 
 class python__VarArgs_VarArgs_Impl_:
@@ -9570,7 +9243,6 @@ class python__VarArgs_VarArgs_Impl_:
     def fromArray(d):
         this1 = d
         return this1
-python__VarArgs_VarArgs_Impl_._hx_class = python__VarArgs_VarArgs_Impl_
 
 
 class python_internal_ArrayImpl:
@@ -9756,7 +9428,6 @@ class python_internal_ArrayImpl:
                 pos = 0
             res = x[pos:(pos + len1)]
             del x[pos:(pos + len1)]
-python_internal_ArrayImpl._hx_class = python_internal_ArrayImpl
 
 
 class HxOverrides:
@@ -9943,13 +9614,11 @@ class HxOverrides:
                 a1[k1] = x
                 del a1[val]
         return a1
-HxOverrides._hx_class = HxOverrides
 
 
 class python_internal_Internal:
     _hx_class_name = "python.internal.Internal"
     __slots__ = ()
-python_internal_Internal._hx_class = python_internal_Internal
 
 
 class python_internal_MethodClosure:
@@ -9969,7 +9638,6 @@ class python_internal_MethodClosure:
     def _hx_empty_init(_hx_o):
         _hx_o.obj = None
         _hx_o.func = None
-python_internal_MethodClosure._hx_class = python_internal_MethodClosure
 
 
 class HxString:
@@ -10088,7 +9756,6 @@ class HxString:
                 if (startIndex < 0):
                     startIndex = 0
             return s[startIndex:(startIndex + _hx_len)]
-HxString._hx_class = HxString
 
 
 class python_io_NativeInput(haxe_io_Input):
@@ -10145,7 +9812,6 @@ class python_io_NativeInput(haxe_io_Input):
     def _hx_empty_init(_hx_o):
         _hx_o.stream = None
         _hx_o.wasEof = None
-python_io_NativeInput._hx_class = python_io_NativeInput
 
 
 class python_io_IInput:
@@ -10153,7 +9819,6 @@ class python_io_IInput:
     __slots__ = ("bigEndian",)
     _hx_fields = ["bigEndian"]
     _hx_methods = ["set_bigEndian", "readByte", "readBytes", "close", "readAll", "readFullBytes", "read", "readUntil", "readLine", "readFloat", "readDouble", "readInt8", "readInt16", "readUInt16", "readInt24", "readUInt24", "readInt32", "readString"]
-python_io_IInput._hx_class = python_io_IInput
 
 
 class python_io_NativeBytesInput(python_io_NativeInput):
@@ -10184,7 +9849,6 @@ class python_io_NativeBytesInput(python_io_NativeInput):
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
-python_io_NativeBytesInput._hx_class = python_io_NativeBytesInput
 
 
 class python_io_IFileInput:
@@ -10192,7 +9856,6 @@ class python_io_IFileInput:
     __slots__ = ()
     _hx_methods = ["seek", "tell", "eof"]
     _hx_interfaces = [python_io_IInput]
-python_io_IFileInput._hx_class = python_io_IFileInput
 
 
 class python_io_FileBytesInput(python_io_NativeBytesInput):
@@ -10207,7 +9870,6 @@ class python_io_FileBytesInput(python_io_NativeBytesInput):
 
     def __init__(self,stream):
         super().__init__(stream)
-python_io_FileBytesInput._hx_class = python_io_FileBytesInput
 
 
 class python_io_NativeOutput(haxe_io_Output):
@@ -10245,7 +9907,6 @@ class python_io_NativeOutput(haxe_io_Output):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.stream = None
-python_io_NativeOutput._hx_class = python_io_NativeOutput
 
 
 class python_io_NativeBytesOutput(python_io_NativeOutput):
@@ -10275,7 +9936,6 @@ class python_io_NativeBytesOutput(python_io_NativeOutput):
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
-python_io_NativeBytesOutput._hx_class = python_io_NativeBytesOutput
 
 
 class python_io_IOutput:
@@ -10283,7 +9943,6 @@ class python_io_IOutput:
     __slots__ = ("bigEndian",)
     _hx_fields = ["bigEndian"]
     _hx_methods = ["set_bigEndian", "writeByte", "writeBytes", "flush", "close", "write", "writeFullBytes", "writeFloat", "writeDouble", "writeInt8", "writeInt16", "writeUInt16", "writeInt24", "writeUInt24", "writeInt32", "prepare", "writeInput", "writeString"]
-python_io_IOutput._hx_class = python_io_IOutput
 
 
 class python_io_IFileOutput:
@@ -10291,7 +9950,6 @@ class python_io_IFileOutput:
     __slots__ = ()
     _hx_methods = ["seek", "tell"]
     _hx_interfaces = [python_io_IOutput]
-python_io_IFileOutput._hx_class = python_io_IFileOutput
 
 
 class python_io_FileBytesOutput(python_io_NativeBytesOutput):
@@ -10306,7 +9964,6 @@ class python_io_FileBytesOutput(python_io_NativeBytesOutput):
 
     def __init__(self,stream):
         super().__init__(stream)
-python_io_FileBytesOutput._hx_class = python_io_FileBytesOutput
 
 
 class python_io_NativeTextInput(python_io_NativeInput):
@@ -10337,7 +9994,6 @@ class python_io_NativeTextInput(python_io_NativeInput):
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
-python_io_NativeTextInput._hx_class = python_io_NativeTextInput
 
 
 class python_io_FileTextInput(python_io_NativeTextInput):
@@ -10352,7 +10008,6 @@ class python_io_FileTextInput(python_io_NativeTextInput):
 
     def __init__(self,stream):
         super().__init__(stream)
-python_io_FileTextInput._hx_class = python_io_FileTextInput
 
 
 class python_io_NativeTextOutput(python_io_NativeOutput):
@@ -10381,7 +10036,6 @@ class python_io_NativeTextOutput(python_io_NativeOutput):
 
     @staticmethod
     def _hx_empty_init(_hx_o):        pass
-python_io_NativeTextOutput._hx_class = python_io_NativeTextOutput
 
 
 class python_io_FileTextOutput(python_io_NativeTextOutput):
@@ -10396,7 +10050,6 @@ class python_io_FileTextOutput(python_io_NativeTextOutput):
 
     def __init__(self,stream):
         super().__init__(stream)
-python_io_FileTextOutput._hx_class = python_io_FileTextOutput
 
 
 class python_io_IoTools:
@@ -10450,7 +10103,6 @@ class python_io_IoTools:
         else:
             pass
         stream.seek(p,pos1)
-python_io_IoTools._hx_class = python_io_IoTools
 
 
 class python_lib__Re_Choice_Impl_:
@@ -10465,7 +10117,6 @@ class python_lib__Re_Choice_Impl_:
     @staticmethod
     def fromB(x):
         return x
-python_lib__Re_Choice_Impl_._hx_class = python_lib__Re_Choice_Impl_
 
 
 class python_lib__Re_RegexHelper:
@@ -10482,7 +10133,6 @@ class python_lib__Re_RegexHelper:
                 return r.findall(string,pos)
         else:
             return r.findall(string,pos,endpos)
-python_lib__Re_RegexHelper._hx_class = python_lib__Re_RegexHelper
 
 
 class sys_net_Socket:
@@ -10569,7 +10219,6 @@ class sys_net_Socket:
         _hx_o.input = None
         _hx_o.output = None
         _hx_o.custom = None
-sys_net_Socket._hx_class = sys_net_Socket
 
 
 class python_net_SslSocket(sys_net_Socket):
@@ -10607,7 +10256,6 @@ class python_net_SslSocket(sys_net_Socket):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.hostName = None
-python_net_SslSocket._hx_class = python_net_SslSocket
 
 
 class sys_Http(haxe_http_HttpBase):
@@ -11048,7 +10696,6 @@ class sys_Http(haxe_http_HttpBase):
         _hx_o.chunk_size = None
         _hx_o.chunk_buf = None
         _hx_o.file = None
-sys_Http._hx_class = sys_Http
 
 
 class sys_io_FileInput(haxe_io_Input):
@@ -11130,7 +10777,6 @@ class sys_io_FileInput(haxe_io_Input):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.impl = None
-sys_io_FileInput._hx_class = sys_io_FileInput
 
 
 class sys_io_FileOutput(haxe_io_Output):
@@ -11209,7 +10855,6 @@ class sys_io_FileOutput(haxe_io_Output):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.impl = None
-sys_io_FileOutput._hx_class = sys_io_FileOutput
 
 class sys_io_FileSeek(Enum):
     __slots__ = ()
@@ -11218,7 +10863,6 @@ class sys_io_FileSeek(Enum):
 sys_io_FileSeek.SeekBegin = sys_io_FileSeek("SeekBegin", 0, ())
 sys_io_FileSeek.SeekCur = sys_io_FileSeek("SeekCur", 1, ())
 sys_io_FileSeek.SeekEnd = sys_io_FileSeek("SeekEnd", 2, ())
-sys_io_FileSeek._hx_class = sys_io_FileSeek
 
 
 class sys_net_Host:
@@ -11248,7 +10892,6 @@ class sys_net_Host:
         _hx_o.host = None
         _hx_o.ip = None
         _hx_o.name = None
-sys_net_Host._hx_class = sys_net_Host
 
 
 class sys_net__Socket_SocketInput(haxe_io_Input):
@@ -11307,7 +10950,6 @@ class sys_net__Socket_SocketInput(haxe_io_Input):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o._hx___s = None
-sys_net__Socket_SocketInput._hx_class = sys_net__Socket_SocketInput
 
 
 class sys_net__Socket_SocketOutput(haxe_io_Output):
@@ -11354,7 +10996,6 @@ class sys_net__Socket_SocketOutput(haxe_io_Output):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o._hx___s = None
-sys_net__Socket_SocketOutput._hx_class = sys_net__Socket_SocketOutput
 
 Math.NEGATIVE_INFINITY = float("-inf")
 Math.POSITIVE_INFINITY = float("inf")
