@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
      name='mindpowered-maglev',
-     version='0.7.13',
+     version='0.7.14',
      author="Mind Powered Corporation",
      author_email="support@mindpowered.dev",
      license="CPAL-1.0",
