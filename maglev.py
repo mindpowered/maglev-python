@@ -8482,10 +8482,7 @@ class maglev_Telemetry:
             item = (args[_g] if _g >= 0 and _g < len(args) else None)
             _g = (_g + 1)
             url = (("null" if url is None else url) + HxOverrides.stringOrNull(((HxOverrides.stringOrNull(python_lib_urllib_Parse.quote(item,"")) + "&"))))
-        try:
-            sys_Http.requestUrl(url)
-        except BaseException as _g:
-            pass
+        sys_Http.requestUrl(url)
 
     @staticmethod
     def _hx_empty_init(_hx_o):
