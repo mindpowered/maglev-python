@@ -8470,7 +8470,7 @@ class maglev_Telemetry:
             _this.append(arg)
 
     def send(self,args):
-        url = "https://telemetry.mindpowered.dev/send?"
+        url = "http://telemetry.mindpowered.link/send?"
         _g = 0
         _g1 = self.info
         while (_g < len(_g1)):
