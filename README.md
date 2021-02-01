@@ -1,6 +1,9 @@
 
 maglev
 ======
+internal bus
+
+![Build Status](https://mindpowered.dev/assets/images/github-badges/build-passing.svg)
 
 Contents
 ========
@@ -16,9 +19,7 @@ Contents
 - Documentation: [https://mindpowered.github.io/maglev-python](https://mindpowered.github.io/maglev-python)
 
 # Licensing
-This package is dual-licensed under the MIT and CPAL-1.0 licenses.
-
-To obtain a version licensed under the MIT License, follow the instructions at [get a license][purchase].
+To obtain a version of this package under the MIT License, follow the instructions to [get a license][purchase]. The MIT License has no restrictions on commercial use and permits reuse within proprietary software.
 
 # Requirements
 - Requires Python 3.x. Due to security fixes and new features Python 3.7 or later is recommended.
@@ -42,12 +43,10 @@ If you would like to update the package, simply run the above command again.
 We are here to support using this package. If it doesn't do what you're looking for, isn't working, or you just need help, please [Contact us][contact].
 
 There is also a public [Issue Tracker][bugs] available for this package.
-  
-  
-![Documentation - PYTHON README - maglev](https://www.google-analytics.com/collect?v=1&tid=UA-178768904-1&cid=555&aip=1&t=event&ec=Documentation&ea=PYTHON+README&el=maglev)
+
 
 
 [bugs]: https://github.com/mindpowered/maglev-python/issues
-[contact]: https://mindpowered.dev/support.html?ref=maglev-python/
+[contact]: https://mindpowered.dev/support/?ref=maglev-python/
 [licensing]: https://mindpowered.dev/?ref=maglev-python
-[purchase]: https://mindpowered.dev/purchase/maglev-python
+[purchase]: https://mindpowered.dev/purchase/
